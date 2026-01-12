@@ -1,0 +1,64 @@
+/* eslint-disable unicorn/no-useless-undefined */
+'use client';
+
+import { Input } from '@/components/ui-test/input';
+import { ControlWrapper } from '../control-wrapper';
+import { TextControlProps } from '../../types/controls';
+import { createControlRenderer } from '../../utils/rendering';
+import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
+
+function TextControl(props: TextControlProps) {
+  const { schema, uischema, enabled, data, required, errors, path, handleChange } = props;
+
+  const { type } = schema;
+  const { placeholder } = uischema;
+
+  const isNumberInput = type === 'number';
+  const hasErrors = errors.length > 0;
+
+  const [inputValue, setInputValue] = useState<string>('');
+
+  useEffect(() => {
+    if (data == null) {
+      setInputValue('');
+    } else {
+      setInputValue(String(data));
+    }
+  }, [data]);
+
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setInputValue(event.target.value);
+  };
+
+  function onBlur() {
+    const trimmed = inputValue.trim();
+
+    if (trimmed === '') {
+      handleChange(path, undefined);
+    } else if (isNumberInput) {
+      const number_ = Number(trimmed);
+      handleChange(path, Number.isNaN(number_) ? undefined : number_);
+    } else {
+      handleChange(path, trimmed);
+    }
+  };
+
+  return (
+    <ControlWrapper {...props}>
+      <Input
+        type={isNumberInput ? 'number' : 'text'}
+        required={required}
+        value={inputValue}
+        onChange={onChange}
+        onBlur={onBlur}
+        disabled={!enabled}
+        placeholder={placeholder}
+        className={cn('text-sm', hasErrors && 'border-destructive focus-visible:ring-destructive')}
+      />
+      {hasErrors && <p className="mt-1 text-xs text-destructive">{errors}</p>}
+    </ControlWrapper>
+  );
+}
+
+export const textControlRenderer = createControlRenderer('Text', TextControl);
