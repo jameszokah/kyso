@@ -1,6 +1,6 @@
 # kyso
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Self, and more.
+This project was created by [James Zokah](https://github.com/jameszokah/kyso), a modern TypeScript stack that combines Next.js, Self, and more.
 
 ## Features
 

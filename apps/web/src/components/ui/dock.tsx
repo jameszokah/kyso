@@ -55,6 +55,11 @@ type DockProviderProps = {
   value: DocumentContextType;
 };
 
+type ChildProps = {
+  width: MotionValue<number>;
+  isHovered: MotionValue<number>;
+};
+
 const DockContext = createContext<DocumentContextType | undefined>(undefined);
 
 function DockProvider({ children, value }: DockProviderProps) {
@@ -170,8 +175,10 @@ function DockItem({ children, className, onClick, onChange, isTogglable, isCheck
       aria-haspopup="true"
       {...props}
     >
-      {Children.map(children, (child) => cloneElement(child as React.ReactElement,
-        { width, isHovered }
+      {Children.map(children, (child) => cloneElement(child as React.ReactElement<ChildProps>,
+        { width, 
+          "data-hovered": isHovered,
+        }
       ))}
     </motion.div>
   );
@@ -179,7 +186,7 @@ function DockItem({ children, className, onClick, onChange, isTogglable, isCheck
 
 function DockLabel({ children, className, ...rest }: DockLabelProps) {
   const restProps = rest as Record<string, unknown>;
-  const isHovered = restProps['isHovered'] as MotionValue<number>;
+  const isHovered = restProps['data-hovered'] as MotionValue<number>;
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

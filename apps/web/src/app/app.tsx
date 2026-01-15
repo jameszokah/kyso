@@ -1,4 +1,4 @@
-
+'use client';
 import { setAutoFreeze } from 'immer';
 import { DiagramWrapper } from '@/features/diagram/diagram-wrapper';
 import { DiagramContainer as Diagram } from '../features/diagram/diagram';

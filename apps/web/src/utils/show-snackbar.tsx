@@ -1,12 +1,12 @@
 import { toast } from 'sonner';
 import i18n from 'i18next';
-import { DefaultTranslationMap } from '@/i18n/i18next';
+// import { DefaultTranslationMap } from '@/i18n/i18next';
 
 const SNACKBAR_PREFIX = `snackbar` as const;
-type SnackbarKey = keyof DefaultTranslationMap[typeof SNACKBAR_PREFIX];
+// type SnackbarKey = keyof DefaultTranslationMap[typeof SNACKBAR_PREFIX];
 
 type ShowSnackbarProps = {
-  title: SnackbarKey;
+  title: any;
   variant?: 'default' | 'destructive' | 'success' | 'warning' | 'info' | 'error';
   subtitle?: string;
   buttonLabel?: string;

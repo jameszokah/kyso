@@ -1,5 +1,5 @@
-import { Point } from '@kyso/types/common';
-import { XYPosition } from '@xyflow/react';
+import type { Point } from '@kyso/types/common';
+import type { XYPosition } from '@xyflow/react';
 
 export function addPoints(point1: Point | XYPosition, point2: Point | XYPosition) {
   return { x: point1.x + point2.x, y: point1.y + point2.y };

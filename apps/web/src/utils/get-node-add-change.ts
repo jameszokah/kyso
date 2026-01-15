@@ -1,5 +1,5 @@
-import { NodeData, WorkflowBuilderNode } from '@kyso/types/node-data';
-import { NodeAddChange, XYPosition } from '@xyflow/react';
+import type { NodeData, WorkflowBuilderNode } from '@kyso/types/node-data';
+import type { NodeAddChange, XYPosition } from '@xyflow/react';
 import { NodeType } from '@kyso/types/node-types';
 
 export function getNodeAddChange(

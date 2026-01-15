@@ -1,5 +1,5 @@
-import { Edge, Node } from '@xyflow/react';
-import { StateMachineConfig, AgentToolConfig, AgentConfig } from './state-machine-types';
+import type { Edge, Node } from '@xyflow/react';
+import type { StateMachineConfig, AgentToolConfig, AgentConfig } from './state-machine-types';
 
 export function extractStateMachineConfig(nodes: Node[], edges: Edge[]): StateMachineConfig | null {
   const startNode = nodes.find((node) => node.type === 'start-node');

@@ -1,4 +1,4 @@
-import { NodeChange } from '@xyflow/react';
+import type { NodeChange } from '@xyflow/react';
 
 type NodeChangedListener = (changes: NodeChange[]) => void;
 

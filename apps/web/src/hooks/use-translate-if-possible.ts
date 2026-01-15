@@ -1,3 +1,4 @@
+'use client';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -6,9 +7,9 @@ export function useTranslateIfPossible() {
 
   const translateIfPossible = useCallback(
     (value = '') => {
-      if (value && i18n.exists(value)) {
-        return t(value) as string;
-      }
+      // if (value && i18n?.exists(value)) {
+      //   return t(value) as string;
+      // }
 
       return;
     },

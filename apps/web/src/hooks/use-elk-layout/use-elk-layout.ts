@@ -1,8 +1,9 @@
+'use client';
 import { useCallback } from 'react';
 import { useReactFlow, useUpdateNodeInternals } from '@xyflow/react';
 import { getLayoutedNodes } from './get-layouted-nodes';
-import { LayoutDirection } from '@kyso/types/common';
-import { WorkflowBuilderNode, WorkflowBuilderEdge } from '@kyso/types/node-data';
+import type { LayoutDirection } from '@kyso/types/common';
+import type { WorkflowBuilderNode, WorkflowBuilderEdge } from '@kyso/types/node-data';
 import { useFitView } from '../use-fit-view';
 
 export function useElkLayout() {

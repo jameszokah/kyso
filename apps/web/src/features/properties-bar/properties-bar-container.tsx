@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { useRemoveElements } from '@/hooks/use-remove-elements';
 import { useTranslation } from 'react-i18next';

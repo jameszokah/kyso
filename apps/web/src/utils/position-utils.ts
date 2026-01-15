@@ -1,5 +1,5 @@
-import { getNodesBounds, Node, Viewport } from '@xyflow/react';
-import { Point } from '@kyso/types/common';
+import { getNodesBounds, type Node, type Viewport } from '@xyflow/react';
+import type { Point } from '@kyso/types/common';
 import { SNAP_GRID, SNAP_IS_ACTIVE } from '@/features/diagram/diagram.const';
 
 export function getNodesCenterPoint(nodes: Node[]): Point {

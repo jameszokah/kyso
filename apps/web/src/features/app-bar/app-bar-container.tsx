@@ -1,6 +1,5 @@
 'use client';
 
-
 import useStore from '@/store/store';
 
 import { useContext, useEffect, useState } from 'react';

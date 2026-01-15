@@ -31,8 +31,8 @@ function generateKeys() {
   const keys = [];
 
   for (const fileName of readdirSync(outputDirectory)) {
-    const key = fileName.split('.tsx')[0];
-    const lowerCaseKey = key.toLowerCase();
+    const key = fileName?.split('.tsx')[0];
+    const lowerCaseKey = key?.toLowerCase();
 
     // Remove existing files with the same name but different casing
     if (keyLookup.has(lowerCaseKey)) {
