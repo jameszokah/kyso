@@ -1,13 +1,8 @@
-import { ReactFlowProvider } from '@xyflow/react';
-import { ZoomProvider } from '@/providers/zoom-provider';
-import { UndoRedoProvider } from '@/providers/undo-redo-provider';
-import { MousePositionProvider } from '@/providers/mouse-position-provider';
-import { ModalProvider } from '@/features/modals/modal-provider';
+
 import { setAutoFreeze } from 'immer';
 import { DiagramWrapper } from '@/features/diagram/diagram-wrapper';
 import { DiagramContainer as Diagram } from '../features/diagram/diagram';
 
-import './i18n/index';
 
 // Plugins entry point
 import '@/features/plugins/index';
@@ -22,11 +17,7 @@ export function App() {
   setAutoFreeze(false);
 
   return (
-    <ReactFlowProvider>
-      <ZoomProvider>
-        <UndoRedoProvider>
-          <MousePositionProvider>
-            <ModalProvider>
+    
               <SidebarProvider
                 style={{
                   '--sidebar-width': '16rem',
@@ -46,10 +37,6 @@ export function App() {
                   <OrnamentBar />
                 </Environment> */}
               </SidebarProvider>
-            </ModalProvider>
-          </MousePositionProvider>
-        </UndoRedoProvider>
-      </ZoomProvider>
-    </ReactFlowProvider>
+            
   );
 }

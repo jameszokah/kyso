@@ -1,5 +1,5 @@
-import { IconType } from './common';
-import {
+import type { IconType } from './common';
+import type {
   IfThenElseSchema,
   NumberFieldValidationSchema,
   ObjectFieldRequiredValidationSchema,

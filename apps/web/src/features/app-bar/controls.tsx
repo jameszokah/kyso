@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './app-bar.module.css';
 import { useTranslation } from 'react-i18next';
 import { Archive, DownloadSimple, Export, Image } from '@phosphor-icons/react';

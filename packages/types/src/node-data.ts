@@ -1,7 +1,7 @@
 import type { IconType } from './common';
 import type { Edge, Node } from '@xyflow/react';
-import type { UISchema } from '@kyso/web/src/app/features/json-form/types/uischema';
-import type { NodeDataProperties } from '@kyso/web/src/app/features/json-form/types/default-properties';
+import type { UISchema } from '../../../apps/web/src/features/json-form/types/uischema';
+import type { NodeDataProperties } from '../../../apps/web/src/features/json-form/types/default-properties';
 import type { BaseNodeProperties, NodeSchema } from './node-schema';
 import { NodeType } from './node-types';
 

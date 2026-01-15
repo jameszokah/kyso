@@ -1,9 +1,9 @@
-import { ReactFlowInstance, ReactFlowJsonObject } from '@xyflow/react';
+import type { ReactFlowInstance, ReactFlowJsonObject } from '@xyflow/react';
 import { NodeType } from './node-types';
-import { NodeDefinition, WorkflowBuilderEdge, WorkflowBuilderNode } from './node-data';
-import { ReactNode } from 'react';
-import { NodeSchema } from './node-schema';
-import { WBIcon } from '@kyso/icons';
+import type { NodeDefinition, WorkflowBuilderEdge, WorkflowBuilderNode } from './node-data';
+import type { ReactNode } from 'react';
+import type { NodeSchema } from './node-schema';
+import type { WBIcon } from '@kyso/icons';
 
 export type LayoutDirection = 'DOWN' | 'RIGHT';
 

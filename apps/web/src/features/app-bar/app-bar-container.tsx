@@ -1,4 +1,5 @@
-import './variables.css';
+'use client';
+
 
 import useStore from '@/store/store';
 
