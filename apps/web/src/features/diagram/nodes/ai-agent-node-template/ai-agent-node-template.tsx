@@ -1,12 +1,12 @@
 import { Position } from '@xyflow/react';
-import { IconType } from '@kyso/types/common';
+import type { IconType } from '@kyso/types/common';
 import { memo, useMemo } from 'react';
 import { Icon } from '@kyso/icons';
 import { SettingInfo } from './components/setting-info/setting-info';
 import { ToolInfo } from './components/tool-info/tool-info';
-import { ItemOption } from '@kyso/types/node-schema';
-import { NodeDataProperties } from '@/features/json-form/types/default-properties';
-import { AiAgentNodeSchema } from '../../../../data/nodes/ai-agent/schema';
+import type { ItemOption } from '@kyso/types/node-schema';
+import type { NodeDataProperties } from '@/features/json-form/types/default-properties';
+import type { AiAgentNodeSchema } from '../../../../data/nodes/ai-agent/schema';
 import { getHandleId } from '../../handles/get-handle-id';
 import { ConnectableItem } from '../components/connectable-item/connectable-item';
 import { useState } from 'react';
@@ -94,11 +94,11 @@ export const AiAgentNodeTemplate = memo(
             )}
           </BaseNodeHeader>
           {/* Content */}
-          <BaseNodeContent className="p-3">
+          <BaseNodeContent className={cn("p-0",{"p-3": isCanvasNode})}>
             <CollapsibleContent>
               <div className="flex flex-col gap-3 pb-2">
                 <SettingInfo
-                  label="Chat Model"
+                  label="Voice Model"
                   actionLabel={chatModel ? chatModel.label : 'Add Chat'}
                   icon={chatModel?.icon}
                   className={cn(

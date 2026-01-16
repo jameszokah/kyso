@@ -3,8 +3,8 @@
 import { cn } from '@/lib/utils';
 import { SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
 import { NodePreviewContainer } from '../../node-preview-container';
-import { PaletteItem } from '@kyso/types/common';
-import { DragEvent } from 'react';
+import type { PaletteItem } from '@kyso/types/common';
+import type { DragEvent } from 'react';
 
 type PaletteItemsProps = {
   onDragStart: (event: DragEvent, type: string) => void;
