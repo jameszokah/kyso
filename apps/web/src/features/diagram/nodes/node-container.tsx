@@ -1,8 +1,8 @@
 import useStore from '@/store/store';
 
 import { memo } from 'react';
-import { NodeProps } from '@xyflow/react';
-import { WorkflowBuilderNode } from '@kyso/types/node-data';
+import { type NodeProps } from '@xyflow/react';
+import type { WorkflowBuilderNode } from '@kyso/types/node-data';
 import { WorkflowNodeTemplate } from './workflow-node-template/workflow-node-template';
 
 type Props = NodeProps<WorkflowBuilderNode>;

@@ -1,4 +1,4 @@
-import { DiagramModel, TemplateModel } from '@kyso/types/common';
+import type { DiagramModel, TemplateModel } from '@kyso/types/common';
 
 const defaultDiagram: DiagramModel = {
   name: 'Simple workflow diagram',

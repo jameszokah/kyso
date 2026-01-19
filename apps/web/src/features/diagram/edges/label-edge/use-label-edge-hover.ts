@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useStore from '@/store/store';
-import { EdgeState, useEdgeStyle } from '../use-edge-style';
+import { type EdgeState, useEdgeStyle } from '../use-edge-style';
 
 type UseLabelEdgeHoverParams = {
   id: string;

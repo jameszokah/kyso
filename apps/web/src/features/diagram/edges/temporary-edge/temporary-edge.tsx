@@ -1,6 +1,6 @@
 import { EDGE_CURVE_RADIUS, EDGE_OFFSET } from '../edge.consts';
 import { useEdgeStyle } from '../use-edge-style';
-import { BaseEdge, ConnectionLineComponentProps, getSmoothStepPath } from '@xyflow/react';
+import { BaseEdge, type ConnectionLineComponentProps, getSmoothStepPath } from '@xyflow/react';
 
 export function TemporaryEdge({ fromX, fromY, fromPosition, toX, toY, toPosition }: ConnectionLineComponentProps) {
   const style = useEdgeStyle({ state: 'temporary' });

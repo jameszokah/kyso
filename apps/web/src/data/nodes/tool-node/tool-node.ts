@@ -1,4 +1,4 @@
-import { PaletteItem } from '@kyso/types/common';
+import type { PaletteItem } from '@kyso/types/common';
 import { schema } from './schema';
 import { defaultPropertiesData } from './default-properties-data';
 import { uischema } from './uischema';

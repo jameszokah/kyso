@@ -1,7 +1,7 @@
-import { BaseEdge, EdgeProps } from '@xyflow/react';
-import { EdgeState, useEdgeStyle } from '../use-edge-style';
+import { BaseEdge, type EdgeProps } from '@xyflow/react';
+import { type EdgeState, useEdgeStyle } from '../use-edge-style';
 import { EDGE_CURVE_RADIUS, SELF_CONNECTING_EDGE_LABEL_OFFSET } from '../edge.consts';
-import { WorkflowBuilderEdge } from '@kyso/types/node-data';
+import type { WorkflowBuilderEdge } from '@kyso/types/node-data';
 
 type SelfConnectingEdgeProps = EdgeProps<WorkflowBuilderEdge> & {
   nodeHeight?: number;

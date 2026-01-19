@@ -1,5 +1,5 @@
-import { LayoutDirection } from '@kyso/types/common';
-import { HandleType, Position } from '@xyflow/react';
+import type { LayoutDirection } from '@kyso/types/common';
+import { type HandleType, Position } from '@xyflow/react';
 
 export function getHandlePosition({ handleType, direction }: GetHandlePositionOptions) {
   return HANDLE_POSITION_MAP[`${handleType}-${direction}`];

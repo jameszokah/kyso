@@ -1,11 +1,11 @@
 import useStore from '@/store/store';
 
-import { NodeProps, Node } from '@xyflow/react';
-import { NodeData } from '@kyso/types/node-data';
+import { type NodeProps, type Node } from '@xyflow/react';
+import type { NodeData } from '@kyso/types/node-data';
 import { memo, useMemo } from 'react';
 
-import { VoiceAgentNodeSchema } from '../../../data/nodes/voice-agent/schema';
-import { NodeDataProperties } from '../../json-form/types/default-properties';
+import type { VoiceAgentNodeSchema } from '../../../data/nodes/voice-agent/schema';
+import type { NodeDataProperties } from '../../json-form/types/default-properties';
 import { VoiceAgentNodeTemplate } from './voice-agent-node-template/voice-agent-node-template';
 import { modelProviderOptions } from '@/data/nodes/voice-agent/select-options';
 

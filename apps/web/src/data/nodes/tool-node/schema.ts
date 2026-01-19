@@ -1,4 +1,4 @@
-import { NodeSchema } from '@kyso/types/node-schema';
+import type { NodeSchema } from '@kyso/types/node-schema';
 import { sharedProperties } from '../shared/shared-properties';
 
 export const schema = {
