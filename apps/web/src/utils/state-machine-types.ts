@@ -1,42 +1,70 @@
-export interface AgentConfig {
+export interface WorkflowConfig {
   id: string;
+  tenantId: string;
+  name: string;
+  initialState: string;
+  states: Record<string, AgentState>;
+  global?: {
+    model?: {
+      provider: string;
+      modelName: string;
+      apiKey?: string;
+    };
+    voice?: {
+      provider: string;
+      voiceId: string;
+      model?: string;
+      apiKey?: string;
+    };
+    stt?: {
+      provider: string;
+      modelName?: string;
+      language?: string;
+      apiKey?: string;
+    };
+    language?: string;
+  };
+}
+
+export interface AgentState {
+  name: string;
   systemPrompt: string;
-  model: {
+  tools: AgentToolConfig[];
+  model?: {
     provider: string;
     modelName: string;
+    apiKey?: string;
   };
-  voice: {
+  voice?: {
     provider: string;
     voiceId: string;
+    model?: string;
+    language?: string;
+    apiKey?: string;
   };
-  stt: {
+  stt?: {
     provider: string;
     modelName?: string;
     language?: string;
+    apiKey?: string;
   };
-  tools: AgentToolConfig[];
+  rag?: {
+    enabled: boolean;
+    serviceName?: string;
+  };
 }
 
 export interface AgentToolConfig {
   name: string;
   description: string;
-  type: 'http_request' | 'function';
+  type: 'http_request' | 'function' | 'webhook';
   config: Record<string, any>;
-}
-
-export interface StateMachineConfig {
-  id: string;
-  name: string;
-  callConfig?: {
-    allowCall: boolean;
-    agentName: string;
+  transitionTo?: string;
+  parameters?: {
+    [key: string]: {
+      type: 'string' | 'number' | 'boolean' | 'object' | 'array';
+      description: string;
+      required?: boolean;
+    };
   };
-  initialState: string;
-  states: Record<string, StateConfig>;
-}
-
-export interface StateConfig {
-  name: string;
-  agent?: AgentConfig;
-  transitions: Record<string, string>; // tool_name -> target_state_name
 }

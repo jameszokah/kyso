@@ -19,7 +19,9 @@ interface ToolbarProps {
   onImport?: () => void;
   onSaveAsImage?: () => void;
   onArchive?: () => void;
+  onPreview?: () => void;
 }
+
 
 export function Toolbar({
   onSave,
@@ -36,7 +38,9 @@ export function Toolbar({
   onImport,
   onSaveAsImage,
   onArchive,
+  onPreview,
 }: ToolbarProps) {
+
   const data = [
     {
       title: 'Save',
@@ -45,6 +49,14 @@ export function Toolbar({
       isTogglable: false,
       disabled: false,
     },
+    {
+      title: 'Preview',
+      icon: <Icon name="PlayThin" className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
+      onClick: onPreview,
+      isTogglable: false,
+      disabled: false,
+    },
+
     {
       title: 'Open',
       icon: <Icon name="FolderOpenThin" className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
@@ -107,7 +119,7 @@ export function Toolbar({
             item.title === 'More' ? (
               <DockItem isTogglable={item.isTogglable} key={item.title} className="z-20">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-b from-gray-900/10 to-transparent dark:from-gray-100/10 blur-3xl -z-10 rounded-full" />
+                  <div className="absolute inset-0 bg-linear-to-b from-gray-900/10 to-transparent dark:from-gray-100/10 blur-3xl -z-10 rounded-full" />
                   <MenuContainer>
                     <MenuItem
                       icon={

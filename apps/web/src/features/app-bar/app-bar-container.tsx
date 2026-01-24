@@ -10,8 +10,14 @@ import { ImportConfirmationDialog } from './import-confirmation-dialog';
 import { UndoRedoContext } from '@/providers/undo-redo-provider';
 import { useElkLayout } from '@/hooks/use-elk-layout/use-elk-layout';
 // import { useTheme } from '../../hooks/use-theme';
+import { validateWorkflow, extractWorkflowConfig, type ValidationResult } from '../workflow-validator/workflow-logic';
+import { PreviewDialog } from '../workflow-validator/components/preview-dialog';
+import type { WorkflowConfig } from '@/utils/state-machine-types';
 
 export function AppBarContainer() {
+  const nodes = useStore((state) => state.nodes);
+  const edges = useStore((state) => state.edges);
+
   const documentName = useStore((state) => state.documentName || '');
   const isReadOnlyMode = useStore((store) => store.isReadOnlyMode);
   const saveDiagram = useStore((store) => store.saveDiagram);
@@ -27,6 +33,11 @@ export function AppBarContainer() {
 
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
+
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const [previewConfig, setPreviewConfig] = useState<WorkflowConfig | null>(null);
+
 
   const layout = useElkLayout();
 
@@ -106,6 +117,21 @@ export function AppBarContainer() {
     saveAsImage();
   }
 
+  function handlePreview() {
+    const result = validateWorkflow(nodes, edges);
+    setValidationResult(result);
+    
+    if (result.isValid) {
+        const config = extractWorkflowConfig(nodes, edges);
+        setPreviewConfig(config);
+    } else {
+        setPreviewConfig(null);
+    }
+    
+    setIsPreviewOpen(true);
+  }
+
+
   return (
     <div className={''}>
       <Toolbar
@@ -121,7 +147,9 @@ export function AppBarContainer() {
         onExport={handleExport}
         onImport={handleImport}
         onSaveAsImage={handleSaveAsImage}
+        onPreview={handlePreview}
       />
+
       <ProjectSelection documentName={documentName} isReadOnlyMode={isReadOnlyMode} />
       <ImportConfirmationDialog
         isOpen={isImportDialogOpen}
@@ -129,6 +157,13 @@ export function AppBarContainer() {
         onCancel={handleCancelImport}
         fileName={pendingFile?.name || ''}
       />
+      <PreviewDialog
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        validationResult={validationResult}
+        config={previewConfig}
+      />
+
     </div>
   );
 }
