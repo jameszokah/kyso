@@ -27,8 +27,8 @@ interface ToolNodeSelectorControlProps {
 function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorControlProps) {
   const nodes = useStore((state) => state.nodes);
   
-  // Get all tool nodes from the graph
-  const toolNodes = nodes.filter((n) => n.type === 'tool-node');
+  // Get all tool nodes from the graph using data.type (where palette type is stored)
+  const toolNodes = nodes.filter((n) => (n.data?.type as string) === 'tool-node');
   
   // Build options from tool nodes - check multiple possible data structures
   const availableTools = toolNodes
