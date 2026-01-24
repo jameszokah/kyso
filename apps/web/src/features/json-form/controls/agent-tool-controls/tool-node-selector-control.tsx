@@ -29,6 +29,17 @@ function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorC
   // Get all tool nodes from the graph using data.type
   const toolNodes = nodes.filter((n) => (n.data?.type as string) === 'tool-node');
   
+  // Debug logging - keep until tool display is fixed
+  console.log('[ToolNodeSelector] All nodes count:', nodes.length);
+  console.log('[ToolNodeSelector] All nodes types:', nodes.map(n => ({ id: n.id, type: n.type, dataType: n.data?.type })));
+  console.log('[ToolNodeSelector] Tool nodes found:', toolNodes.length);
+  console.log('[ToolNodeSelector] Tool nodes details:', toolNodes.map(n => ({
+    id: n.id,
+    type: n.type,
+    dataType: n.data?.type,
+    properties: n.data?.properties,
+  })));
+  
   // Build available HTTP tools list from ToolNodes
   const availableHttpTools: ToolReference[] = [];
   
@@ -36,15 +47,26 @@ function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorC
     const props = node.data?.properties as Record<string, unknown> | undefined;
     const tool = props?.tool as Record<string, unknown> | undefined;
     
+    console.log('[ToolNodeSelector] Checking tool node:', node.id, { 
+      props, 
+      tool,
+      toolName: tool?.name,
+    });
+    
     const toolName = tool?.name;
     if (toolName && typeof toolName === 'string') {
+      console.log('[ToolNodeSelector] ✓ Tool has name:', toolName);
       availableHttpTools.push({
         nodeId: node.id,
         toolName: toolName,
         type: 'http_tool',
       });
+    } else {
+      console.log('[ToolNodeSelector] ✗ Tool missing name, skipping');
     }
   }
+  
+  console.log('[ToolNodeSelector] Final availableHttpTools:', availableHttpTools);
 
   // Get transition tools from edges to other VoiceAgents
   const transitionTools: ToolReference[] = [];

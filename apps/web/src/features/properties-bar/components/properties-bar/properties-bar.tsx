@@ -25,9 +25,6 @@ function PropertiesSidebarComponent({
 }: PropertiesBarProps) {
   const { open } = useSidebar();
 
-  console.log('selection :', !!selection);
-  console.log('open :', open);
-
   const name = selection?.node?.data?.properties?.label ?? selection?.edge?.data?.label;
   const isExpanded = !!selection;
   const hasCustomItems = tabs.length > 0;
