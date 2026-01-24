@@ -16,6 +16,7 @@ export default {
     templates: 'Templates',
     nodesLibrary: 'Toolbar',
     helpSupport: 'Help & Support',
+    settings: 'Settings',
   },
   node: {
     action: {
@@ -131,4 +132,5 @@ export default {
     aiConnectionError: 'Error in connection to AI server',
     wrongDiagramFormat: 'Wrong diagram format',
   },
+  
 } as const;

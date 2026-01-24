@@ -15,7 +15,7 @@ import { SettingsDialog } from '../settings/settings-dialog';
 import { Settings } from 'lucide-react';
 import { useFitView } from '@/hooks/use-fit-view';
 import useStore from '@/store/store';
-import { DiagramModel } from '@kyso/types/common';
+import type { DiagramModel } from '@kyso/types/common';
 import { useCallback, useState } from 'react';
 import { useI18n } from '@/locales/client';
 
@@ -63,7 +63,7 @@ export function PaletteFooter() {
 
       <Button variant="ghost" className="w-full justify-start gap-2" onClick={() => setIsSettingsOpen(true)}>
         <Settings className="w-4 h-4" />
-        {t('palette.settings', 'Settings')}
+        {t('palette.settings')}
       </Button>
 
       <SettingsDialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
