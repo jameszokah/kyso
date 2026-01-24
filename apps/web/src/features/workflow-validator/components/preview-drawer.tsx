@@ -38,7 +38,7 @@ export function PreviewDrawer({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="top" className="max-h-[70vh] overflow-y-auto">
+      <SheetContent side="top" className="max-h-[70vh] overflow-y-auto rounded-b-2xl">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             Workflow Preview

@@ -11,8 +11,17 @@ export function validateWorkflow(nodes: Node[], edges: Edge[]): ValidationResult
   const errors: string[] = [];
   const validEdges: Set<string> = new Set();
 
-  const startNode = nodes.find((n) => n.type === 'start-node');
-  const endNodes = nodes.filter((n) => n.type === 'end-node');
+  // Log for debugging
+  console.log('[Validate] Nodes:', nodes.map(n => ({ id: n.id, type: n.type })));
+  console.log('[Validate] Edges:', edges.length);
+
+  // Check for start node (try multiple type variations)
+  const startNode = nodes.find((n) => 
+    n.type === 'start-node' || n.type === 'startNode' || n.type === 'start'
+  );
+  const endNodes = nodes.filter((n) => 
+    n.type === 'end-node' || n.type === 'endNode' || n.type === 'end'
+  );
 
   if (!startNode) {
     errors.push('Workflow must have a Start Node.');

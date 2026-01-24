@@ -30,26 +30,28 @@ function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorC
   // Get all tool nodes from the graph
   const toolNodes = nodes.filter((n) => n.type === 'tool-node');
   
-  // Type for tool node properties
-  type ToolNodeProperties = {
-    label?: string;
-    tool?: { name?: string };
-  };
-
-  // Build options from tool nodes
+  // Build options from tool nodes - check multiple possible data structures
   const availableTools = toolNodes
     .filter((n) => {
-      const props = n.data?.properties as ToolNodeProperties | undefined;
-      return props?.tool?.name;
+      // Check both possible paths: data.properties.tool.name OR data.tool.name
+      const propsPath = (n.data?.properties as any)?.tool?.name;
+      const directPath = (n.data as any)?.tool?.name;
+      return propsPath || directPath;
     })
     .map((n) => {
-      const props = n.data?.properties as ToolNodeProperties;
+      // Get tool from either path
+      const propsPath = (n.data?.properties as any);
+      const directData = n.data as any;
+      const tool = propsPath?.tool || directData?.tool || {};
+      const label = propsPath?.label || directData?.label || 'Tool';
+      
       return {
         nodeId: n.id,
-        toolName: props?.tool?.name as string,
-        label: `${props?.label || 'Tool'} - ${props?.tool?.name || 'Unnamed'}`,
+        toolName: tool?.name as string,
+        label: `${label} - ${tool?.name || 'Unnamed'}`,
       };
     });
+
 
   const selectedTools = data || [];
 
