@@ -1,5 +1,5 @@
 import { Position } from '@xyflow/react';
-import { IconType } from '@kyso/types/common';
+import type { IconType } from '@kyso/types/common';
 import { memo, useMemo } from 'react';
 import { Icon } from '@kyso/icons';
 import { SettingInfo } from './components/setting-info/setting-info';
@@ -122,8 +122,8 @@ export const VoiceAgentNodeTemplate = memo(
               <ToolInfo>
                 {selectedTools?.map((tool, index) => (
                   <ConnectableItem
-                    key={index}
-                    label={tool.tool}
+                    key={tool.name || index}
+                    label={tool.name || 'Unnamed Tool'}
                     handleType="source"
                     innerId={index.toString()}
                     nodeId={id}
