@@ -27,7 +27,10 @@ export type DiagramState = {
   draggedSegmentDestinationId: string | null;
   setDraggedSegmentDestinationId: (id: string | null) => void;
   getNodes: () => Node[];
+  validatedEdgeIds: string[];
+  setValidatedEdgeIds: (ids: string[]) => void;
 };
+
 
 export function useDiagramSlice(set: SetDiagramState, get: GetDiagramState) {
   return {
@@ -105,5 +108,10 @@ export function useDiagramSlice(set: SetDiagramState, get: GetDiagramState) {
       set({ draggedSegmentDestinationId: id });
     },
     getNodes: () => get().nodes,
+    validatedEdgeIds: [],
+    setValidatedEdgeIds: (ids: string[]) => {
+      set({ validatedEdgeIds: ids });
+    },
   };
 }
+

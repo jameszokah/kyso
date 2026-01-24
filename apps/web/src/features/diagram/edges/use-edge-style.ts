@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-export type EdgeState = 'default' | 'selected' | 'temporary';
+export type EdgeState = 'default' | 'selected' | 'temporary' | 'validated';
 
 interface UseEdgeStyleProps {
   state: EdgeState;
@@ -21,6 +21,15 @@ export function useEdgeStyle({ state, isHovered }: UseEdgeStyleProps): CSSProper
     };
   }
 
+  if (state === 'validated') {
+    return {
+      ...baseStyle,
+      stroke: '#22c55e', // green-500
+      strokeWidth: 3,
+      animation: 'pulse-edge 1.5s ease-in-out infinite',
+    };
+  }
+
   if (state === 'selected') {
     return {
       ...baseStyle,
@@ -38,3 +47,4 @@ export function useEdgeStyle({ state, isHovered }: UseEdgeStyleProps): CSSProper
 
   return baseStyle;
 }
+

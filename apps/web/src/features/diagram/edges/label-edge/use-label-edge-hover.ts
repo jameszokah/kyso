@@ -9,11 +9,13 @@ type UseLabelEdgeHoverParams = {
 
 export function useLabelEdgeHover({ id, isSelected }: UseLabelEdgeHoverParams) {
   const draggedSegmentDestinationId = useStore((state) => state.draggedSegmentDestinationId);
+  const validatedEdgeIds = useStore((state) => state.validatedEdgeIds);
   const [labelHovered, setLabelHovered] = useState(false);
   const edgeHovered = useStore((state) => state.hoveredElement === id);
   const hovered = (labelHovered || edgeHovered) && !draggedSegmentDestinationId;
 
-  const edgeState: EdgeState = isSelected ? 'selected' : 'default';
+  const isValidated = validatedEdgeIds.includes(id);
+  const edgeState: EdgeState = isValidated ? 'validated' : isSelected ? 'selected' : 'default';
   const style = useEdgeStyle({ state: edgeState, isHovered: hovered });
 
   function handleMouseEnter() {

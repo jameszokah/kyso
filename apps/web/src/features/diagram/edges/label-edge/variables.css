@@ -6,3 +6,15 @@
   --wb-edge-label-color: var(--ax-colors-gray-500); /* missing token */
   --wb-edge-label-background: var(--ax-colors-gray-200); /* missing token */
 }
+
+@keyframes pulse-edge {
+  0%, 100% {
+    opacity: 1;
+    stroke-opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+    stroke-opacity: 0.6;
+  }
+}
+

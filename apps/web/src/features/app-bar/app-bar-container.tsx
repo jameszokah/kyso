@@ -117,9 +117,14 @@ export function AppBarContainer() {
     saveAsImage();
   }
 
+  const setValidatedEdgeIds = useStore((store) => store.setValidatedEdgeIds);
+
   function handlePreview() {
     const result = validateWorkflow(nodes, edges);
     setValidationResult(result);
+    
+    // Set validated edges for animation
+    setValidatedEdgeIds(result.validEdges);
     
     if (result.isValid) {
         const config = extractWorkflowConfig(nodes, edges);
