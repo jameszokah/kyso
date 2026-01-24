@@ -66,7 +66,7 @@ function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorC
       };
     });
 
-
+  console.log('[ToolNodeSelector] Available tools:', availableTools.length, availableTools);
 
   const selectedTools = data || [];
 
