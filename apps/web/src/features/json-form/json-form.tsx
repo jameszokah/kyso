@@ -19,6 +19,7 @@ import { aiToolsControlRenderer } from './controls/ai-tools-control/ai-tools-con
 import { decisionBranchesControlRenderer } from './controls/decision-branches-control/decision-branches-control';
 import { agentToolsListControlRenderer } from './controls/agent-tool-controls/agent-tools-list-control';
 import { singleAgentToolControlRenderer } from './controls/agent-tool-controls/single-agent-tool-control';
+import { toolNodeSelectorControlRenderer } from './controls/agent-tool-controls/tool-node-selector-control';
 
 
 type Props = Pick<ComponentProps<typeof JsonForms>, 'onChange' | 'data' | 'uischema' | 'schema'> & {
@@ -51,5 +52,6 @@ const renderers: JsonFormsRendererRegistryEntry[] = [
   decisionBranchesControlRenderer,
   agentToolsListControlRenderer,
   singleAgentToolControlRenderer,
-
+  toolNodeSelectorControlRenderer,
 ];
+

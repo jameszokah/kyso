@@ -37,16 +37,20 @@ export const uischema: UISchema = {
       elements: [
         { type: 'Select', scope: scope('properties.model.properties.provider'), label: 'Provider' },
         { type: 'Select', scope: scope('properties.model.properties.modelName'), label: 'Model Name' },
+        { type: 'Text', scope: scope('properties.model.properties.apiKey'), label: 'API Key', inputType: 'password' },
       ],
     },
+
     {
       type: 'Accordion',
       label: 'Voice Configuration',
       elements: [
         { type: 'Select', scope: scope('properties.voice.properties.provider'), label: 'Provider' },
         { type: 'Select', scope: scope('properties.voice.properties.voiceId'), label: 'Voice ID' },
+        { type: 'Text', scope: scope('properties.voice.properties.apiKey'), label: 'API Key', inputType: 'password' },
       ],
     },
+
     {
       type: 'Accordion',
       label: 'STT Configuration',
@@ -54,12 +58,14 @@ export const uischema: UISchema = {
         { type: 'Select', scope: scope('properties.stt.properties.provider'), label: 'Provider' },
         { type: 'Select', scope: scope('properties.stt.properties.modelName'), label: 'Model Name' },
         { type: 'Select', scope: scope('properties.stt.properties.language'), label: 'Language' },
+        { type: 'Text', scope: scope('properties.stt.properties.apiKey'), label: 'API Key', inputType: 'password' },
       ],
     },
+
     {
       type: 'Accordion',
       label: 'Tools',
-      elements: [{ type: 'AgentToolsList', scope: scope('properties.tools') }],
+      elements: [{ type: 'ToolNodeSelector', scope: scope('properties.tools') }],
     },
   ],
 };

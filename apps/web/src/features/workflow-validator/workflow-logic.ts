@@ -1,5 +1,5 @@
-import { Edge, Node } from '@xyflow/react';
-import { WorkflowConfig, AgentState, AgentToolConfig } from '@/utils/state-machine-types';
+import type { Edge, Node } from '@xyflow/react';
+import type { WorkflowConfig, AgentState, AgentToolConfig } from '@/utils/state-machine-types';
 
 export interface ValidationResult {
   isValid: boolean;

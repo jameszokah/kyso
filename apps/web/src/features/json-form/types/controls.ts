@@ -120,3 +120,10 @@ export type SingleAgentToolControlElement = Override<
   }
 >;
 
+export type ToolNodeSelectorControlElement = Override<
+  BaseControlElement,
+  {
+    type: 'ToolNodeSelector';
+  }
+>;
+

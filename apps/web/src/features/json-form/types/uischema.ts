@@ -15,8 +15,9 @@ import type {
   DecisionBranchesControlElement,
   AgentToolsListControlElement,
   SingleAgentToolControlElement,
-
+  ToolNodeSelectorControlElement,
 } from './controls';
+
 import type { LabelElement } from './label';
 
 export type UISchemaControlElement<T extends string = string> = (
@@ -30,7 +31,9 @@ export type UISchemaControlElement<T extends string = string> = (
   | DecisionBranchesControlElement
   | AgentToolsListControlElement
   | SingleAgentToolControlElement
+  | ToolNodeSelectorControlElement
 ) & { scope: T; errorIndicatorEnabled?: boolean };
+
 
 export type UISchemaControlElementType = UISchemaControlElement['type'];
 

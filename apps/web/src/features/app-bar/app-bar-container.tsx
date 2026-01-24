@@ -11,7 +11,7 @@ import { UndoRedoContext } from '@/providers/undo-redo-provider';
 import { useElkLayout } from '@/hooks/use-elk-layout/use-elk-layout';
 // import { useTheme } from '../../hooks/use-theme';
 import { validateWorkflow, extractWorkflowConfig, type ValidationResult } from '../workflow-validator/workflow-logic';
-import { PreviewDialog } from '../workflow-validator/components/preview-dialog';
+import { PreviewDrawer } from '../workflow-validator/components/preview-drawer';
 import type { WorkflowConfig } from '@/utils/state-machine-types';
 
 export function AppBarContainer() {
@@ -162,7 +162,7 @@ export function AppBarContainer() {
         onCancel={handleCancelImport}
         fileName={pendingFile?.name || ''}
       />
-      <PreviewDialog
+      <PreviewDrawer
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
         validationResult={validationResult}

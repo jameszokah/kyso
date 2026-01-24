@@ -31,8 +31,13 @@ export const schema = {
           options: Object.values(modelNameOptions),
           placeholder: 'Select Model',
         },
+        apiKey: {
+          type: 'string',
+          placeholder: 'API Key (optional)',
+        },
       },
     },
+
     voice: {
       type: 'object',
       properties: {
@@ -46,8 +51,13 @@ export const schema = {
           options: Object.values(voiceIdOptions),
           placeholder: 'Select Voice',
         },
+        apiKey: {
+          type: 'string',
+          placeholder: 'API Key (optional)',
+        },
       },
     },
+
     stt: {
       type: 'object',
       properties: {
@@ -66,8 +76,13 @@ export const schema = {
           options: Object.values(languageOptions),
           placeholder: 'Select Language',
         },
+        apiKey: {
+          type: 'string',
+          placeholder: 'API Key (optional)',
+        },
       },
     },
+
     tools: {
       type: 'array',
       items: {
