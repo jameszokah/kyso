@@ -1,6 +1,7 @@
-import { Node, Edge } from '@xyflow/react';
+import type { Node, Edge } from '@xyflow/react';
 import styles from './delete-confirmation.module.css';
-import { Trans, useTranslation } from 'react-i18next';
+// import { Trans, useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 import { Checkbox } from '@/components/ui-test/checkbox';
 import { Button } from '@/components/ui-test/button';
 import { useState } from 'react';
@@ -14,11 +15,15 @@ type DeleteConfirmationProps = {
 
 export function DeleteConfirmation({ nodes, edges, onShouldShowAgainChange }: DeleteConfirmationProps) {
   const [isChecked, setIsChecked] = useState(false);
-  const { t } = useTranslation();
+  const t = useI18n();
+
+  // Use explicit keys instead of dynamic template literals
+  const getNodeWord = () => nodes.length > 1 ? t('deleteConfirmation.nodes') : t('deleteConfirmation.node');
+  const getEdgeWord = () => edges.length > 1 ? t('deleteConfirmation.edges') : t('deleteConfirmation.edge');
 
   const parts = [
-    nodes.length > 0 ? t(`deleteConfirmation.${nodes.length > 1 ? 'nodes' : 'node'}`) : '',
-    edges.length > 0 ? t(`deleteConfirmation.${edges.length > 1 ? 'edges' : 'edge'}`) : '',
+    nodes.length > 0 ? getNodeWord() : '',
+    edges.length > 0 ? getEdgeWord() : '',
   ].filter(Boolean);
 
   function handleChange(checked: boolean) {
@@ -27,17 +32,20 @@ export function DeleteConfirmation({ nodes, edges, onShouldShowAgainChange }: De
   }
 
   const translatedParts = parts.join(` ${t('deleteConfirmation.andConnected')} `);
-  const selectedText = t(`deleteConfirmation.${nodes.length > 1 ? 'selectedPlural' : 'selected'}`);
+  const selectedText = nodes.length > 1 ? t('deleteConfirmation.selectedPlural') : t('deleteConfirmation.selected');
+
 
   return (
     <div className={styles['content']}>
-      <span>
-        <Trans
-          i18nKey="deleteConfirmation.text"
-          values={{ selected: selectedText, parts: translatedParts }}
-          components={{ b: <b /> }}
-        />
-      </span>
+      <span
+        dangerouslySetInnerHTML={{
+          __html: t('deleteConfirmation.text', {
+            selected: selectedText,
+            parts: translatedParts,
+          }),
+        }}
+      />
+
       <div className="flex items-center space-x-2 mt-4">
         <Checkbox
           id="dont-show-again-checkbox"
@@ -56,7 +64,7 @@ type DeleteConfirmationButtonsProps = {
 };
 
 export function DeleteConfirmationButtons({ onDeleteClick, onCancelClick }: DeleteConfirmationButtonsProps) {
-  const { t } = useTranslation();
+  const t = useI18n();
 
   return (
     <div className={styles['buttons']}>

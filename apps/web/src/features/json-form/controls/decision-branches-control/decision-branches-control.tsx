@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { DecisionBranchesControlProps, DecisionBranch } from '../../types/controls';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 import { PlaceholderButton } from '@/features/diagram/nodes/components/placeholder-button/placeholder-button';
 import { createControlRenderer } from '../../utils/rendering';
 import { BranchCard } from './branch-card/branch-card';
@@ -10,7 +10,8 @@ function DecisionBranchesControl(props: DecisionBranchesControlProps) {
 
   const decisionBranches = data as DecisionBranch[];
 
-  const { t } = useTranslation();
+  const t = useI18n();
+
 
   const onUpdateBranch = useCallback(
     ({ conditions, index }: DecisionBranch) => {

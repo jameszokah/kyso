@@ -17,10 +17,10 @@ import { useFitView } from '@/hooks/use-fit-view';
 import useStore from '@/store/store';
 import { DiagramModel } from '@kyso/types/common';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 
 export function PaletteFooter() {
-  const { t } = useTranslation();
+  const t = useI18n();
   const fitView = useFitView();
   const setDiagramModel = useStore((store) => store.setDiagramModel);
   const [isOpen, setIsOpen] = useState(false);

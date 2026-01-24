@@ -1,7 +1,8 @@
 'use client';
 
 import styles from './app-bar.module.css';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next'; // Removing old import
+import { useI18n } from '@/locales/client';
 import { Archive, DownloadSimple, Export, Image } from '@phosphor-icons/react';
 import { useMemo } from 'react';
 import { LanguageSelector } from '../translation/language-selector';
@@ -20,7 +21,8 @@ interface ControlsProps {
 }
 
 export function Controls({ onExport, onImport, onSaveAsImage, onArchive }: ControlsProps) {
-  const { t } = useTranslation();
+  const t = useI18n();
+
 
   const items = useMemo(
     () => [

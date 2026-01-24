@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 import { Button } from '@/components/ui-test/button';
 import { Input } from '@/components/ui-test/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
@@ -9,7 +9,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
 import { Icon } from '@kyso/icons';
 import { comparisonsOperators, validateCondition } from '@/features/json-form/utils/conditional-transform';
-import { DynamicCondition } from '@/features/json-form/types/controls';
+import type { DynamicCondition } from '@/features/json-form/types/controls';
 
 type ConditionsFormFieldProps = {
   condition: Partial<DynamicCondition>;
@@ -26,7 +26,22 @@ export function ConditionsFormField({
   isLast,
   shouldShowValidation,
 }: ConditionsFormFieldProps) {
-  const { t } = useTranslation();
+  const t = useI18n();
+
+  // Helper to get type-safe operator translations
+  const getOperatorLabel = (operator: string) => {
+    const operatorMap: Record<string, string> = {
+      isEqual: t('conditions.compare.isEqual'),
+      isNotEqual: t('conditions.compare.isNotEqual'),
+      isGreaterThan: t('conditions.compare.isGreaterThan'),
+      isLessThan: t('conditions.compare.isLessThan'),
+      isLessThanOrEqual: t('conditions.compare.isLessThanOrEqual'),
+      isGreaterThanOrEqual: t('conditions.compare.isGreaterThanOrEqual'),
+      isContaining: t('conditions.compare.isContaining'),
+      isNotContaining: t('conditions.compare.isNotContaining'),
+    };
+    return operatorMap[operator] || operator;
+  };
 
   const handleChange = (field: 'x' | 'comparisonOperator' | 'y' | 'logicalOperator', value: unknown) => {
     onChange({
@@ -74,7 +89,7 @@ export function ConditionsFormField({
             <SelectContent>
               {comparisonsOperators.map((operator) => (
                 <SelectItem key={operator} value={operator}>
-                  {t(`conditions.compare.${operator}`)}
+                  {getOperatorLabel(operator)}
                 </SelectItem>
               ))}
             </SelectContent>

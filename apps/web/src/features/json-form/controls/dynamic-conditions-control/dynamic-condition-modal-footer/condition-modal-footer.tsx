@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui-test/button';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 
 type Props = {
   closeModal: () => void;
@@ -7,7 +7,8 @@ type Props = {
 };
 
 export function ConditionModalFooter({ closeModal, handleConfirm }: Props) {
-  const { t } = useTranslation();
+  const t = useI18n();
+
 
   return (
     <div className="flex justify-end gap-2">

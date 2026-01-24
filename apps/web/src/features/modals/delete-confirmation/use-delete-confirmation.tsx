@@ -4,7 +4,7 @@ import { Node, Edge } from '@xyflow/react';
 import { DeleteConfirmation, DeleteConfirmationButtons } from './delete-confirmation';
 import { MinusCircle } from '@phosphor-icons/react';
 import useStore from '@/store/store';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 
 type Props = {
   nodes: Node[];
@@ -17,7 +17,8 @@ export function useDeleteConfirmation() {
   const { openModal, closeModal } = useContext(ModalContext);
   const shouldSkipShowingConfirmation = useStore((state) => state.shouldSkipShowingConfirmation);
   const setShouldSkipShowDeleteConfirmation = useStore((state) => state.setShouldSkipShowDeleteConfirmation);
-  const { t } = useTranslation();
+  const t = useI18n();
+
 
   const handleDeleteClick = useCallback(
     (onDeleteClick: () => void, shouldShowAgain: boolean) => {

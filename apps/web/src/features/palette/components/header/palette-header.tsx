@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui-test/button';
 import { SidebarMenu, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { Icon } from '@kyso/icons';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 
 
 export function PaletteHeader() {
-  const { t } = useTranslation();
+  const t = useI18n();
   const { toggleSidebar } = useSidebar();
 
   return (

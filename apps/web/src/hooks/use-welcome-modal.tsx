@@ -5,13 +5,14 @@ import { templates } from '@/data/templates';
 import type { DiagramModel } from '@kyso/types/common';
 import useStore from '@/store/store';
 import { Icon } from '@kyso/icons';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 import { useFitView } from './use-fit-view';
 
 export function useTemplateSelectionModal() {
   const { openModal, closeModal } = useContext(ModalContext);
   const setDiagramModel = useStore((store) => store.setDiagramModel);
-  const { t } = useTranslation();
+  const t = useI18n();
+
 
   const title = useMemo(() => t('templateSelector.title'), [t]);
   const fitView = useFitView();

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 import { SlidersHorizontalIcon, TrashIcon } from '@phosphor-icons/react';
 import { Button } from '@/components/ui-test/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -19,7 +19,8 @@ type Props = {
 };
 
 export function BranchCard({ branch, onUpdate, onRemove }: Props) {
-  const { t } = useTranslation();
+  const t = useI18n();
+
   const { conditions, index } = branch;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const formRef = useRef<ConditionsFormHandle>(null);

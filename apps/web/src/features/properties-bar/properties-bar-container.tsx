@@ -1,13 +1,13 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { useRemoveElements } from '@/hooks/use-remove-elements';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 import { useSingleSelectedElement } from '@/features/properties-bar/use-single-selected-element';
 import { PropertiesSidebar } from './components/properties-bar/properties-bar';
 
 export function PropertiesBarContainer() {
   const { removeElements } = useRemoveElements();
-  const { t } = useTranslation();
+  const t = useI18n();
 
   const [selectedTab, setSelectedTab] = useState('properties');
 

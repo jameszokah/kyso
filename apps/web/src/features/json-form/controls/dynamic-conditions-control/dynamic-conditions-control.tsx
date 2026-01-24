@@ -3,12 +3,12 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui-test/button';
 import { Textarea } from '@/components/ui/textarea';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 import { cn } from '@/lib/utils';
-import { DynamicCondition, DynamicConditionsControlProps } from '../../types/controls';
+import type { DynamicCondition, DynamicConditionsControlProps } from '../../types/controls';
 import { createControlRenderer } from '../../utils/rendering';
 import { ControlWrapper } from '../control-wrapper';
-import { ConditionsForm, ConditionsFormHandle } from './dynamic-conditions-form/conditions-form';
+import { ConditionsForm, type ConditionsFormHandle } from './dynamic-conditions-form/conditions-form';
 import { Icon } from '@kyso/icons';
 import { conditionsToDependencies } from '../../utils/conditional-transform';
 import { ConditionModalFooter } from './dynamic-condition-modal-footer/condition-modal-footer';
@@ -16,7 +16,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 
 function DynamicConditionsControl(props: DynamicConditionsControlProps) {
   const { data = [], handleChange, path, enabled } = props;
-  const { t } = useTranslation(undefined, { keyPrefix: 'conditions' });
+  const t = useI18n();
+
 
   const [open, setOpen] = useState(false);
   const formRef = useRef<ConditionsFormHandle>(null);
@@ -39,14 +40,14 @@ function DynamicConditionsControl(props: DynamicConditionsControlProps) {
     <div className="p-2 border border-border rounded-xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-3 gap-2 font-semibold text-foreground">
-        <span className="text-sm font-medium leading-none">{t('title')}</span>
-        <Button size="icon" variant="outline" className="h-8 w-8" onClick={() => setOpen(true)} title={t('title')}>
+        <span className="text-sm font-medium leading-none">{t('conditions.title')}</span>
+        <Button size="icon" variant="outline" className="h-8 w-8" onClick={() => setOpen(true)} title={t('conditions.title')}>
           <Icon name="FrameCornersThin" />
         </Button>
       </div>
 
       {/* Dependencies Viewer */}
-      <ControlWrapper {...props} uischema={{ ...props.uischema, label: t('dependencies') }}>
+      <ControlWrapper {...props} uischema={{ ...props.uischema, label: t('conditions.dependencies') }}>
         <Textarea
           disabled={!enabled}
           value={dependencies.join(' ')}
@@ -58,7 +59,7 @@ function DynamicConditionsControl(props: DynamicConditionsControlProps) {
           readOnly
         />
         <span className="text-xs text-muted-foreground bg-muted rounded px-2 py-1 mt-2 inline-block w-fit">
-          {t('totalNumber', { count: data.length })}
+          {t('conditions.totalNumber', { count: data.length })}
         </span>
       </ControlWrapper>
 
@@ -66,8 +67,9 @@ function DynamicConditionsControl(props: DynamicConditionsControlProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{t('title')}</DialogTitle>
+            <DialogTitle>{t('conditions.title')}</DialogTitle>
           </DialogHeader>
+
 
           <ConditionsForm ref={formRef} onChange={onChange} value={data} />
 

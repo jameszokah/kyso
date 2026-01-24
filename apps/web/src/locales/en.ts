@@ -1,4 +1,4 @@
-export const en = {
+export default {
   header: {
     folderName: 'username',
     projectSelection: {
@@ -49,7 +49,7 @@ export const en = {
     deleteEdge: 'Delete edge',
   },
   deleteConfirmation: {
-    text: "You're about to <b>permanently delete</b> {{selected}} {{parts}}. Please, confirm to proceed.",
+    text: "You're about to <b>permanently delete</b> {selected} {parts}. Please, confirm to proceed.",
     cancel: 'Cancel',
     delete: 'Delete',
     node: 'node',
@@ -63,11 +63,11 @@ export const en = {
     dontShowMeThisAgain: 'Don’t show me this again',
   },
   decisionBranches: {
-    branch: 'Branch #{{index}}',
+    branch: 'Branch #{index}',
     branches: 'Branches',
     addBranch: 'Add branch',
     singleCondition: '1 condition',
-    manyConditions: '{{count}} conditions',
+    manyConditions: '{count} conditions',
     noConditions: 'No conditions yet',
   },
   conditions: {
@@ -75,12 +75,13 @@ export const en = {
     subtitle: 'Define Your Conditional Rules',
     cancel: 'Cancel',
     confirm: 'Confirm',
-    totalNumber: 'total: {{count}} conditions',
+    totalNumber: 'total: {count} conditions',
     totalNumber_one: 'total: 1 condition',
     dependencies: 'Dependencies',
     compare: {
       or: 'or',
       and: 'and',
+      select: 'Select comparison',
       isEqual: 'is equal to',
       isNotEqual: 'is not equal to',
       isGreaterThan: 'is greater than',

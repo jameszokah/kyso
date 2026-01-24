@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Cards, CaretDown } from '@phosphor-icons/react';
 import useStore from '@/store/store';
-import { useTranslation } from 'react-i18next';
+import { useI18n } from '@/locales/client';
 
 interface ProjectSelectionProps {
   documentName: string;
@@ -22,7 +22,8 @@ interface ProjectSelectionProps {
 export function ProjectSelection({ documentName, onDuplicateClick, isReadOnlyMode }: ProjectSelectionProps) {
   const setDocumentName = useStore((state) => state.setDocumentName);
   const [editName, setEditName] = useState<boolean>(false);
-  const { t } = useTranslation();
+  const t = useI18n();
+
 
   const items = useMemo(
     () =>
@@ -71,7 +72,7 @@ export function ProjectSelection({ documentName, onDuplicateClick, isReadOnlyMod
             className="text-sm font-medium text-foreground truncate max-w-[320px] text-left"
             title={documentName}
           >
-            {documentName || t('header.untitled')}
+            {documentName || t('header.folderName')}
           </button>
         )}
 
