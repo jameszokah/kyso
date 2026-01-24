@@ -1,13 +1,13 @@
 'use client';
 import { setAutoFreeze } from 'immer';
 import { DiagramWrapper } from '@/features/diagram/diagram-wrapper';
-import { DiagramContainer as Diagram } from '../features/diagram/diagram';
+import { DiagramContainer as Diagram } from '@/features/diagram/diagram';
 
 
 // Plugins entry point
 import '@/features/plugins/index';
 import { SidebarProvider } from '@/components/ui/sidebar';
-import VoiceFlow from '../flows/voice';
+import VoiceFlow from '@/flows/voice';
 
 export function App() {
   // useDetectLanguageChange();
