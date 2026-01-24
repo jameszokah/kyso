@@ -27,8 +27,21 @@ interface ToolNodeSelectorControlProps {
 function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorControlProps) {
   const nodes = useStore((state) => state.nodes);
   
+  // Debug: Log all nodes and their data types
+  console.log('[ToolNodeSelector] All nodes:', nodes.map(n => ({
+    id: n.id,
+    type: n.type,
+    dataType: n.data?.type,
+    data: n.data
+  })));
+  
   // Get all tool nodes from the graph using data.type (where palette type is stored)
   const toolNodes = nodes.filter((n) => (n.data?.type as string) === 'tool-node');
+  
+  console.log('[ToolNodeSelector] Tool nodes found:', toolNodes.length, toolNodes.map(n => ({
+    id: n.id,
+    data: n.data
+  })));
   
   // Build options from tool nodes - check multiple possible data structures
   const availableTools = toolNodes
@@ -36,6 +49,7 @@ function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorC
       // Check both possible paths: data.properties.tool.name OR data.tool.name
       const propsPath = (n.data?.properties as any)?.tool?.name;
       const directPath = (n.data as any)?.tool?.name;
+      console.log('[ToolNodeSelector] Checking node:', n.id, { propsPath, directPath });
       return propsPath || directPath;
     })
     .map((n) => {
@@ -51,6 +65,7 @@ function ToolNodeSelectorControl({ path, handleChange, data }: ToolNodeSelectorC
         label: `${label} - ${tool?.name || 'Unnamed'}`,
       };
     });
+
 
 
   const selectedTools = data || [];
