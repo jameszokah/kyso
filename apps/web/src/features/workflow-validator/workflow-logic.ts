@@ -16,13 +16,10 @@ export function validateWorkflow(nodes: Node[], edges: Edge[]): ValidationResult
   const errors: string[] = [];
   const validEdges: Set<string> = new Set();
 
-  // Log for debugging
-  console.log('[Validate] Nodes:', nodes.map(n => ({ id: n.id, type: n.type, dataType: getNodeType(n) })));
-  console.log('[Validate] Edges:', edges.length);
-
   // Check for start node using data.type
   const startNode = nodes.find((n) => getNodeType(n) === 'start-node');
   const endNodes = nodes.filter((n) => getNodeType(n) === 'end-node');
+
 
   if (!startNode) {
     errors.push('Workflow must have a Start Node.');
