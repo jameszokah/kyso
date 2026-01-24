@@ -1,11 +1,11 @@
-import { ControlElement, ControlProps as JsonFormsControlProps } from '@jsonforms/core';
-import { Override } from './utils';
-import { UISchemaControlElement } from './uischema';
-import { FieldSchema } from '@kyso/types/node-schema';
-import { UISchemaRule } from './rules';
-import { ComparisonOperator, LogicalOperator } from '../utils/conditional-transform';
-import { NodeDataProperties } from '@/features/json-form/types/default-properties';
-import { AiAgentNodeSchema } from '../../../data/nodes/ai-agent/schema';
+import type { ControlElement, ControlProps as JsonFormsControlProps } from '@jsonforms/core';
+import type { Override } from './utils';
+import type { UISchemaControlElement } from './uischema';
+import type { FieldSchema } from '@kyso/types/node-schema';
+import type { UISchemaRule } from './rules';
+import type { ComparisonOperator, LogicalOperator } from '../utils/conditional-transform';
+import type { NodeDataProperties } from '@/features/json-form/types/default-properties';
+import type { AiAgentNodeSchema } from '../../../data/nodes/ai-agent/schema';
 
 type ControlProps<D, T extends UISchemaControlElement> = Override<
   BaseControlProps,
@@ -105,3 +105,18 @@ export type AiToolsControlElement = Override<
 export type AiToolsControlProps = ControlProps<AiAgentTool[], AiToolsControlElement>;
 
 type BaseControlElement = Override<ControlElement, { rule?: UISchemaRule }>;
+
+export type AgentToolsListControlElement = Override<
+  BaseControlElement,
+  {
+    type: 'AgentToolsList';
+  }
+>;
+
+export type SingleAgentToolControlElement = Override<
+  BaseControlElement,
+  {
+    type: 'SingleAgentTool';
+  }
+>;
+

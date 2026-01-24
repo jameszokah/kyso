@@ -1,6 +1,6 @@
-import { UISchema } from '@/features/json-form/types/uischema';
+import type { UISchema } from '@/features/json-form/types/uischema';
 import { getScope } from '@/features/json-form/utils/get-scope';
-import { VoiceAgentNodeSchema } from './schema';
+import type { VoiceAgentNodeSchema } from './schema';
 
 const scope = getScope<VoiceAgentNodeSchema>;
 
@@ -59,7 +59,7 @@ export const uischema: UISchema = {
     {
       type: 'Accordion',
       label: 'Tools',
-      elements: [{ type: 'AiTools', scope: scope('properties.tools') }],
+      elements: [{ type: 'AgentToolsList', scope: scope('properties.tools') }],
     },
   ],
 };

@@ -1,4 +1,4 @@
-import { ItemOption } from '@kyso/types/node-schema';
+import type { ItemOption } from '@kyso/types/node-schema';
 export const toolOptions: Record<string, ItemOption> = {
   gmail: { label: 'Gmail', value: 'gmail', icon: 'GoogleLogoThin' },
   excel: { label: 'Excel', value: 'excel', icon: 'MicrosoftExcelLogoThin' },

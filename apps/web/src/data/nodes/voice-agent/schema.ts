@@ -1,4 +1,4 @@
-import { NodeSchema } from '@kyso/types/node-schema';
+import type { NodeSchema } from '@kyso/types/node-schema';
 import { sharedProperties } from '../shared/shared-properties';
 import {
   modelProviderOptions,
@@ -78,13 +78,14 @@ export const schema = {
           type: {
             type: 'string',
             options: [
-              { label: 'Transfer To', value: 'transfer' },
+              { label: 'HTTP Request', value: 'http_request' },
               { label: 'Function', value: 'function' },
+              { label: 'Webhook', value: 'webhook' },
             ],
           },
           config: {
             type: 'object',
-            properties: {},
+            properties: {}, // Allow any config for now, managed by custom control
           },
         },
       },

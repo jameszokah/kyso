@@ -17,6 +17,9 @@ import { textAreaControlRenderer } from './controls/text-area-control/text-area-
 import { dynamicConditionsControlRenderer } from './controls/dynamic-conditions-control/dynamic-conditions-control';
 import { aiToolsControlRenderer } from './controls/ai-tools-control/ai-tools-control';
 import { decisionBranchesControlRenderer } from './controls/decision-branches-control/decision-branches-control';
+import { agentToolsListControlRenderer } from './controls/agent-tool-controls/agent-tools-list-control';
+import { singleAgentToolControlRenderer } from './controls/agent-tool-controls/single-agent-tool-control';
+
 
 type Props = Pick<ComponentProps<typeof JsonForms>, 'onChange' | 'data' | 'uischema' | 'schema'> & {
   readonly?: boolean;
@@ -46,4 +49,7 @@ const renderers: JsonFormsRendererRegistryEntry[] = [
   dynamicConditionsControlRenderer,
   aiToolsControlRenderer,
   decisionBranchesControlRenderer,
+  agentToolsListControlRenderer,
+  singleAgentToolControlRenderer,
+
 ];

@@ -4,7 +4,7 @@ import type {
   HorizontalLayoutElement,
   VerticalLayoutElement,
 } from './layouts';
-import {
+import type {
   DatePickerControlElement,
   SelectControlElement,
   SwitchControlElement,
@@ -13,8 +13,11 @@ import {
   TextControlElement,
   AiToolsControlElement,
   DecisionBranchesControlElement,
+  AgentToolsListControlElement,
+  SingleAgentToolControlElement,
+
 } from './controls';
-import { LabelElement } from './label';
+import type { LabelElement } from './label';
 
 export type UISchemaControlElement<T extends string = string> = (
   | TextControlElement
@@ -25,7 +28,10 @@ export type UISchemaControlElement<T extends string = string> = (
   | DynamicConditionsControlElement
   | AiToolsControlElement
   | DecisionBranchesControlElement
+  | AgentToolsListControlElement
+  | SingleAgentToolControlElement
 ) & { scope: T; errorIndicatorEnabled?: boolean };
+
 export type UISchemaControlElementType = UISchemaControlElement['type'];
 
 type UISchemaLayoutElement =

@@ -12,46 +12,9 @@ export const uischema: UISchema = {
       type: 'Group',
       label: 'Tool Configuration',
       elements: [
-        {
-          type: 'Text',
-          scope: scope('properties.toolDescription'),
-          label: 'Tool Description',
-          placeholder: 'Enter tool description',
-        },
-        { type: 'Select', scope: scope('properties.toolType'), label: 'Type' },
-
-        // Reverting to simple Text for now as specific visibility logic might vary
-        {
-          type: 'Text',
-          scope: scope('properties.transferTo'),
-          label: 'Transfer To',
-          rule: {
-            effect: 'SHOW',
-            condition: {
-              scope: scope('properties.toolType'),
-              schema: {
-                const: 'transfer',
-              },
-              failWhenUndefined: true,
-            },
-          },
-        },
-        {
-        type: 'VerticalLayout',
-        elements: [{ type: 'AiTools', scope: scope('properties.functionConfig') }],
-          rule: {
-            effect: 'SHOW',
-            condition: {
-              scope: scope('properties.toolType'),
-              schema: {
-                const: 'function',
-                
-              },
-              failWhenUndefined: true,
-            },
-          },
-        },
+        { type: 'SingleAgentTool', scope: scope('properties.tool') },
       ],
     },
   ],
 };
+

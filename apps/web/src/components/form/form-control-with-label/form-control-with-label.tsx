@@ -1,15 +1,16 @@
 import { Label } from '../label/label';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 type Props = {
   label: string;
+  className?: string;
   required?: boolean;
 };
 
-export function FormControlWithLabel({ label, required, children }: PropsWithChildren<Props>) {
+export function FormControlWithLabel({ label, className, required, children }: PropsWithChildren<Props>) {
   return (
     <div className="flex flex-col gap-1.5">
-      <Label label={label} required={required} />
+      <Label label={label} className={className} required={required} />
       {children}
     </div>
   );
