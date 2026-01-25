@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { createControlRenderer } from '../../utils/rendering';
 import useStore from '@/store/store';
 import { Button } from '@/components/ui/button';
-import { Wrench, Robot, ArrowsLeftRight, PlusCircle, X } from '@phosphor-icons/react';
+import { Robot, PlusCircle, X, ArrowsLeftRightIcon, WrenchIcon } from '@phosphor-icons/react';
 
 interface AgentToolConfig {
   name: string;
@@ -122,12 +122,12 @@ function ToolNodeSelectorControl({ path, handleChange, data = [] }: ToolNodeSele
               className="flex items-center gap-2 p-2 border rounded-md bg-primary/10 border-primary/30"
             >
               {tool.transitionTo ? (
-                <ArrowsLeftRight className="h-4 w-4 text-blue-600" />
+                <ArrowsLeftRightIcon className="h-4 w-4 text-blue-600" />
               ) : (
-                <Wrench className="h-4 w-4 text-primary" />
+                < WrenchIcon className="h-4 w-4 text-primary" />
               )}
               <div className="flex-1">
-                <span className="text-sm w-32 truncate font-medium">{tool.name}</span>
+                <span className="text-sm whitespace-normal wrap-break-word font-medium">{tool.name}</span>
                 {tool.description && (
                   <p className="text-xs w-32 truncate text-muted-foreground">{tool.description}</p>
                 )}
