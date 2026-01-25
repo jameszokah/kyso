@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { type ReceivedChatMessage } from '@livekit/components-react';
-import { ChatEntry } from '@/components/livekit/chat/chat-entry';
+import { ChatEntry } from '@/components/voice-ui/livekit/chat/chat-entry';
 import { cn } from '@/lib/utils';
 
 const ChatEntryMotion = motion.create(ChatEntry);

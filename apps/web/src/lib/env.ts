@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import { APP_CONFIG_DEFAULTS } from '@/app-config';
+import { APP_CONFIG_DEFAULTS } from '@/app/app-config';
 import type { AppConfig, SandboxConfig } from './types';
 
 export const CONFIG_ENDPOINT = process.env.NEXT_PUBLIC_APP_CONFIG_ENDPOINT;

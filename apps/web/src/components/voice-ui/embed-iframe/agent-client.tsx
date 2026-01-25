@@ -7,7 +7,7 @@ import { RoomAudioRenderer, RoomContext, StartAudio } from '@livekit/components-
 import { XIcon } from '@phosphor-icons/react';
 import useConnectionDetails from '@/hooks/voice-ui/use-connection-details';
 import type { AppConfig, EmbedErrorDetails } from '@/lib/types';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { SessionView } from './session-view';
 import { WelcomeView } from './welcome-view';
 

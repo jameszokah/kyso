@@ -108,10 +108,10 @@ export function ProjectSelection({ documentName, onDuplicateClick, isReadOnlyMod
         </div>
       </div>
 
-      <div className="absolute right-4 top-7 transform -translate-y-1/2 pointer-events-auto">
-        <Button variant="ghost" aria-label="Close project selection" onClick={() => setEditName(false)}>
-          Preview
-        </Button>
+          <div className="absolute right-6 top-7 transform -translate-y-1/2 w-[calc(100%-75%)] pointer-events-auto">
+            <Button aria-label="Deploy to production" onClick={() => setEditName(false)}>
+            Deploy
+          </Button>
       </div>
     </header>
   );

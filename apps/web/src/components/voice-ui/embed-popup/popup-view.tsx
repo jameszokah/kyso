@@ -12,9 +12,9 @@ import {
   useTracks,
   useVoiceAssistant,
 } from '@livekit/components-react';
-import { ActionBar } from '@/components/embed-popup/action-bar';
-import { AudioVisualizer } from '@/components/embed-popup/audio-visualizer';
-import { Transcript } from '@/components/embed-popup/transcript';
+import { ActionBar } from '@/components/voice-ui/embed-popup/action-bar';
+import { AudioVisualizer } from '@/components/voice-ui/embed-popup/audio-visualizer';
+import { Transcript } from '@/components/voice-ui/embed-popup/transcript';
 import useChatAndTranscription from '@/hooks/voice-ui/use-chat-and-transcription';
 import { useDebugMode } from '@/hooks/voice-ui/useDebug';
 import type { AppConfig, EmbedErrorDetails } from '@/lib/types';

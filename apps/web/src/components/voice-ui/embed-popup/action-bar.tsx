@@ -5,12 +5,12 @@ import { useCallback } from 'react';
 import { Track } from 'livekit-client';
 import { BarVisualizer, useRemoteParticipants } from '@livekit/components-react';
 import { ChatTextIcon } from '@phosphor-icons/react/dist/ssr';
-import { ChatInput } from '@/components/livekit/chat/chat-input';
-import { DeviceSelect } from '@/components/livekit/device-select';
-import { TrackToggle } from '@/components/livekit/track-toggle';
+import { ChatInput } from '@/components/voice-ui//livekit/chat/chat-input';
+import { DeviceSelect } from '@/components/voice-ui//livekit/device-select';
+import { TrackToggle } from '@/components/voice-ui//livekit/track-toggle';
 import { Toggle } from '@/components/ui/toggle';
-import { UseAgentControlBarProps, useAgentControlBar } from '@/hooks/voice-ui/use-agent-control-bar';
-import { AppConfig } from '@/lib/types';
+import { type UseAgentControlBarProps, useAgentControlBar } from '@/hooks/voice-ui/use-agent-control-bar';
+import type { AppConfig } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 export interface AgentControlBarProps

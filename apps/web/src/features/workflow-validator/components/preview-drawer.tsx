@@ -12,6 +12,8 @@ import type { ValidationResult } from '../workflow-logic';
 import type { WorkflowConfig } from '@/utils/state-machine-types';
 import { CheckCircle, XCircle, Copy } from '@phosphor-icons/react';
 import { useState } from 'react';
+import { ApplyThemeScript } from '@/components/voice-ui/theme-toggle';
+import WelcomeDynamic from '@/components/voice-ui/welcome-dynamic';
 
 interface PreviewDrawerProps {
   isOpen: boolean;
@@ -38,7 +40,7 @@ export function PreviewDrawer({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="top" className="max-h-[70vh] overflow-y-auto rounded-b-2xl">
+      <SheetContent side="top" className="max-h-[80vh] w-[calc(100%-4rem)] justify-center left-1/2 -translate-x-1/2 overflow-y-auto rounded-b-3xl">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             Workflow Preview
@@ -53,6 +55,7 @@ export function PreviewDrawer({
             )}
           </SheetTitle>
         </SheetHeader>
+        
 
         <div className="flex-1 overflow-y-auto py-4 px-4">
           {!validationResult?.isValid && validationResult?.errors && (
@@ -65,6 +68,12 @@ export function PreviewDrawer({
               </ul>
             </div>
           )}
+
+
+          <div className="bg-background">
+            <ApplyThemeScript />
+            <WelcomeDynamic />
+          </div>
 
           {config && (
             <div className="relative">
@@ -81,6 +90,8 @@ export function PreviewDrawer({
             </div>
           )}
         </div>
+
+      
 
         <SheetFooter>
           <Button onClick={onClose}>Close</Button>

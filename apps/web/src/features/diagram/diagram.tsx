@@ -179,7 +179,7 @@ function DiagramContainerComponent({ edgeTypes = {} }: { edgeTypes?: EdgeTypes }
         selectionMode={SelectionMode.Partial}
         proOptions={proOptions}
       >
-        <Background />
+       <Background bgColor="var(--sidebar)" />
         {/* <Watermark /> */}
       </ReactFlow>
     </div>

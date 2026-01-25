@@ -4,11 +4,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Room, RoomEvent } from 'livekit-client';
 import { motion } from 'motion/react';
 import { RoomAudioRenderer, RoomContext, StartAudio } from '@livekit/components-react';
-import { ErrorMessage } from '@/components/embed-popup/error-message';
-import { PopupView } from '@/components/embed-popup/popup-view';
-import { Trigger } from '@/components/embed-popup/trigger';
+import { ErrorMessage } from '@/components/voice-ui/embed-popup/error-message';
+import { PopupView } from '@/components/voice-ui/embed-popup/popup-view';
+import { Trigger } from '@/components/voice-ui/embed-popup/trigger';
 import useConnectionDetails from '@/hooks/voice-ui/use-connection-details';
-import { type AppConfig, EmbedErrorDetails } from '@/lib/types';
+import { type AppConfig, type EmbedErrorDetails } from '@/lib/types';
 
 const PopupViewMotion = motion.create(PopupView);
 

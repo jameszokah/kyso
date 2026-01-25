@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'motion/react';
 import { CheckIcon, CopyIcon, HandPointingIcon } from '@phosphor-icons/react';
-import { APP_CONFIG_DEFAULTS } from '@/app-config';
+import { APP_CONFIG_DEFAULTS } from '@/app/app-config';
 import { THEME_STORAGE_KEY, getSandboxId } from '@/lib/env';
 import type { ThemeMode } from '@/lib/types';
 import { cn } from '@/lib/utils';

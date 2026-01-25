@@ -10,13 +10,13 @@ import {
   useVoiceAssistant,
 } from '@livekit/components-react';
 import { PhoneDisconnectIcon } from '@phosphor-icons/react/dist/ssr';
-import { DeviceSelect } from '@/components/livekit/device-select';
-import { TrackToggle } from '@/components/livekit/track-toggle';
+import { DeviceSelect } from '@/components/voice-ui/livekit/device-select';
+import { TrackToggle } from '@/components/voice-ui/livekit/track-toggle';
 import { Button } from '@/components/ui/button';
 import { useAgentControlBar } from '@/hooks/voice-ui/use-agent-control-bar';
 import { useDebugMode } from '@/hooks/voice-ui/useDebug';
 import type { AppConfig } from '@/lib/types';
-import { EmbedErrorDetails } from '@/lib/types';
+import type { EmbedErrorDetails } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 function isAgentAvailable(agentState: AgentState) {

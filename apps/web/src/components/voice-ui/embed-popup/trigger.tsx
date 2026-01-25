@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useVoiceAssistant } from '@livekit/components-react';
 import { PhoneDisconnectIcon, XIcon } from '@phosphor-icons/react';
-import { EmbedErrorDetails } from '@/lib/types';
+import type { EmbedErrorDetails } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 
 const AnimatedButton = motion.create(Button);
 

@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
-import EmbedAgentClient from '@/components/embed-iframe/agent-client';
-import { ApplyThemeScript } from '@/components/embed-iframe/theme-provider';
+import EmbedAgentClient from '@/components/voice-ui/embed-iframe/agent-client';
+import { ApplyThemeScript } from '@/components/voice-ui/embed-iframe/theme-provider';
 import { getAppConfig, getOrigin } from '@/lib/env';
 
 export default async function Embed() {
