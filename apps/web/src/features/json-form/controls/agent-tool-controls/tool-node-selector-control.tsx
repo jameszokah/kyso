@@ -127,9 +127,9 @@ function ToolNodeSelectorControl({ path, handleChange, data = [] }: ToolNodeSele
                 <Wrench className="h-4 w-4 text-primary" />
               )}
               <div className="flex-1">
-                <span className="text-sm font-medium">{tool.name}</span>
+                <span className="text-sm w-32 truncate font-medium">{tool.name}</span>
                 {tool.description && (
-                  <p className="text-xs text-muted-foreground">{tool.description}</p>
+                  <p className="text-xs w-32 truncate text-muted-foreground">{tool.description}</p>
                 )}
               </div>
               <Button 
