@@ -198,7 +198,7 @@ function ToolNodeSelectorControl({ path, handleChange, data = [] }: ToolNodeSele
                 <span className="text-sm w-32 truncate font-medium text-blue-800 dark:text-blue-300">
                   {transition.label}
                 </span>
-                <p className="text-xs text-blue-600 dark:text-blue-400">{transition.name}</p>
+                <p className="text-xs text-blue-600 dark:text-blue-400 w-32 truncate">{transition.name}</p>
               </div>
               <Button 
                 variant="ghost" 
