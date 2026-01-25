@@ -195,7 +195,7 @@ function ToolNodeSelectorControl({ path, handleChange, data = [] }: ToolNodeSele
             >
               <ArrowsLeftRight className="h-4 w-4 text-blue-600" />
               <div className="flex-1">
-                <span className="text-sm font-medium text-blue-800 dark:text-blue-300">
+                <span className="text-sm w-32 truncate font-medium text-blue-800 dark:text-blue-300">
                   {transition.label}
                 </span>
                 <p className="text-xs text-blue-600 dark:text-blue-400">{transition.name}</p>
