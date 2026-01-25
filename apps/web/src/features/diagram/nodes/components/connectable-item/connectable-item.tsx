@@ -27,7 +27,7 @@ export function ConnectableItem({ label, nodeId, innerId, handleType }: Props) {
         'font-normal',
       )}
     >
-      <span className='whitespace-normal wrap-break-word'>{label}</span>
+      <span className='w-32 truncate'>{label}</span>
 
       <div className={cn('relative', { 'absolute bottom-0 left-1/2 -translate-x-1/2': isVertical })}>
         <Handle id={handleId} position={position} type="source" />

@@ -160,7 +160,7 @@ function ToolNodeSelectorControl({ path, handleChange, data = [] }: ToolNodeSele
                   : 'bg-muted/50 hover:bg-muted'
               }`}
             >
-              <Wrench className="h-4 w-4 text-muted-foreground" />
+              <WrenchIcon className="h-4 w-4 text-muted-foreground" />
               <div className="flex-1">
                 <span className="text-sm font-medium">{tool.name}</span>
               </div>
@@ -193,7 +193,7 @@ function ToolNodeSelectorControl({ path, handleChange, data = [] }: ToolNodeSele
                   : 'bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 dark:hover:bg-blue-900/50'
               }`}
             >
-              <ArrowsLeftRight className="h-4 w-4 text-blue-600" />
+              <ArrowsLeftRightIcon className="h-4 w-4 text-blue-600" />
               <div className="flex-1">
                 <span className="text-sm w-32 truncate font-medium text-blue-800 dark:text-blue-300">
                   {transition.label}
