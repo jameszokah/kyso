@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import type { ValidationResult } from '../workflow-logic';
 import type { WorkflowConfig } from '@/utils/state-machine-types';
 import { CheckCircle, XCircle, Copy } from '@phosphor-icons/react';

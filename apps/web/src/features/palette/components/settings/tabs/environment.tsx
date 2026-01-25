@@ -2,8 +2,8 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import { Plus, Search, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui-test/button';
-import { Input } from '@/components/ui-test/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import useStore from '@/store/store';
 import type { EnvironmentVariable } from '@/store/slices/settings/settings-slice';
 

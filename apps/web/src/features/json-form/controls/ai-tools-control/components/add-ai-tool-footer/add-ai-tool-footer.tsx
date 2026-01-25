@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { FORM_TOOLS_NAME } from '../add-ai-tool-form-content/add-ai-tool-form-content';
 
 type Props = {

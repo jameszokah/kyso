@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import { AiAgentTool } from '../../../../types/controls';
 import { FormControlWithLabel } from '@/components/form/form-control-with-label/form-control-with-label';
-import { Input } from '@/components/ui-test/input';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toolOptions } from '../../../../../../data/nodes/ai-agent/select-options';

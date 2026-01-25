@@ -3,7 +3,7 @@ import styles from './delete-confirmation.module.css';
 // import { Trans, useTranslation } from 'react-i18next';
 import { useI18n } from '@/locales/client';
 import { Checkbox } from '@/components/ui-test/checkbox';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { Label } from '@/components/ui-test/label';
 

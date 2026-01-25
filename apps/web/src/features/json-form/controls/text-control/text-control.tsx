@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/no-useless-undefined */
 'use client';
 
-import { Input } from '@/components/ui-test/input';
+import { Input } from '@/components/ui/input';
 import { ControlWrapper } from '../control-wrapper';
 import { TextControlProps } from '../../types/controls';
 import { createControlRenderer } from '../../utils/rendering';

@@ -1,7 +1,7 @@
 'use client';
 
 import { PlusCircleIcon, SlidersHorizontalIcon, TrashIcon } from '@phosphor-icons/react';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { createControlRenderer } from '../../utils/rendering';
 import { useState, useCallback } from 'react';

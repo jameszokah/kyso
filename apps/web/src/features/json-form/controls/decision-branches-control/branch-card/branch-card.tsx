@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { useI18n } from '@/locales/client';
 import { SlidersHorizontalIcon, TrashIcon } from '@phosphor-icons/react';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import {
   ConditionsForm,

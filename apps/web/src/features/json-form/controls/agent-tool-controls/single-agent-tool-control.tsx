@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { createControlRenderer } from '../../utils/rendering';
 import { AgentToolConfigControl, type AgentToolConfig } from './agent-tool-config-control';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { GearSix, PencilSimple, PlusCircle } from '@phosphor-icons/react';
 

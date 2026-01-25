@@ -2,8 +2,8 @@
 
 import { useMemo } from 'react';
 import { useI18n } from '@/locales/client';
-import { Button } from '@/components/ui-test/button';
-import { Input } from '@/components/ui-test/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';

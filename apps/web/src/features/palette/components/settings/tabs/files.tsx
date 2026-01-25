@@ -2,8 +2,8 @@
 
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Download, Loader2, Plus, Search, Trash2, Upload } from 'lucide-react';
-import { Button } from '@/components/ui-test/button';
-import { Input } from '@/components/ui-test/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import useStore from '@/store/store';
 

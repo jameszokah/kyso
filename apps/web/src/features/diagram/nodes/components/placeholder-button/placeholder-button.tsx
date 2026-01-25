@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { PlusCircleIcon } from '@phosphor-icons/react';
 
 type Props = {

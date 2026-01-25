@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { FormControlWithLabel } from '@/components/form/form-control-with-label/form-control-with-label';
-import { Input } from '@/components/ui-test/input';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,

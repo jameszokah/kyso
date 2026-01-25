@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
-import { Button } from '@/components/ui-test/button';
-import { Input } from '@/components/ui-test/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 // Sample integrations data (in real app, would come from OAuth providers)
 const SAMPLE_INTEGRATIONS = [

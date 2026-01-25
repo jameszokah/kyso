@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { createControlRenderer } from '../../utils/rendering';
 import useStore from '@/store/store';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { Wrench, Robot, ArrowsLeftRight, PlusCircle, X } from '@phosphor-icons/react';
 
 interface AgentToolConfig {

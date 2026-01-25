@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarFooter, useSidebar } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { PropertiesBarHeader } from '../header/properties-bar-header';
 import { NodeProperties } from '../node-properties/node-properties';
 import { EdgeProperties } from '../edge-properties/edge-properties';

@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui-test/button';
-import { Input } from '@/components/ui-test/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { TrashIcon, PlusIcon } from '@phosphor-icons/react';
 import React from 'react';
 

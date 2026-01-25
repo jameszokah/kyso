@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { useI18n } from '@/locales/client';
 
 type Props = {

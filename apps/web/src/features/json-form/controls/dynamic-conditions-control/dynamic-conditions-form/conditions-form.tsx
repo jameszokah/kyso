@@ -10,7 +10,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { DynamicCondition } from '@/features/json-form/types/controls';
 import { ModalContext } from '@/features/modals/modal-provider';

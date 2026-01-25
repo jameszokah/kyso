@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui-test/button';
+import { Button } from '@/components/ui/button';
 import { SidebarMenu, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { Icon } from '@kyso/icons';
 import { useI18n } from '@/locales/client';
