@@ -142,14 +142,14 @@ export function extractWorkflowConfig(
         // Specialized Tool Node (HTTP)
         const targetProps = targetNode.data?.properties as any || targetNode.data;
         const toolData = targetProps?.tool;
-        // if (toolData) {
-        //   tools.push({
-        //     name: toolData.name || 'http_tool',
-        //     description: toolData.description || '',
-        //     type: toolData.type || 'http_request',
-        //     config: toolData.config || {},
-        //   });
-        // }
+        if (toolData) {
+          tools.push({
+            name: toolData.name || 'http_tool',
+            description: toolData.description || '',
+            type: toolData.type || 'http_request',
+            config: toolData.config || {},
+          });
+        }
       }
     }
 
