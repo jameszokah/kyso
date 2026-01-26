@@ -80,7 +80,7 @@ function ToolNodeSelectorControl({ path, handleChange, data = [] }: ToolNodeSele
   // Add a tool
   const addTool = (tool: AgentToolConfig) => {
     if (!isToolSelected(tool.name)) {
-      handleChange(path, [...data,]);
+      handleChange(path, [...data, tool]);
     }
   };
   
