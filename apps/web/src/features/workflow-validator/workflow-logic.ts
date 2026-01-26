@@ -64,7 +64,8 @@ export function validateWorkflow(nodes: Node[], edges: Edge[]): ValidationResult
 export function extractWorkflowConfig(
   nodes: Node[],
   edges: Edge[],
-  tenantId: string = 'default-tenant'
+  tenantId: string = 'default-tenant',
+  workflowName: string = 'Extracted Workflow'
 ): WorkflowConfig | null {
   const startNode = nodes.find((n) => getNodeType(n) === 'start-node');
   if (!startNode) return null;
@@ -87,7 +88,7 @@ export function extractWorkflowConfig(
   const config: WorkflowConfig = {
     id: crypto.randomUUID(),
     tenantId,
-    name: 'Extracted Workflow',
+    name: workflowName,
     initialState: initialStateId,
     states: {},
     global: {
