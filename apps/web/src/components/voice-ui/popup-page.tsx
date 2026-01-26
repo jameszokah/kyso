@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import Script from 'next/script';
 import { HandPointingIcon } from '@phosphor-icons/react';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { ThemeToggle } from '@/components/voice-ui/theme-toggle';
 import { getSandboxId } from '@/lib/env';
 
 export default function PopupPage() {
