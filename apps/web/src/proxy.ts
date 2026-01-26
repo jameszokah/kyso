@@ -1,5 +1,5 @@
 import { createI18nMiddleware } from 'next-international/middleware';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const I18nMiddleware = createI18nMiddleware({
   locales: ['en', 'es'],
@@ -7,7 +7,11 @@ const I18nMiddleware = createI18nMiddleware({
 });
 
 export function proxy(request: NextRequest) {
-  return I18nMiddleware(request);
+    if (request.nextUrl.pathname.startsWith('/embed')) {
+        return NextResponse.next();
+    }
+
+    return I18nMiddleware(request);
 }
 
 export const config = {
