@@ -64,7 +64,7 @@ export function VoiceAgentSettingsPanel({
   onChange,
   className,
 }: VoiceAgentSettingsPanelProps) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const updateSetting = useCallback(
     <K extends keyof VoiceAgentSettings>(
