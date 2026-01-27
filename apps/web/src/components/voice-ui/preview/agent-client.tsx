@@ -89,16 +89,16 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
   }, [room, refreshConnectionDetails]);
 
   useEffect(() => {
-    if (!connectionDetails) {
-      setError({
-        title: "Error fetching connection details",
-        description: "Please try again later",
-      });
-      return;
-    }
-    if (room.state !== "disconnected") {
-      return;
-    }
+    // if (!connectionDetails) {
+    //   setError({
+    //     title: "Error fetching connection details",
+    //     description: "Please try again later",
+    //   });
+    //   return;
+    // }
+    // if (room.state !== "disconnected") {
+    //   return;
+    // }
 
     const connect = async () => {
       Promise.all([
