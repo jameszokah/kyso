@@ -117,9 +117,11 @@ export function extractWorkflowConfig(
     };
 
     // Process Tools & Transitions
-    const tools: AgentToolConfig[] = [];
+    // Process Tools & Transitions
+    const dynamicToolsMap = new Map<string, AgentToolConfig>();
     const outgoingEdges = edges.filter(e => e.source === node.id);
 
+    // 1. Collect dynamic tools from edges (Tool Nodes & Transitions)
     for (const edge of outgoingEdges) {
       const targetNode = nodes.find(n => n.id === edge.target);
       if (!targetNode) continue;
@@ -131,32 +133,45 @@ export function extractWorkflowConfig(
         const targetKey = getKey(targetNode);
         const targetProps = targetNode.data?.properties as any || targetNode.data;
         const toolName = `transfer_to_${targetKey}`;
-        tools.push({
+        const transitionTool: AgentToolConfig = {
           name: toolName,
           description: `Transfer to ${targetProps?.label || targetKey}`,
           type: 'function',
           config: {},
           transitionTo: targetKey
-        });
+        };
+        dynamicToolsMap.set(toolName, transitionTool);
       } else if (targetType === 'tool-node') {
         // Specialized Tool Node (HTTP)
         const targetProps = targetNode.data?.properties as any || targetNode.data;
         const toolData = targetProps?.tool;
         if (toolData) {
-          tools.push({
+          const toolConfig: AgentToolConfig = {
             name: toolData.name || 'http_tool',
             description: toolData.description || '',
             type: toolData.type || 'http_request',
             config: toolData.config || {},
-          });
+          };
+          dynamicToolsMap.set(toolConfig.name, toolConfig);
         }
       }
     }
 
-    // Merge internal tools (from the list inside the node)
+    // 2. Build final tools list
+    // Priority: Tools explicitly added to the node properties (UI "Selected Tools")
+    const tools: AgentToolConfig[] = [];
+    
     if (Array.isArray(props?.tools)) {
-      tools.push(...props.tools);
+      for (const propTool of props.tools) {
+        // If we have a dynamic version (from edge), use it (fresh config)
+        // Otherwise fallback to the static version stored in props
+        const dynamicTool = dynamicToolsMap.get(propTool.name);
+        tools.push(dynamicTool || propTool);
+      }
     }
+
+    // Note: If a tool is connected via edge but NOT in props.tools (e.g. deleted from UI), 
+    // it will NOT be included. This matches user expectation: "update... to reflect ui changes".
 
     agentState.tools = tools;
     config.states[stateKey] = agentState;
