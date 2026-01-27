@@ -153,7 +153,7 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
           duration: 1,
         }}
       >
-        <div className="ml-auto h-80 w-full rounded-[28px] border border-solid bg-background drop-shadow-md md:max-w-3xl">
+        <div className="mr-auto h-80 w-full rounded-[28px] border border-solid bg-background drop-shadow-md md:max-w-3xl">
           <div className="relative h-full w-full">
             <ErrorMessage error={error} />
             {!error && (

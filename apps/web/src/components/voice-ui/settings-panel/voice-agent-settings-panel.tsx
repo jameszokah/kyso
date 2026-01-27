@@ -94,7 +94,7 @@ export function VoiceAgentSettingsPanel({
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className="w-80 p-0"
+          className="w-84 p-0"
           side="left"
           sideOffset={12}
         >
