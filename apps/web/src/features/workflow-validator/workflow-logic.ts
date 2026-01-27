@@ -129,6 +129,9 @@ export function extractWorkflowConfig(
       const targetType = getNodeType(targetNode);
 
       if (targetType === 'voice-agent' || targetType === 'voice-node') {
+        // Prevent self-transitions
+        if (targetNode.id === node.id) continue;
+
         // Create transition tool
         const targetKey = getKey(targetNode);
         const targetProps = targetNode.data?.properties as any || targetNode.data;

@@ -38,15 +38,18 @@ function ToolNodeSelectorControl({
   data = [],
 }: ToolNodeSelectorControlProps) {
   const nodes = useStore((state) => state.nodes);
+  const selectedNodesIds = useStore((state) => state.selectedNodesIds);
 
   // Get all tool nodes from the graph
   const toolNodes = nodes.filter(
     (n) => (n.data?.type as string) === "tool-node"
   );
 
-  // Get all voice agent nodes (for transitions)
+  // Get all voice agent nodes (for transitions) - exclude currently selected node
   const voiceAgentNodes = nodes.filter(
-    (n) => (n.data?.type as string) === "voice-agent"
+    (n) =>
+      (n.data?.type as string) === "voice-agent" &&
+      !selectedNodesIds.includes(n.id)
   );
 
   // Build available HTTP tools list from ToolNodes
