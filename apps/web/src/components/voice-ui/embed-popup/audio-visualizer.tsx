@@ -1,27 +1,38 @@
-import { type AgentState, BarVisualizer, type TrackReference } from '@livekit/components-react';
-import { cn } from '@/lib/utils';
+"use client";
+
+import type { AgentState, TrackReference } from "@livekit/components-react";
+import { UnifiedVisualizer } from "@/components/ai-elements/unified-visualizer";
+import { loadSettings } from "@/lib/voice-agent-settings";
 
 interface AudioVisualizerProps {
   agentState: AgentState;
   audioTrack?: TrackReference;
 }
 
-export function AudioVisualizer({ agentState, audioTrack }: AudioVisualizerProps) {
+/**
+ * AudioVisualizer component that uses the UnifiedVisualizer with settings from localStorage.
+ * Supports both audio visualizers (zodiac: aries-leo) and persona (zodiac: virgo-aquarius).
+ */
+export function AudioVisualizer({
+  agentState,
+  audioTrack,
+}: AudioVisualizerProps) {
+  const settings = loadSettings();
+
+  const variant =
+    settings.visualizerType === "persona"
+      ? settings.personaVariant
+      : settings.audioVisualizerVariant;
+
   return (
-    <BarVisualizer
-      barCount={5}
+    <UnifiedVisualizer
+      audioTrack={audioTrack}
+      className="h-full w-full"
+      color={settings.visualizerColor}
+      size={settings.visualizerSize}
       state={agentState}
-      trackRef={audioTrack}
-      options={{ minHeight: 5 }}
-      className="flex h-full w-auto items-center justify-center gap-3"
-    >
-      <span
-        className={cn([
-          'bg-muted min-h-6 w-6 rounded-full',
-          'origin-center transition-colors duration-250 ease-linear',
-          'data-[lk-highlighted=true]:bg-foreground data-[lk-muted=true]:bg-muted',
-        ])}
-      />
-    </BarVisualizer>
+      type={settings.visualizerType}
+      variant={variant}
+    />
   );
 }

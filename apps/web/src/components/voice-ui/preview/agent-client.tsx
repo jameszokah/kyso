@@ -1,14 +1,23 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Room, RoomEvent } from 'livekit-client';
-import { motion } from 'motion/react';
-import { RoomAudioRenderer, RoomContext, StartAudio } from '@livekit/components-react';
-import { ErrorMessage } from '@/components/voice-ui/embed-popup/error-message';
-import { PopupView } from '@/components/voice-ui/embed-popup/popup-view';
-import { Trigger } from '@/components/voice-ui/embed-popup/trigger';
-import useConnectionDetails from '@/hooks/voice-ui/use-connection-details';
-import { type AppConfig, type EmbedErrorDetails } from '@/lib/types';
+import {
+  RoomAudioRenderer,
+  RoomContext,
+  StartAudio,
+} from "@livekit/components-react";
+import { Room, RoomEvent } from "livekit-client";
+import { motion } from "motion/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ErrorMessage } from "@/components/voice-ui/embed-popup/error-message";
+import { PopupView } from "@/components/voice-ui/embed-popup/popup-view";
+import { VoiceAgentSettingsPanel } from "@/components/voice-ui/settings-panel/voice-agent-settings-panel";
+import useConnectionDetails from "@/hooks/voice-ui/use-connection-details";
+import type { AppConfig, EmbedErrorDetails } from "@/lib/types";
+import {
+  loadSettings,
+  saveSettings,
+  type VoiceAgentSettings,
+} from "@/lib/voice-agent-settings";
 
 const PopupViewMotion = motion.create(PopupView);
 
@@ -20,10 +29,35 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
   const isAnimating = useRef(false);
   const room = useMemo(() => new Room(), []);
   const [error, setError] = useState<EmbedErrorDetails | null>(null);
-  const { connectionDetails, refreshConnectionDetails, existingOrRefreshConnectionDetails } =
-    useConnectionDetails(appConfig);
+  const [settings, setSettings] = useState<VoiceAgentSettings>(() =>
+    loadSettings()
+  );
 
+  // Merge settings with appConfig to create the effective config
+  const effectiveAppConfig = useMemo<AppConfig>(
+    () => ({
+      ...appConfig,
+      supportsChatInput: settings.supportsChatInput,
+      supportsVideoInput: settings.supportsVideoInput,
+      supportsScreenShare: settings.supportsScreenShare,
+      isPreConnectBufferEnabled: settings.isPreConnectBufferEnabled,
+    }),
+    [appConfig, settings]
+  );
 
+  const {
+    connectionDetails,
+    refreshConnectionDetails,
+    existingOrRefreshConnectionDetails,
+  } = useConnectionDetails(effectiveAppConfig);
+
+  const handleSettingsChange = useCallback(
+    (newSettings: VoiceAgentSettings) => {
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    },
+    []
+  );
 
   const handlePanelAnimationStart = () => {
     isAnimating.current = true;
@@ -31,7 +65,7 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
 
   const handlePanelAnimationComplete = () => {
     isAnimating.current = false;
-    if (room.state !== 'disconnected') {
+    if (room.state !== "disconnected") {
       room.disconnect();
     }
   };
@@ -42,7 +76,7 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
     };
     const onMediaDevicesError = (error: Error) => {
       setError({
-        title: 'Encountered an error with your media devices',
+        title: "Encountered an error with your media devices",
         description: `${error.name}: ${error.message}`,
       });
     };
@@ -57,28 +91,31 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
   useEffect(() => {
     if (!connectionDetails) {
       setError({
-        title: 'Error fetching connection details',
-        description: 'Please try again later',
+        title: "Error fetching connection details",
+        description: "Please try again later",
       });
       return;
     }
-    if (room.state !== 'disconnected') {
+    if (room.state !== "disconnected") {
       return;
     }
 
     const connect = async () => {
       Promise.all([
         room.localParticipant.setMicrophoneEnabled(true, undefined, {
-          preConnectBuffer: appConfig.isPreConnectBufferEnabled,
+          preConnectBuffer: effectiveAppConfig.isPreConnectBufferEnabled,
         }),
         existingOrRefreshConnectionDetails().then((connectionDetails) =>
-          room.connect(connectionDetails.serverUrl, connectionDetails.participantToken)
+          room.connect(
+            connectionDetails.serverUrl,
+            connectionDetails.participantToken
+          )
         ),
       ]).catch((error) => {
         if (error instanceof Error) {
-          console.error('Error connecting to agent:', error);
+          console.error("Error connecting to agent:", error);
           setError({
-            title: 'There was an error connecting to the agent',
+            title: "There was an error connecting to the agent",
             description: `${error.name}: ${error.message}`,
           });
         }
@@ -90,7 +127,7 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
     room,
     connectionDetails,
     existingOrRefreshConnectionDetails,
-    appConfig.isPreConnectBufferEnabled,
+    effectiveAppConfig.isPreConnectBufferEnabled,
   ]);
 
   return (
@@ -99,45 +136,47 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
       <StartAudio label="Start Audio" />
 
       <motion.div
-        initial={{
-          opacity: 0,
-          translateY: 8,
-        }}
         animate={{
           opacity: 1,
           translateY: 0,
         }}
+        className="z-50 flex w-full items-center justify-between gap-4"
+        initial={{
+          opacity: 0,
+          translateY: 8,
+        }}
+        onAnimationComplete={handlePanelAnimationComplete}
+        onAnimationStart={handlePanelAnimationStart}
         transition={{
-          type: 'spring',
+          type: "spring",
           bounce: 0,
           duration: 1,
         }}
-        onAnimationStart={handlePanelAnimationStart}
-        onAnimationComplete={handlePanelAnimationComplete}
-        className="flex w-full justify-between items-center z-50"
       >
-        <div className="bg-background ml-auto h-80 w-full rounded-[28px] border border-solid drop-shadow-md md:max-w-3xl">
+        <div className="ml-auto h-80 w-full rounded-[28px] border border-solid bg-background drop-shadow-md md:max-w-3xl">
           <div className="relative h-full w-full">
             <ErrorMessage error={error} />
             {!error && (
               <PopupViewMotion
-                appConfig={appConfig}
-                initial={{ opacity: 1 }}
                 animate={{ opacity: error === null ? 1 : 0 }}
+                appConfig={effectiveAppConfig}
+                className="absolute inset-0"
+                initial={{ opacity: 1 }}
+                onEmbedError={setError}
+                sessionStarted={true}
                 transition={{
-                  type: 'spring',
+                  type: "spring",
                   duration: 0.2,
                 }}
-                sessionStarted={true}
-                onEmbedError={setError}
-                className="absolute inset-0"
               />
             )}
           </div>
         </div>
-        <div className='flex flex-col h-80 w-14 rounded-[28px] border border-solid drop-shadow-md' key={'panel'}>
-          
-        </div>
+        <VoiceAgentSettingsPanel
+          className="h-80"
+          onChange={handleSettingsChange}
+          settings={settings}
+        />
       </motion.div>
     </RoomContext.Provider>
   );
