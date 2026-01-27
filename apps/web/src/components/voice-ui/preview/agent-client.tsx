@@ -116,7 +116,7 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
         onAnimationComplete={handlePanelAnimationComplete}
         className="flex z-50"
       >
-        <div className="bg-background ml-auto h-[480px] w-full rounded-[28px] border border-solid drop-shadow-md md:max-w-3xl">
+        <div className="bg-background ml-auto max-h-80 w-full rounded-[28px] border border-solid drop-shadow-md md:max-w-3xl">
           <div className="relative h-full w-full">
             <ErrorMessage error={error} />
             {!error && (
@@ -134,6 +134,9 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
               />
             )}
           </div>
+        </div>
+        <div className='flex flex-col' key={'panel'}>
+          
         </div>
       </motion.div>
     </RoomContext.Provider>
