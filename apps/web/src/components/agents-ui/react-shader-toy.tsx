@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useRef } from 'react';
 const PRECISIONS = ['lowp', 'mediump', 'highp'];
 const FS_MAIN_SHADER = `\nvoid main(void){
@@ -780,7 +781,7 @@ export function ReactShaderToy({
     }
     if (uniformsRef.current.iFrame?.isNeeded) {
       const timeDeltaUniform = gl.getUniformLocation(shaderProgramRef.current, UNIFORM_FRAME);
-      gl.uniform1i(timeDeltaUniform, (uniformsRef.current.iFrame.value as number)++);
+      gl.uniform1i(timeDeltaUniform, (uniformsRef.current.iFrame.value as number)+ 1);
     }
     if (texturesArrRef.current.length > 0) {
       for (let index = 0; index < texturesArrRef.current.length; index++) {
