@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { ApplyThemeScript } from '@/components/voice-ui/theme-toggle';
 import WelcomeDynamic from '@/components/voice-ui/welcome-dynamic';
 import { APP_CONFIG_DEFAULTS } from '@/app/app-config';
-import EmbedPopupAgentClient from '@/components/voice-ui/embed-popup/agent-client';
+import PreviewAgentClient from '@/components/voice-ui/preview/agent-client';
 
 interface PreviewDrawerProps {
   isOpen: boolean;
@@ -73,7 +73,7 @@ export function PreviewDrawer({
 
           {validationResult?.isValid && (
             <div className="bg-background">
-              <EmbedPopupAgentClient appConfig={APP_CONFIG_DEFAULTS} />
+              <PreviewAgentClient appConfig={APP_CONFIG_DEFAULTS} />
             </div>
           )}
             
