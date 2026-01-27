@@ -63,6 +63,8 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
     isAnimating.current = true;
   };
 
+  
+
   const handlePanelAnimationComplete = () => {
     isAnimating.current = false;
     if (room.state !== "disconnected") {
