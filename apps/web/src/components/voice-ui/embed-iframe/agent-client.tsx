@@ -106,9 +106,9 @@ function EmbedAgentClient({ appConfig }: AppProps) {
         <div className="flex h-full items-center justify-between gap-1 gap-4 pl-3">
           <div className="pl-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/lk-logo.svg" alt="LiveKit Logo" className="block size-6 dark:hidden" />
+            <img src="/kyso-logo.png" alt="Kyso Logo" className="block size-6 dark:hidden" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/lk-logo-dark.svg" alt="LiveKit Logo" className="hidden size-6 dark:block" />
+            <img src="/kyso-logo-dark.png" alt="Kyso Logo" className="hidden size-6 dark:block" />
           </div>
 
           <div className="flex flex-col justify-center">

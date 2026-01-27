@@ -1,7 +1,6 @@
-import * as React from 'react';
 import ReactDOM from 'react-dom/client';
 import { getAppConfig } from '@/lib/env';
-import globalCss from '@/styles/globals.css';
+import globalCss from '@/app/global.css?inline';
 import EmbedFixedAgentClient from './agent-client';
 
 const scriptTag = document.querySelector<HTMLScriptElement>('script[data-lk-sandbox-id]');

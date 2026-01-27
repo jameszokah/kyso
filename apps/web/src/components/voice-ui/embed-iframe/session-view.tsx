@@ -98,7 +98,7 @@ export const SessionView = ({
               {visibleControls.microphone ? (
                 <div className="flex items-center gap-0">
                   <TrackToggle
-                    variant="primary"
+                    variant="default"
                     source={Track.Source.Microphone}
                     pressed={microphoneToggle.enabled}
                     disabled={microphoneToggle.pending}

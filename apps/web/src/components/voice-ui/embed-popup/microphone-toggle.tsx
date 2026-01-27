@@ -4,8 +4,8 @@ import {
   type TrackReferenceOrPlaceholder,
   useTrackToggle,
 } from '@livekit/components-react';
-import { DeviceSelect } from '@/components/livekit/device-select';
-import { TrackToggle } from '@/components/livekit/track-toggle';
+import { DeviceSelect } from '@/components/voice-ui/livekit/device-select';
+import { TrackToggle } from '@/components/voice-ui/livekit/track-toggle';
 import { cn } from '@/lib/utils';
 
 interface MicrophoneToggleProps {
@@ -22,7 +22,7 @@ export function MicrophoneToggle({
   return (
     <div className="flex items-center gap-0">
       <TrackToggle
-        variant="primary"
+        variant="default"
         source={Track.Source.Microphone}
         pressed={microphoneToggle.enabled}
         disabled={microphoneToggle.pending}
@@ -31,7 +31,7 @@ export function MicrophoneToggle({
       >
         <BarVisualizer
           barCount={3}
-          trackRef={micTrackRef}
+          track={micTrackRef}
           options={{ minHeight: 5 }}
           className="flex h-full w-auto items-center justify-center gap-0.5"
         >

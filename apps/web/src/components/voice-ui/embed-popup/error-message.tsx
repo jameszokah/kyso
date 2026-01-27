@@ -1,4 +1,4 @@
-import { EmbedErrorDetails } from '@/lib/types';
+import type { EmbedErrorDetails } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 interface ErrorMessageProps {

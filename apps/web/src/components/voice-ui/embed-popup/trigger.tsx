@@ -51,12 +51,13 @@ export function Trigger({ error = null, popupOpen, onToggle }: TriggerProps) {
       >
         {/* ring */}
         <motion.div
+          key="kyso-ring"
           className={cn(
             'absolute inset-0 z-10 rounded-full transition-colors',
-            !popupOpen && 'bg-fgAccent',
+            !popupOpen && 'bg-accent',
             !error &&
               isAgentConnecting &&
-              'bg-fgAccent/30 animate-spin [background-image:conic-gradient(from_0deg,transparent_0%,transparent_30%,var(--color-fgAccent)_50%,transparent_70%,transparent_100%)]',
+              'bg-accent/30 animate-spin [background-image:conic-gradient(from_0deg,transparent_0%,transparent_30%,var(--color-accent)_50%,transparent_70%,transparent_100%)]',
             (isAgentConnected || (error && popupOpen)) && 'bg-destructive-foreground'
           )}
         />
@@ -64,25 +65,25 @@ export function Trigger({ error = null, popupOpen, onToggle }: TriggerProps) {
         <div
           className={cn(
             'relative z-20 grid size-11 place-items-center rounded-full transition-colors',
-            !popupOpen && 'bg-fgAccent',
-            !error && isAgentConnecting && 'bg-bg1',
+            !popupOpen && 'bg-accent',
+            !error && isAgentConnecting && 'bg-primary/90',
             (isAgentConnected || (error && popupOpen)) && 'bg-destructive'
           )}
         >
           <AnimatePresence>
             {!popupOpen && (
               <motion.div
-                key="lk-logo"
+                key="kyso-logo"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: popupOpen ? 20 : -20 }}
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
               >
                 <div
-                  className="bg-bg1 size-5"
+                  className="bg-primary/90 size-5"
                   // webpack build throws if I use custom tailwind classes to achive this
                   style={{
-                    maskImage: 'url(/lk-logo.svg)',
+                    maskImage: 'url(/kyso-logo.png)',
                     maskSize: 'contain',
                   }}
                 />
@@ -90,7 +91,7 @@ export function Trigger({ error = null, popupOpen, onToggle }: TriggerProps) {
             )}
             {(isAgentConnecting || (error && popupOpen)) && (
               <motion.div
-                key="dismiss"
+                key="kyso-dismiss"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: popupOpen ? -20 : 20 }}
@@ -105,7 +106,7 @@ export function Trigger({ error = null, popupOpen, onToggle }: TriggerProps) {
             )}
             {!error && isAgentConnected && (
               <motion.div
-                key="disconnect"
+                key="kyso-disconnect"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: popupOpen ? -20 : 20 }}
