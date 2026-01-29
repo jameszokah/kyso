@@ -169,15 +169,16 @@ export const DEFAULT_SETTINGS: VoiceAgentSettings = {
 const STORAGE_KEY = "kyso-voice-agent-settings";
 const SETTINGS_CHANGE_EVENT = "kyso-voice-agent-settings-change";
 
-// In-memory cache for SSR and initial hydration
-let cachedSettings: VoiceAgentSettings = DEFAULT_SETTINGS;
+// In-memory cache for SSR and snapshot stability
+let cachedSettings: VoiceAgentSettings = { ...DEFAULT_SETTINGS };
+let isInitialized = false;
 
 /**
- * Get settings from localStorage (or cache for SSR)
+ * Initialize the cache from localStorage (called once)
  */
-function getSettingsSnapshot(): VoiceAgentSettings {
-  if (typeof window === "undefined") {
-    return cachedSettings;
+function initializeCache(): void {
+  if (isInitialized || typeof window === "undefined") {
+    return;
   }
 
   try {
@@ -187,9 +188,26 @@ function getSettingsSnapshot(): VoiceAgentSettings {
       cachedSettings = { ...DEFAULT_SETTINGS, ...parsed };
     }
   } catch {
-    // Ignore parse errors, use cached/default
+    // Ignore parse errors, use default
   }
 
+  isInitialized = true;
+}
+
+/**
+ * Get settings snapshot - returns cached reference for stability
+ * This MUST return the same reference if the settings haven't changed
+ * to prevent useSyncExternalStore infinite loops
+ */
+function getSettingsSnapshot(): VoiceAgentSettings {
+  if (typeof window === "undefined") {
+    return DEFAULT_SETTINGS;
+  }
+
+  // Initialize on first call
+  initializeCache();
+
+  // Always return the cached reference
   return cachedSettings;
 }
 
@@ -201,27 +219,68 @@ function getServerSnapshot(): VoiceAgentSettings {
 }
 
 /**
+ * Update the cache from localStorage and return whether it changed
+ */
+function refreshCache(): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored) as Partial<VoiceAgentSettings>;
+      const newSettings = { ...DEFAULT_SETTINGS, ...parsed };
+
+      // Check if actually changed (shallow compare)
+      const hasChanged =
+        JSON.stringify(newSettings) !== JSON.stringify(cachedSettings);
+      if (hasChanged) {
+        cachedSettings = newSettings;
+        return true;
+      }
+    }
+  } catch {
+    // Ignore parse errors
+  }
+
+  return false;
+}
+
+/**
  * Subscribe to settings changes (for useSyncExternalStore)
  */
 function subscribeToSettings(callback: () => void): () => void {
-  const handleChange = () => {
-    cachedSettings = getSettingsSnapshot();
-    callback();
+  const handleStorageChange = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY && refreshCache()) {
+      callback();
+    }
+  };
+
+  const handleCustomEvent = (e: Event) => {
+    const customEvent = e as CustomEvent<{ cacheUpdated?: boolean }>;
+
+    // If cache was already updated by saveSettings, just call callback
+    if (customEvent.detail?.cacheUpdated) {
+      callback();
+      return;
+    }
+
+    // Otherwise refresh from localStorage
+    if (refreshCache()) {
+      callback();
+    }
   };
 
   // Listen for storage events (cross-tab sync)
-  window.addEventListener("storage", (e) => {
-    if (e.key === STORAGE_KEY) {
-      handleChange();
-    }
-  });
+  window.addEventListener("storage", handleStorageChange);
 
   // Listen for custom events (same-tab sync)
-  window.addEventListener(SETTINGS_CHANGE_EVENT, handleChange);
+  window.addEventListener(SETTINGS_CHANGE_EVENT, handleCustomEvent);
 
   return () => {
-    window.removeEventListener("storage", handleChange);
-    window.removeEventListener(SETTINGS_CHANGE_EVENT, handleChange);
+    window.removeEventListener("storage", handleStorageChange);
+    window.removeEventListener(SETTINGS_CHANGE_EVENT, handleCustomEvent);
   };
 }
 
@@ -284,10 +343,15 @@ export function saveSettings(settings: VoiceAgentSettings): void {
 
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+
+    // Update cache directly (this is already the new value)
     cachedSettings = settings;
 
     // Dispatch custom event for same-tab reactivity
-    window.dispatchEvent(new CustomEvent(SETTINGS_CHANGE_EVENT));
+    // Pass cacheUpdated: true so subscriber doesn't re-read localStorage
+    window.dispatchEvent(
+      new CustomEvent(SETTINGS_CHANGE_EVENT, { detail: { cacheUpdated: true } })
+    );
   } catch (error) {
     console.warn("Failed to save voice agent settings:", error);
   }
