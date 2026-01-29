@@ -7,17 +7,13 @@ import {
 } from "@livekit/components-react";
 import { Room, RoomEvent } from "livekit-client";
 import { motion } from "motion/react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ErrorMessage } from "@/components/voice-ui/embed-popup/error-message";
 import { PopupView } from "@/components/voice-ui/embed-popup/popup-view";
 import { VoiceAgentSettingsPanel } from "@/components/voice-ui/settings-panel/voice-agent-settings-panel";
 import useConnectionDetails from "@/hooks/voice-ui/use-connection-details";
 import type { AppConfig, EmbedErrorDetails } from "@/lib/types";
-import {
-  loadSettings,
-  saveSettings,
-  type VoiceAgentSettings,
-} from "@/lib/voice-agent-settings";
+import { useVoiceAgentSettings } from "@/lib/voice-agent-settings";
 
 const PopupViewMotion = motion.create(PopupView);
 
@@ -29,9 +25,9 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
   const isAnimating = useRef(false);
   const room = useMemo(() => new Room(), []);
   const [error, setError] = useState<EmbedErrorDetails | null>(null);
-  const [settings, setSettings] = useState<VoiceAgentSettings>(() =>
-    loadSettings()
-  );
+
+  // Use reactive settings hook - changes propagate immediately
+  const settings = useVoiceAgentSettings();
 
   // Merge settings with appConfig to create the effective config
   const effectiveAppConfig = useMemo<AppConfig>(
@@ -51,19 +47,9 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
     existingOrRefreshConnectionDetails,
   } = useConnectionDetails(effectiveAppConfig);
 
-  const handleSettingsChange = useCallback(
-    (newSettings: VoiceAgentSettings) => {
-      setSettings(newSettings);
-      saveSettings(newSettings);
-    },
-    []
-  );
-
   const handlePanelAnimationStart = () => {
     isAnimating.current = true;
   };
-
-  
 
   const handlePanelAnimationComplete = () => {
     isAnimating.current = false;
@@ -91,17 +77,6 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
   }, [room, refreshConnectionDetails]);
 
   useEffect(() => {
-    // if (!connectionDetails) {
-    //   setError({
-    //     title: "Error fetching connection details",
-    //     description: "Please try again later",
-    //   });
-    //   return;
-    // }
-    // if (room.state !== "disconnected") {
-    //   return;
-    // }
-
     const connect = async () => {
       Promise.all([
         room.localParticipant.setMicrophoneEnabled(true, undefined, {
@@ -174,11 +149,7 @@ function PreviewAgentClient({ appConfig }: EmbedFixedAgentClientProps) {
             )}
           </div>
         </div>
-        <VoiceAgentSettingsPanel
-          className="h-80"
-          onChange={handleSettingsChange}
-          settings={settings}
-        />
+        <VoiceAgentSettingsPanel className="h-80" />
       </motion.div>
     </RoomContext.Provider>
   );

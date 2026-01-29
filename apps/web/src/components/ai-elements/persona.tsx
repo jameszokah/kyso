@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import {
   type RiveParameters,
   useRive,
@@ -11,6 +10,7 @@ import {
 } from "@rive-app/react-webgl2";
 import type { FC, ReactNode } from "react";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export type PersonaState =
   | "idle"
@@ -29,6 +29,11 @@ interface PersonaProps {
   onStop?: RiveParameters["onStop"];
   className?: string;
   variant?: keyof typeof sources;
+  /**
+   * Show a loading skeleton while Rive file loads
+   * @default true
+   */
+  showLoadingState?: boolean;
 }
 
 // The state machine name is always 'default' for Elements AI visuals
@@ -72,6 +77,37 @@ const sources = {
     hasModel: true,
   },
 };
+
+// Cache for preloaded Rive files
+const preloadedFiles = new Set<string>();
+
+/**
+ * Preload a Rive file for faster initial rendering
+ */
+export function preloadPersona(variant: keyof typeof sources): void {
+  const source = sources[variant];
+  if (!source || preloadedFiles.has(source.source)) {
+    return;
+  }
+
+  // Use fetch to cache the file
+  fetch(source.source, { mode: "cors" })
+    .then(() => {
+      preloadedFiles.add(source.source);
+    })
+    .catch(() => {
+      // Ignore preload errors
+    });
+}
+
+/**
+ * Preload all Rive persona files
+ */
+export function preloadAllPersonas(): void {
+  for (const variant of Object.keys(sources) as (keyof typeof sources)[]) {
+    preloadPersona(variant);
+  }
+}
 
 const getCurrentTheme = (): "light" | "dark" => {
   if (typeof window !== "undefined") {
@@ -166,6 +202,36 @@ const PersonaWithoutModel = memo(
   ({ children }: PersonaWithoutModelProps) => children
 );
 
+/**
+ * Loading skeleton for Persona component
+ */
+const PersonaLoadingSkeleton = memo(({ className }: { className?: string }) => (
+  <div
+    className={cn(
+      "size-16 shrink-0 animate-pulse rounded-full bg-muted/50",
+      className
+    )}
+  >
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="size-1/2 animate-ping rounded-full bg-muted-foreground/20" />
+    </div>
+  </div>
+));
+
+/**
+ * Error fallback for Persona component
+ */
+const PersonaErrorFallback = memo(({ className }: { className?: string }) => (
+  <div
+    className={cn(
+      "flex size-16 shrink-0 items-center justify-center rounded-full bg-destructive/10 text-destructive",
+      className
+    )}
+  >
+    <span className="text-xs">!</span>
+  </div>
+));
+
 export const Persona: FC<PersonaProps> = memo(
   ({
     variant = "obsidian",
@@ -177,8 +243,11 @@ export const Persona: FC<PersonaProps> = memo(
     onPlay,
     onStop,
     className,
+    showLoadingState = true,
   }) => {
     const source = sources[variant];
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     if (!source) {
       throw new Error(`Invalid variant: ${variant}`);
@@ -204,14 +273,15 @@ export const Persona: FC<PersonaProps> = memo(
 
     const stableCallbacks = useMemo(
       () => ({
-        onLoad: ((loadedRive) =>
-          callbacksRef.current.onLoad?.(
-            loadedRive
-          )) as RiveParameters["onLoad"],
-        onLoadError: ((err) =>
-          callbacksRef.current.onLoadError?.(
-            err
-          )) as RiveParameters["onLoadError"],
+        onLoad: ((loadedRive) => {
+          setIsLoaded(true);
+          setHasError(false);
+          callbacksRef.current.onLoad?.(loadedRive);
+        }) as RiveParameters["onLoad"],
+        onLoadError: ((err) => {
+          setHasError(true);
+          callbacksRef.current.onLoadError?.(err);
+        }) as RiveParameters["onLoadError"],
         onReady: () => callbacksRef.current.onReady?.(),
         onPause: ((event) =>
           callbacksRef.current.onPause?.(event)) as RiveParameters["onPause"],
@@ -222,6 +292,12 @@ export const Persona: FC<PersonaProps> = memo(
       }),
       []
     );
+
+    // Reset state when variant changes
+    useEffect(() => {
+      setIsLoaded(false);
+      setHasError(false);
+    }, [variant]);
 
     const { rive, RiveComponent } = useRive({
       src: source.source,
@@ -261,10 +337,29 @@ export const Persona: FC<PersonaProps> = memo(
 
     const Component = source.hasModel ? PersonaWithModel : PersonaWithoutModel;
 
+    // Show error fallback if failed to load
+    if (hasError) {
+      return <PersonaErrorFallback className={className} />;
+    }
+
     return (
       <Component rive={rive} source={source}>
-        <RiveComponent className={cn("size-16 shrink-0", className)} />
+        {/* Show loading skeleton while loading */}
+        {showLoadingState && !isLoaded && (
+          <PersonaLoadingSkeleton className={className} />
+        )}
+        <RiveComponent
+          className={cn(
+            "size-16 shrink-0",
+            // Hide until loaded if showing loading state
+            showLoadingState && !isLoaded && "hidden",
+            className
+          )}
+        />
       </Component>
     );
   }
 );
+
+// Export sources for external use (e.g., preloading)
+export { sources as personaSources };

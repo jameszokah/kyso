@@ -2,7 +2,7 @@
 
 import type { AgentState, TrackReference } from "@livekit/components-react";
 import { UnifiedVisualizer } from "@/components/ai-elements/unified-visualizer";
-import { loadSettings } from "@/lib/voice-agent-settings";
+import { useVoiceAgentSettings } from "@/lib/voice-agent-settings";
 
 interface AudioVisualizerProps {
   agentState: AgentState;
@@ -10,29 +10,24 @@ interface AudioVisualizerProps {
 }
 
 /**
- * AudioVisualizer component that uses the UnifiedVisualizer with settings from localStorage.
- * Supports both audio visualizers (zodiac: aries-leo) and persona (zodiac: virgo-aquarius).
+ * AudioVisualizer component that uses the UnifiedVisualizer with reactive settings.
+ * Automatically updates when settings change in real-time.
  */
 export function AudioVisualizer({
   agentState,
   audioTrack,
 }: AudioVisualizerProps) {
-  const settings = loadSettings();
-
-  const variant =
-    settings.visualizerType === "persona"
-      ? settings.personaVariant
-      : settings.audioVisualizerVariant;
+  // Use reactive settings hook - changes propagate immediately
+  const settings = useVoiceAgentSettings();
 
   return (
     <UnifiedVisualizer
       audioTrack={audioTrack}
       className="h-full w-full"
-      color={settings.visualizerColor}
-      size={settings.visualizerSize}
+      color={settings.personaColor}
+      size={settings.personaSize}
       state={agentState}
-      type={settings.visualizerType}
-      variant={variant}
+      variant={settings.personaVariant}
     />
   );
 }

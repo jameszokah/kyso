@@ -1,7 +1,7 @@
 "use client";
 
 import { Layout, Monitor, Palette, RotateCcw, Settings2 } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,7 +12,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -21,28 +23,13 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import {
-  type AudioVisualizerVariant,
   DEFAULT_SETTINGS,
-  getVisualizerLabel,
+  getPersonaLabel,
+  PERSONA_VARIANTS,
   type PersonaVariant,
+  useVoiceAgentSettingsState,
   type VoiceAgentSettings,
 } from "@/lib/voice-agent-settings";
-
-const AUDIO_VISUALIZER_VARIANTS: AudioVisualizerVariant[] = [
-  "aries",
-  "taurus",
-  "gemini",
-  "cancer",
-  "leo",
-];
-const PERSONA_VARIANTS: PersonaVariant[] = [
-  "virgo",
-  "libra",
-  "scorpio",
-  "sagittarius",
-  "capricorn",
-  "aquarius",
-];
 
 const ACCENT_COLORS = [
   { value: "#1FD5F9", label: "Cyan" },
@@ -54,35 +41,31 @@ const ACCENT_COLORS = [
 ];
 
 interface VoiceAgentSettingsPanelProps {
-  settings: VoiceAgentSettings;
-  onChange: (settings: VoiceAgentSettings) => void;
   className?: string;
 }
 
 export function VoiceAgentSettingsPanel({
-  settings,
-  onChange,
   className,
 }: VoiceAgentSettingsPanelProps) {
-  const [open, setOpen] = useState(false);
+  const [settings, setSettings] = useVoiceAgentSettingsState();
 
   const updateSetting = useCallback(
     <K extends keyof VoiceAgentSettings>(
       key: K,
       value: VoiceAgentSettings[K]
     ) => {
-      onChange({ ...settings, [key]: value });
+      setSettings({ ...settings, [key]: value });
     },
-    [settings, onChange]
+    [settings, setSettings]
   );
 
   const handleReset = useCallback(() => {
-    onChange(DEFAULT_SETTINGS);
-  }, [onChange]);
+    setSettings(DEFAULT_SETTINGS);
+  }, [setSettings]);
 
   return (
     <div className={cn("flex flex-col gap-2 p-2", className)}>
-      <Popover onOpenChange={setOpen} open={open}>
+      <Popover>
         <PopoverTrigger asChild>
           <Button
             className="h-10 w-10 rounded-full bg-background/80 backdrop-blur-sm"
@@ -122,10 +105,10 @@ export function VoiceAgentSettingsPanel({
               </TabsTrigger>
               <TabsTrigger
                 className="rounded-none border-transparent border-b-2 px-4 py-2 data-[state=active]:border-primary data-[state=active]:bg-transparent"
-                value="visualizer"
+                value="persona"
               >
                 <Palette className="mr-1.5 h-3.5 w-3.5" />
-                Visualizer
+                Persona
               </TabsTrigger>
               <TabsTrigger
                 className="rounded-none border-transparent border-b-2 px-4 py-2 data-[state=active]:border-primary data-[state=active]:bg-transparent"
@@ -203,79 +186,42 @@ export function VoiceAgentSettingsPanel({
               </div>
             </TabsContent>
 
-            {/* Visualizer Settings Tab */}
-            <TabsContent className="mt-0 p-4" value="visualizer">
+            {/* Persona Settings Tab */}
+            <TabsContent className="mt-0 p-4" value="persona">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label className="font-medium text-muted-foreground text-xs">
-                    Visualizer Type
+                    Persona Style
                   </Label>
                   <Select
                     onValueChange={(v) =>
-                      updateSetting("visualizerType", v as "audio" | "persona")
+                      updateSetting("personaVariant", v as PersonaVariant)
                     }
-                    value={settings.visualizerType}
+                    value={settings.personaVariant}
                   >
                     <SelectTrigger className="h-9">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="audio">Audio Visualizer</SelectItem>
-                      <SelectItem value="persona">Persona (Rive)</SelectItem>
+                      <SelectGroup>
+                        <SelectLabel>Audio Visualizers</SelectLabel>
+                        {PERSONA_VARIANTS.audio.map((variant) => (
+                          <SelectItem key={variant} value={variant}>
+                            {getPersonaLabel(variant)}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel>Animated Personas</SelectLabel>
+                        {PERSONA_VARIANTS.rive.map((variant) => (
+                          <SelectItem key={variant} value={variant}>
+                            {getPersonaLabel(variant)}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                 </div>
-
-                {settings.visualizerType === "audio" ? (
-                  <div className="space-y-2">
-                    <Label className="font-medium text-muted-foreground text-xs">
-                      Audio Visualizer Style
-                    </Label>
-                    <Select
-                      onValueChange={(v) =>
-                        updateSetting(
-                          "audioVisualizerVariant",
-                          v as AudioVisualizerVariant
-                        )
-                      }
-                      value={settings.audioVisualizerVariant}
-                    >
-                      <SelectTrigger className="h-9">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {AUDIO_VISUALIZER_VARIANTS.map((variant) => (
-                          <SelectItem key={variant} value={variant}>
-                            {getVisualizerLabel(variant)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <Label className="font-medium text-muted-foreground text-xs">
-                      Persona Style
-                    </Label>
-                    <Select
-                      onValueChange={(v) =>
-                        updateSetting("personaVariant", v as PersonaVariant)
-                      }
-                      value={settings.personaVariant}
-                    >
-                      <SelectTrigger className="h-9">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {PERSONA_VARIANTS.map((variant) => (
-                          <SelectItem key={variant} value={variant}>
-                            {getVisualizerLabel(variant)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
 
                 <div className="space-y-2">
                   <Label className="font-medium text-muted-foreground text-xs">
@@ -284,11 +230,11 @@ export function VoiceAgentSettingsPanel({
                   <Select
                     onValueChange={(v) =>
                       updateSetting(
-                        "visualizerSize",
-                        v as VoiceAgentSettings["visualizerSize"]
+                        "personaSize",
+                        v as VoiceAgentSettings["personaSize"]
                       )
                     }
-                    value={settings.visualizerSize}
+                    value={settings.personaSize}
                   >
                     <SelectTrigger className="h-9">
                       <SelectValue />
@@ -311,13 +257,13 @@ export function VoiceAgentSettingsPanel({
                       <button
                         className={cn(
                           "h-7 w-7 rounded-full border-2 transition-all",
-                          settings.visualizerColor === color.value
+                          settings.personaColor === color.value
                             ? "scale-110 border-foreground"
                             : "border-transparent hover:scale-105"
                         )}
                         key={color.value}
                         onClick={() =>
-                          updateSetting("visualizerColor", color.value)
+                          updateSetting("personaColor", color.value)
                         }
                         style={{ backgroundColor: color.value }}
                         title={color.label}
@@ -364,6 +310,56 @@ export function VoiceAgentSettingsPanel({
                       <SelectItem value="top">Top</SelectItem>
                       <SelectItem value="bottom">Bottom</SelectItem>
                       <SelectItem value="overlay">Overlay</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-2">
+                  <Label className="font-medium text-muted-foreground text-xs">
+                    Chat Input Style
+                  </Label>
+                  <Select
+                    onValueChange={(v) =>
+                      updateSetting(
+                        "chatInputStyle",
+                        v as VoiceAgentSettings["chatInputStyle"]
+                      )
+                    }
+                    value={settings.chatInputStyle}
+                  >
+                    <SelectTrigger className="h-9">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="minimal">Minimal</SelectItem>
+                      <SelectItem value="standard">Standard</SelectItem>
+                      <SelectItem value="expanded">Expanded</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="font-medium text-muted-foreground text-xs">
+                    Control Bar Layout
+                  </Label>
+                  <Select
+                    onValueChange={(v) =>
+                      updateSetting(
+                        "controlBarLayout",
+                        v as VoiceAgentSettings["controlBarLayout"]
+                      )
+                    }
+                    value={settings.controlBarLayout}
+                  >
+                    <SelectTrigger className="h-9">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="compact">Compact</SelectItem>
+                      <SelectItem value="standard">Standard</SelectItem>
+                      <SelectItem value="expanded">Expanded</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

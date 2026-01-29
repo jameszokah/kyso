@@ -17,25 +17,19 @@ import { Persona } from "@/components/ai-elements/persona";
 import { cn } from "@/lib/utils";
 import {
   AUDIO_VISUALIZER_MAP,
-  type AudioVisualizerVariant,
   agentStateToPersonaState,
-  PERSONA_VARIANT_MAP,
+  isAudioVisualizer,
   type PersonaVariant,
+  RIVE_PERSONA_MAP,
   type VisualizerSize,
 } from "@/lib/voice-agent-settings";
 
 export interface UnifiedVisualizerProps extends ComponentProps<"div"> {
   /**
-   * Whether to use audio visualizer or persona (Rive)
+   * The persona variant to render (zodiac name)
+   * Automatically detects if it's an audio visualizer or Rive persona
    */
-  type: "audio" | "persona";
-
-  /**
-   * The variant to use - zodiac name
-   * For audio: aries, taurus, gemini, cancer, leo
-   * For persona: virgo, libra, scorpio, sagittarius, capricorn, aquarius
-   */
-  variant: AudioVisualizerVariant | PersonaVariant;
+  variant: PersonaVariant;
 
   /**
    * Current agent state from LiveKit
@@ -43,7 +37,7 @@ export interface UnifiedVisualizerProps extends ComponentProps<"div"> {
   state: AgentState;
 
   /**
-   * Audio track for visualizer (optional)
+   * Audio track for visualizer (optional, only used for audio variants)
    */
   audioTrack?: LocalAudioTrack | RemoteAudioTrack | TrackReferenceOrPlaceholder;
 
@@ -64,29 +58,41 @@ export interface UnifiedVisualizerProps extends ComponentProps<"div"> {
 }
 
 /**
- * Unified Visualizer component that wraps all audio visualizers and personas
- * with a consistent zodiac-named interface.
+ * Unified Visualizer component that renders either an audio visualizer or Rive persona
+ * based on the variant prop. Uses zodiac naming scheme for all 11 variants.
+ *
+ * Audio Visualizers (aries - leo):
+ * - aries: Aura (shader-based circular)
+ * - taurus: Bar (bar chart)
+ * - gemini: Radial (circular bars)
+ * - cancer: Wave (oscilloscope)
+ * - leo: Grid (dot matrix)
+ *
+ * Rive Personas (virgo - aquarius):
+ * - virgo: Obsidian
+ * - libra: Mana
+ * - scorpio: Opal
+ * - sagittarius: Halo
+ * - capricorn: Glint
+ * - aquarius: Command
  *
  * @example
  * ```tsx
  * // Audio visualizer (Aries = Aura)
  * <UnifiedVisualizer
- *   type="audio"
  *   variant="aries"
  *   state={agentState}
  *   audioTrack={audioTrack}
  * />
  *
- * // Persona (Virgo = Obsidian)
+ * // Rive Persona (Virgo = Obsidian)
  * <UnifiedVisualizer
- *   type="persona"
  *   variant="virgo"
  *   state={agentState}
  * />
  * ```
  */
 export function UnifiedVisualizer({
-  type,
   variant,
   state,
   audioTrack,
@@ -96,35 +102,69 @@ export function UnifiedVisualizer({
   className,
   ...props
 }: UnifiedVisualizerProps) {
-  // Handle persona type
-  if (type === "persona") {
-    const personaVariant = variant as PersonaVariant;
-    const riveVariant = PERSONA_VARIANT_MAP[personaVariant];
-    const personaState = agentStateToPersonaState(state);
-
+  // Auto-detect if this is an audio visualizer or Rive persona
+  if (isAudioVisualizer(variant)) {
     return (
-      <div
-        className={cn("flex items-center justify-center", className)}
+      <AudioVisualizerRenderer
+        audioTrack={audioTrack}
+        className={className}
+        color={color}
+        size={size}
+        state={state}
+        themeMode={themeMode}
+        variant={variant as keyof typeof AUDIO_VISUALIZER_MAP}
         {...props}
-      >
-        <Persona
-          className={cn({
-            "size-6": size === "icon",
-            "size-14": size === "sm",
-            "size-28": size === "md",
-            "size-56": size === "lg",
-            "size-112": size === "xl",
-          })}
-          state={personaState}
-          variant={riveVariant}
-        />
-      </div>
+      />
     );
   }
 
-  // Handle audio visualizer type
-  const audioVariant = variant as AudioVisualizerVariant;
-  const visualizerType = AUDIO_VISUALIZER_MAP[audioVariant];
+  // Rive persona
+  const riveVariant =
+    RIVE_PERSONA_MAP[variant as keyof typeof RIVE_PERSONA_MAP];
+  const personaState = agentStateToPersonaState(state);
+
+  return (
+    <div
+      className={cn("flex items-center justify-center", className)}
+      {...props}
+    >
+      <Persona
+        className={cn({
+          "size-6": size === "icon",
+          "size-14": size === "sm",
+          "size-28": size === "md",
+          "size-56": size === "lg",
+          "size-112": size === "xl",
+        })}
+        state={personaState}
+        variant={riveVariant}
+      />
+    </div>
+  );
+}
+
+/**
+ * Internal component for rendering audio visualizers
+ */
+function AudioVisualizerRenderer({
+  variant,
+  state,
+  audioTrack,
+  size,
+  color,
+  themeMode,
+  className,
+  ...props
+}: {
+  variant: keyof typeof AUDIO_VISUALIZER_MAP;
+  state: AgentState;
+  audioTrack?: LocalAudioTrack | RemoteAudioTrack | TrackReferenceOrPlaceholder;
+  size: VisualizerSize;
+  color: string;
+  themeMode?: "dark" | "light";
+  className?: string;
+} & ComponentProps<"div">) {
+  const visualizerType = AUDIO_VISUALIZER_MAP[variant];
 
   const sharedProps = {
     state,
@@ -169,20 +209,4 @@ export function UnifiedVisualizer({
         />
       );
   }
-}
-
-/**
- * Check if a variant is an audio visualizer variant
- */
-export function isAudioVisualizerVariant(
-  variant: string
-): variant is AudioVisualizerVariant {
-  return variant in AUDIO_VISUALIZER_MAP;
-}
-
-/**
- * Check if a variant is a persona variant
- */
-export function isPersonaVariant(variant: string): variant is PersonaVariant {
-  return variant in PERSONA_VARIANT_MAP;
 }

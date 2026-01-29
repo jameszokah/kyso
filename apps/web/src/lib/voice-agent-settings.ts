@@ -1,22 +1,31 @@
 "use client";
 
 import type { AgentState } from "@livekit/components-react";
+import { useCallback, useSyncExternalStore } from "react";
 import type { PersonaState } from "@/components/ai-elements/persona";
 
-// Zodiac-named visualizer types
-export type AudioVisualizerVariant =
-  | "aries"
-  | "taurus"
-  | "gemini"
-  | "cancer"
-  | "leo";
+// ============================================================================
+// Unified Persona Types (combining audio visualizers and Rive personas)
+// ============================================================================
+
+/**
+ * Unified persona variant combining all visualizers under zodiac names
+ * - aries through leo: Audio visualizers (shader/canvas-based)
+ * - virgo through aquarius: Rive personas (animated vector graphics)
+ */
 export type PersonaVariant =
-  | "virgo"
-  | "libra"
-  | "scorpio"
-  | "sagittarius"
-  | "capricorn"
-  | "aquarius";
+  | "aries" // Audio: Aura (shader-based circular)
+  | "taurus" // Audio: Bar (bar chart style)
+  | "gemini" // Audio: Radial (circular bars)
+  | "cancer" // Audio: Wave (oscilloscope line)
+  | "leo" // Audio: Grid (dot matrix)
+  | "virgo" // Rive: Obsidian
+  | "libra" // Rive: Mana
+  | "scorpio" // Rive: Opal
+  | "sagittarius" // Rive: Halo
+  | "capricorn" // Rive: Glint
+  | "aquarius"; // Rive: Command
+
 export type VisualizerSize = "icon" | "sm" | "md" | "lg" | "xl";
 export type PositionPreset =
   | "top-left"
@@ -25,22 +34,49 @@ export type PositionPreset =
   | "bottom-right";
 export type TranscriptionPosition = "top" | "bottom" | "overlay";
 export type ThemeMode = "dark" | "light" | "system";
+export type ChatInputStyle = "minimal" | "standard" | "expanded";
+export type ControlBarLayout = "compact" | "standard" | "expanded";
+
+// ============================================================================
+// Persona Mappings
+// ============================================================================
+
+/**
+ * Check if a persona variant is an audio visualizer (shader/canvas)
+ */
+export function isAudioVisualizer(variant: PersonaVariant): boolean {
+  return ["aries", "taurus", "gemini", "cancer", "leo"].includes(variant);
+}
+
+/**
+ * Check if a persona variant is a Rive persona
+ */
+export function isRivePersona(variant: PersonaVariant): boolean {
+  return [
+    "virgo",
+    "libra",
+    "scorpio",
+    "sagittarius",
+    "capricorn",
+    "aquarius",
+  ].includes(variant);
+}
 
 /**
  * Maps zodiac audio visualizer names to their component types
  */
 export const AUDIO_VISUALIZER_MAP = {
-  aries: "aura", // Shader-based circular aura
-  taurus: "bar", // Bar chart style
-  gemini: "radial", // Circular bars
-  cancer: "wave", // Oscilloscope line
-  leo: "grid", // Dot matrix grid
+  aries: "aura",
+  taurus: "bar",
+  gemini: "radial",
+  cancer: "wave",
+  leo: "grid",
 } as const;
 
 /**
  * Maps zodiac persona names to Rive file variants
  */
-export const PERSONA_VARIANT_MAP = {
+export const RIVE_PERSONA_MAP = {
   virgo: "obsidian",
   libra: "mana",
   scorpio: "opal",
@@ -70,6 +106,10 @@ export function agentStateToPersonaState(agentState: AgentState): PersonaState {
   }
 }
 
+// ============================================================================
+// Settings Interface
+// ============================================================================
+
 export interface VoiceAgentSettings {
   // General Features
   supportsChatInput: boolean;
@@ -77,12 +117,14 @@ export interface VoiceAgentSettings {
   supportsScreenShare: boolean;
   isPreConnectBufferEnabled: boolean;
 
-  // Visualizer Settings
-  visualizerType: "audio" | "persona";
-  audioVisualizerVariant: AudioVisualizerVariant;
+  // Unified Persona Settings
   personaVariant: PersonaVariant;
-  visualizerSize: VisualizerSize;
-  visualizerColor: string;
+  personaSize: VisualizerSize;
+  personaColor: string;
+
+  // Chat Flow Customization
+  chatInputStyle: ChatInputStyle;
+  controlBarLayout: ControlBarLayout;
 
   // UI Preferences
   showTranscription: boolean;
@@ -101,12 +143,14 @@ export const DEFAULT_SETTINGS: VoiceAgentSettings = {
   supportsScreenShare: false,
   isPreConnectBufferEnabled: true,
 
-  // Visualizer Settings
-  visualizerType: "audio",
-  audioVisualizerVariant: "aries",
-  personaVariant: "virgo",
-  visualizerSize: "lg",
-  visualizerColor: "#1FD5F9",
+  // Unified Persona Settings
+  personaVariant: "aries",
+  personaSize: "lg",
+  personaColor: "#1FD5F9",
+
+  // Chat Flow Customization
+  chatInputStyle: "standard",
+  controlBarLayout: "standard",
 
   // UI Preferences
   showTranscription: true,
@@ -118,38 +162,120 @@ export const DEFAULT_SETTINGS: VoiceAgentSettings = {
   themeMode: "system",
 };
 
+// ============================================================================
+// Reactive Store with useSyncExternalStore
+// ============================================================================
+
 const STORAGE_KEY = "kyso-voice-agent-settings";
+const SETTINGS_CHANGE_EVENT = "kyso-voice-agent-settings-change";
+
+// In-memory cache for SSR and initial hydration
+let cachedSettings: VoiceAgentSettings = DEFAULT_SETTINGS;
 
 /**
- * Load voice agent settings from localStorage
- * Returns default settings if none are stored or on error
+ * Get settings from localStorage (or cache for SSR)
  */
-export function loadSettings(): VoiceAgentSettings {
+function getSettingsSnapshot(): VoiceAgentSettings {
   if (typeof window === "undefined") {
-    return DEFAULT_SETTINGS;
+    return cachedSettings;
   }
 
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      return DEFAULT_SETTINGS;
+    if (stored) {
+      const parsed = JSON.parse(stored) as Partial<VoiceAgentSettings>;
+      cachedSettings = { ...DEFAULT_SETTINGS, ...parsed };
     }
-
-    const parsed = JSON.parse(stored) as Partial<VoiceAgentSettings>;
-
-    // Merge with defaults to handle missing fields from older versions
-    return {
-      ...DEFAULT_SETTINGS,
-      ...parsed,
-    };
-  } catch (error) {
-    console.warn("Failed to load voice agent settings:", error);
-    return DEFAULT_SETTINGS;
+  } catch {
+    // Ignore parse errors, use cached/default
   }
+
+  return cachedSettings;
 }
 
 /**
- * Save voice agent settings to localStorage
+ * Get server snapshot (for SSR hydration)
+ */
+function getServerSnapshot(): VoiceAgentSettings {
+  return DEFAULT_SETTINGS;
+}
+
+/**
+ * Subscribe to settings changes (for useSyncExternalStore)
+ */
+function subscribeToSettings(callback: () => void): () => void {
+  const handleChange = () => {
+    cachedSettings = getSettingsSnapshot();
+    callback();
+  };
+
+  // Listen for storage events (cross-tab sync)
+  window.addEventListener("storage", (e) => {
+    if (e.key === STORAGE_KEY) {
+      handleChange();
+    }
+  });
+
+  // Listen for custom events (same-tab sync)
+  window.addEventListener(SETTINGS_CHANGE_EVENT, handleChange);
+
+  return () => {
+    window.removeEventListener("storage", handleChange);
+    window.removeEventListener(SETTINGS_CHANGE_EVENT, handleChange);
+  };
+}
+
+/**
+ * Reactive hook to get all voice agent settings
+ * Uses useSyncExternalStore for proper React 18 concurrent rendering support
+ */
+export function useVoiceAgentSettings(): VoiceAgentSettings {
+  return useSyncExternalStore(
+    subscribeToSettings,
+    getSettingsSnapshot,
+    getServerSnapshot
+  );
+}
+
+/**
+ * Reactive hook to get a single setting
+ */
+export function useVoiceAgentSetting<K extends keyof VoiceAgentSettings>(
+  key: K
+): VoiceAgentSettings[K] {
+  const settings = useVoiceAgentSettings();
+  return settings[key];
+}
+
+/**
+ * Hook to get settings and a setter function
+ */
+export function useVoiceAgentSettingsState(): [
+  VoiceAgentSettings,
+  (settings: VoiceAgentSettings) => void,
+] {
+  const settings = useVoiceAgentSettings();
+
+  const setSettings = useCallback((newSettings: VoiceAgentSettings) => {
+    saveSettings(newSettings);
+  }, []);
+
+  return [settings, setSettings];
+}
+
+// ============================================================================
+// Non-reactive helpers (for one-time reads or saving)
+// ============================================================================
+
+/**
+ * Load settings from localStorage (non-reactive)
+ */
+export function loadSettings(): VoiceAgentSettings {
+  return getSettingsSnapshot();
+}
+
+/**
+ * Save settings to localStorage and notify all subscribers
  */
 export function saveSettings(settings: VoiceAgentSettings): void {
   if (typeof window === "undefined") {
@@ -158,13 +284,17 @@ export function saveSettings(settings: VoiceAgentSettings): void {
 
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    cachedSettings = settings;
+
+    // Dispatch custom event for same-tab reactivity
+    window.dispatchEvent(new CustomEvent(SETTINGS_CHANGE_EVENT));
   } catch (error) {
     console.warn("Failed to save voice agent settings:", error);
   }
 }
 
 /**
- * Update a single setting and save to localStorage
+ * Update a single setting
  */
 export function updateSetting<K extends keyof VoiceAgentSettings>(
   key: K,
@@ -184,18 +314,22 @@ export function resetSettings(): VoiceAgentSettings {
   return DEFAULT_SETTINGS;
 }
 
+// ============================================================================
+// Display Labels
+// ============================================================================
+
 /**
- * Get display label for visualizer variant
+ * Get display label for persona variant
  */
-export function getVisualizerLabel(
-  variant: AudioVisualizerVariant | PersonaVariant
-): string {
-  const labels: Record<AudioVisualizerVariant | PersonaVariant, string> = {
+export function getPersonaLabel(variant: PersonaVariant): string {
+  const labels: Record<PersonaVariant, string> = {
+    // Audio visualizers
     aries: "Aries (Aura)",
     taurus: "Taurus (Bar)",
     gemini: "Gemini (Radial)",
     cancer: "Cancer (Wave)",
     leo: "Leo (Grid)",
+    // Rive personas
     virgo: "Virgo (Obsidian)",
     libra: "Libra (Mana)",
     scorpio: "Scorpio (Opal)",
@@ -205,3 +339,38 @@ export function getVisualizerLabel(
   };
   return labels[variant];
 }
+
+/**
+ * Get category for persona variant
+ */
+export function getPersonaCategory(variant: PersonaVariant): "audio" | "rive" {
+  return isAudioVisualizer(variant) ? "audio" : "rive";
+}
+
+/**
+ * All persona variants grouped by category
+ */
+export const PERSONA_VARIANTS = {
+  audio: ["aries", "taurus", "gemini", "cancer", "leo"] as PersonaVariant[],
+  rive: [
+    "virgo",
+    "libra",
+    "scorpio",
+    "sagittarius",
+    "capricorn",
+    "aquarius",
+  ] as PersonaVariant[],
+  all: [
+    "aries",
+    "taurus",
+    "gemini",
+    "cancer",
+    "leo",
+    "virgo",
+    "libra",
+    "scorpio",
+    "sagittarius",
+    "capricorn",
+    "aquarius",
+  ] as PersonaVariant[],
+};
