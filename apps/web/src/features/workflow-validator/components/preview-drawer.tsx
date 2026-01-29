@@ -42,7 +42,7 @@ export function PreviewDrawer({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="top" className="max-h-[80vh] w-[calc(100%-4rem)] justify-center left-1/2 -translate-x-1/2 overflow-y-auto rounded-b-3xl">
+      <SheetContent side="top" className="max-h-[80vh] w-[calc(100%-19rem)] justify-center left-1/2 -translate-x-1/2 overflow-y-auto rounded-b-3xl">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             Workflow Preview

@@ -81,9 +81,13 @@ function createParticipantToken(
   };
   at.addGrant(grant);
 
+  at.roomConfig = new RoomConfiguration({
+      agents: [{ metadata: JSON.stringify({ roomName, workflowId: "test_workflow_id"}) }],
+    });
+
   if (agentName) {
     at.roomConfig = new RoomConfiguration({
-      agents: [{ agentName }],
+      agents: [{ agentName, metadata: JSON.stringify({ roomName, workflowId: "test_workflow_id"}) }],
     });
   }
 
