@@ -7,6 +7,9 @@ import { ZoomProvider } from '@/providers/zoom-provider';
 import { UndoRedoProvider } from '@/providers/undo-redo-provider';
 import { MousePositionProvider } from '@/providers/mouse-position-provider';
 import { ModalProvider } from '@/features/modals/modal-provider';
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { queryClient } from "@/utils/orpc";
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -17,7 +20,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               <UndoRedoProvider>
                 <MousePositionProvider>
                   <ModalProvider>   
-                      {children}
+                      <QueryClientProvider client={queryClient}>
+                        {children}
+                        <ReactQueryDevtools />
+                      </QueryClientProvider>
                       <Toaster richColors />
                   </ModalProvider>
                 </MousePositionProvider>
