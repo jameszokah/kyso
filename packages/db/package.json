@@ -22,7 +22,7 @@
     "@kyso/config": "workspace:*"
   },
   "dependencies": {
-    "drizzle-orm": "^0.45.1",
+    "drizzle-orm": "catalog:",
     "@neondatabase/serverless": "^1.0.2",
     "ws": "^8.18.3",
     "dotenv": "catalog:",
