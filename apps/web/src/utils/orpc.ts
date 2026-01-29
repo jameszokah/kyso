@@ -1,3 +1,5 @@
+"use client";
+
 import type { AppRouterClient } from "@kyso/api/routers/index";
 
 import { createORPCClient } from "@orpc/client";
