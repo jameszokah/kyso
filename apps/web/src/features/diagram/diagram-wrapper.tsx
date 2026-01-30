@@ -15,7 +15,8 @@ export function DiagramWrapper({
 }: {
   children: ReactNode;
   initialData?: DiagramModel | null;
-}) {
+  }) {
+  console.log("initialData", initialData);
   useAutoload(initialData);
 
   const isReadOnlyMode = useStore((store) => store.isReadOnlyMode);
