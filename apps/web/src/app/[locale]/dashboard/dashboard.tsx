@@ -40,7 +40,6 @@ import {
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
-import { useCurrentLocale } from "@/locales/client";
 
 interface DashboardProps {
   customerState: ReturnType<typeof authClient.customer.state>;
@@ -48,7 +47,6 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ customerState, session }: DashboardProps) {
-  const locale = useCurrentLocale();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -72,7 +70,7 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
       setIsCreateDialogOpen(false);
       setNewWorkflowName("");
       toast.success("Workflow created!");
-      router.push(`${locale}/workflow/${created.id}` as const);
+      router.push(`/workflow/${created.id}` as const);
     } catch {
       toast.error("Failed to create workflow");
     }
@@ -90,7 +88,7 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
   };
 
   const handleOpenWorkflow = (id: string) => {
-    router.push(`${locale}/workflow/${id}` as const);
+    router.push(`/workflow/${id}` as const);
   };
 
   return (

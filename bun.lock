@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "kyso",
@@ -51,6 +50,7 @@
         "@jsonforms/react": "^3.7.0",
         "@kyso/api": "workspace:*",
         "@kyso/auth": "workspace:*",
+        "@kyso/db": "workspace:*",
         "@kyso/env": "workspace:*",
         "@kyso/icons": "workspace:*",
         "@kyso/types": "workspace:*",
@@ -108,6 +108,7 @@
         "cmdk": "^1.1.1",
         "date-fns": "^4.1.0",
         "dotenv": "catalog:",
+        "drizzle-orm": "catalog:",
         "elkjs": "^0.11.0",
         "embla-carousel-react": "^8.6.0",
         "html-to-image": "^1.11.13",

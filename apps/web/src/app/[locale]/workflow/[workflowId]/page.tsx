@@ -1,22 +1,35 @@
-import { DiagramWrapper } from '@/features/diagram/diagram-wrapper';
-import { DiagramContainer as Diagram } from '@/features/diagram/diagram';
-import VoiceFlow from '@/flows/voice';
+import { Suspense } from "react";
+import { notFound, redirect } from "next/navigation";
+import { getWorkflow, getSession } from "@/lib/workflow-server";
+import WorkflowLoading from "./loading";
+import { WorkflowEditor } from "./workflow-editor";
 
-export default function Home() {
+interface WorkflowPageProps {
+  params: Promise<{
+    workflowId: string;
+    locale: string;
+  }>;
+}
+
+export default async function WorkflowPage({ params }: WorkflowPageProps) {
+  const { workflowId } = await params;
+
+  // Check authentication first
+  const session = await getSession();
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  // Fetch workflow data
+  const workflow = await getWorkflow(workflowId);
+
+  if (!workflow) {
+    notFound();
+  }
+
   return (
-    <div className="">
-       {/* <Cursor /> */}
-                {/* Diagram - render first so it's behind UI elements */}
-                <div className="absolute inset-0 z-0">
-                  <DiagramWrapper>
-                    <Diagram />
-                  </DiagramWrapper>
-                </div>
-
-                <VoiceFlow />
-                {/* <Environment>
-                  <OrnamentBar />
-                </Environment> */}
-    </div>
+    <Suspense fallback={<WorkflowLoading />}>
+      <WorkflowEditor workflow={workflow} />
+    </Suspense>
   );
 }
