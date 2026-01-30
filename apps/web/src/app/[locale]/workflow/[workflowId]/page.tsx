@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import { getWorkflow, getSession } from "@/lib/workflow-server";
-import WorkflowLoading from "./loading";
 import { WorkflowEditor } from "./workflow-editor";
 
 interface WorkflowPageProps {
@@ -28,7 +27,7 @@ export default async function WorkflowPage({ params }: WorkflowPageProps) {
   }
 
   return (
-    <Suspense fallback={<WorkflowLoading />}>
+    <Suspense>
       <WorkflowEditor workflow={workflow} />
     </Suspense>
   );

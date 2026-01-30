@@ -46,6 +46,8 @@ export const getWorkflow = cache(async (workflowId: string) => {
     return workflow;
   } catch {
     // Returns null for NOT_FOUND errors
+
+    console.error("Failed to fetch workflow", session, workflowId);
     return null;
   }
 });
