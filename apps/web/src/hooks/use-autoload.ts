@@ -7,13 +7,19 @@ import type { DiagramModel } from '@kyso/types/common';
 import { localStorageKey } from '@/utils/consts';
 import { useTemplateSelectionModal } from './use-welcome-modal';
 
-export function useAutoload() {
+export function useAutoload(initialData?: DiagramModel | null) {
   const setDiagramModel = useStore((store) => store.setDiagramModel);
   const { openTemplateSelectionModal } = useTemplateSelectionModal();
   const hasLoaded = useRef(false);
 
   useEffect(() => {
     if (hasLoaded.current) return;
+
+    if (initialData) {
+      setDiagramModel(initialData, false);
+      hasLoaded.current = true;
+      return;
+    }
 
     const stringifiedModel = localStorage.getItem(localStorageKey);
 

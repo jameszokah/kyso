@@ -43,7 +43,7 @@ import { authClient } from "@/lib/auth-client";
 import type { Route } from "next";
 
 interface DashboardProps {
-  customerState: ReturnType<typeof authClient.customer.state>;
+  customerState: Awaited<ReturnType<typeof authClient.customer.state>>;
   session: typeof authClient.$Infer.Session;
 }
 

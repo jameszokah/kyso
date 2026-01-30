@@ -9,6 +9,7 @@ interface WorkflowEditorProps {
     id: string;
     name: string;
     description: string | null;
+    canvasData: unknown;
   };
 }
 
@@ -17,7 +18,7 @@ export function WorkflowEditor({ workflow }: WorkflowEditorProps) {
     <div className="relative h-screen w-full">
       {/* Diagram - render first so it's behind UI elements */}
       <div className="absolute inset-0 z-0">
-        <DiagramWrapper>
+        <DiagramWrapper initialData={workflow.canvasData as any}>
           <Diagram />
         </DiagramWrapper>
       </div>

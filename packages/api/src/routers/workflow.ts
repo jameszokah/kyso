@@ -107,7 +107,7 @@ export const workflowRouter = {
         })
         .returning();
 
-      console.info(`[workflow.create] Created workflow ${created.id}`);
+      console.info(`[workflow.create] Created workflow ${created?.id}`);
 
       return created;
     }),
@@ -123,17 +123,17 @@ export const workflowRouter = {
       console.info(`[workflow.list] User ${userId} listing workflows`);
 
       const workflows = await db.query.workflow.findMany({
-        where: and(eq(workflow.userId, userId), eq(workflow.isDeleted, false)),
+        where: and(eq(workflow?.userId, userId), eq(workflow?.isDeleted, false)),
         limit: input.limit,
         offset: input.offset,
-        orderBy: [desc(workflow.updatedAt)],
+        orderBy: [desc(workflow?.updatedAt)],
       });
 
       // Get total count for pagination
       const [{ count }] = await db
         .select({ count: sql<number>`count(*)` })
         .from(workflow)
-        .where(and(eq(workflow.userId, userId), eq(workflow.isDeleted, false)));
+        .where(and(eq(workflow?.userId, userId), eq(workflow?.isDeleted, false)));
 
       return {
         workflows,

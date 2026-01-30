@@ -5,11 +5,11 @@ import { redirect } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
 import Dashboard from "./dashboard";
+import { getSession } from "@/lib/workflow-server";
 
 export default async function DashboardPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+    // Check authentication first
+  const session = await getSession();
 
   if (!session?.user) {
     redirect("/login");

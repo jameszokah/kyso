@@ -1,8 +1,17 @@
+import { client } from "@/utils/orpc";
+import type { AppRouterClient } from "@kyso/api/routers/index";
 import { auth } from "@kyso/auth";
-import { db, workflow, workflowRelease } from "@kyso/db";
-import { and, desc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { cache } from "react";
+
+// =============================================================================
+// Server-Side oRPC Client
+// Creates an oRPC client that works on the server with proper headers
+// =============================================================================
+
+const getServerClient = cache(async (): Promise<AppRouterClient> => {
+  return client;
+});
 
 // =============================================================================
 // Cached Server-Side Data Fetching
@@ -21,8 +30,8 @@ export const getSession = cache(async () => {
 });
 
 /**
- * Get a workflow by ID (cached per request)
- * Validates ownership - returns null if not found or not owned
+ * Get a workflow by ID using oRPC (cached per request)
+ * Returns null if not found or not owned
  */
 export const getWorkflow = cache(async (workflowId: string) => {
   const session = await getSession();
@@ -31,40 +40,37 @@ export const getWorkflow = cache(async (workflowId: string) => {
     return null;
   }
 
-  const found = await db.query.workflow.findFirst({
-    where: and(
-      eq(workflow.id, workflowId),
-      eq(workflow.userId, session.user.id),
-      eq(workflow.isDeleted, false)
-    ),
-  });
-
-  return found ?? null;
+  try {
+    const client = await getServerClient();
+    const workflow = await client.workflow.getById({ id: workflowId });
+    return workflow;
+  } catch {
+    // Returns null for NOT_FOUND errors
+    return null;
+  }
 });
 
 /**
- * Get all workflows for current user (cached per request)
+ * Get all workflows for current user using oRPC (cached per request)
  */
 export const getWorkflows = cache(async () => {
   const session = await getSession();
 
   if (!session?.user?.id) {
-    return [];
+    return { workflows: [], total: 0 };
   }
 
-  const workflows = await db.query.workflow.findMany({
-    where: and(
-      eq(workflow.userId, session.user.id),
-      eq(workflow.isDeleted, false)
-    ),
-    orderBy: [desc(workflow.updatedAt)],
-  });
-
-  return workflows;
+  try {
+    const client = await getServerClient();
+    const result = await client.workflow.list({ limit: 50, offset: 0 });
+    return result;
+  } catch {
+    return { workflows: [], total: 0 };
+  }
 });
 
 /**
- * Get releases for a workflow (cached per request)
+ * Get releases for a workflow using oRPC (cached per request)
  */
 export const getWorkflowReleases = cache(async (workflowId: string) => {
   const session = await getSession();
@@ -73,16 +79,11 @@ export const getWorkflowReleases = cache(async (workflowId: string) => {
     return [];
   }
 
-  // Verify ownership first
-  const wf = await getWorkflow(workflowId);
-  if (!wf) {
+  try {
+    const client = await getServerClient();
+    const releases = await client.workflow.listReleases({ id: workflowId });
+    return releases;
+  } catch {
     return [];
   }
-
-  const releases = await db.query.workflowRelease.findMany({
-    where: eq(workflowRelease.workflowId, workflowId),
-    orderBy: [desc(workflowRelease.releaseNumber)],
-  });
-
-  return releases;
 });
