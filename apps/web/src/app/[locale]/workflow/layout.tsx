@@ -13,7 +13,7 @@ export default function WorkflowLayout({children}: {children: React.ReactNode}) 
                 style={{
                   '--sidebar-width': '16rem',
                   '--sidebar-width-mobile': '16rem',
-                }}
+                } as React.CSSProperties}
               >
                 {children}
                
