@@ -13,8 +13,10 @@ import { useElkLayout } from '@/hooks/use-elk-layout/use-elk-layout';
 import { validateWorkflow, extractWorkflowConfig, type ValidationResult } from '../workflow-validator/workflow-logic';
 import { PreviewDrawer } from '../workflow-validator/components/preview-drawer';
 import type { WorkflowConfig } from '@/utils/state-machine-types';
+import { useUpdateWorkflow } from '@/hooks/workflow-queries';
+import { toast } from 'sonner';
 
-export function AppBarContainer() {
+export function AppBarContainer({ workflowId }: { workflowId: string }) {
   const nodes = useStore((state) => state.nodes);
   const edges = useStore((state) => state.edges);
 
@@ -38,6 +40,8 @@ export function AppBarContainer() {
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
   const [previewConfig, setPreviewConfig] = useState<WorkflowConfig | null>(null);
 
+  const updateMutation = useUpdateWorkflow();
+  const reactFlowInstance = useStore((state) => state.reactFlowInstance);
 
   const layout = useElkLayout();
 
@@ -67,8 +71,22 @@ export function AppBarContainer() {
     };
   }, []);
 
-  function handleSave() {
-    saveDiagram(true);
+  async function handleSave() {
+    if (!reactFlowInstance) return;
+
+    try {
+      const flow = reactFlowInstance.toObject();
+      
+      await updateMutation.mutateAsync({
+        id: workflowId,
+        canvasData: flow,
+      });
+      
+      toast.success('Workflow saved successfully');
+    } catch (error) {
+      console.error('Failed to save workflow', error);
+      toast.error('Failed to save workflow');
+    }
   }
 
   function handleChangeReadonlyMode(value: boolean) {
@@ -155,7 +173,11 @@ export function AppBarContainer() {
         onPreview={handlePreview}
       />
 
-      <ProjectSelection documentName={documentName} isReadOnlyMode={isReadOnlyMode} />
+      <ProjectSelection 
+        workflowId={workflowId} 
+        documentName={documentName} 
+        isReadOnlyMode={isReadOnlyMode} 
+      />
       <ImportConfirmationDialog
         isOpen={isImportDialogOpen}
         onConfirm={handleConfirmImport}
