@@ -1,4 +1,3 @@
-'use client';
 import { AppBarContainer } from '../features/app-bar/app-bar-container';
 import { AppLoaderContainer } from '../features/app-loader/app-loader-container';
 import { PaletteSidebar } from '../features/palette/palette-container';
