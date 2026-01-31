@@ -27,8 +27,6 @@ export default async function WorkflowPage({ params }: WorkflowPageProps) {
   }
 
   return (
-    <Suspense>
-      <WorkflowEditor workflow={workflow} />
-    </Suspense>
+    <WorkflowEditor workflow={workflow} />
   );
 }
