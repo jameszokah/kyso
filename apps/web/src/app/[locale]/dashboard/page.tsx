@@ -23,8 +23,6 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl text-bold">Dashboard</h1>
-      <p className="text-lg">Welcome {session.user.name}</p>
       <Dashboard session={session} customerState={customerState} />
     </div>
   );

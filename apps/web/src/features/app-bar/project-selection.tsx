@@ -1,5 +1,4 @@
-'use client';
-
+import Link from 'next/link';
 import { useMemo, useState, useEffect, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { Cards, CaretDown, Spinner } from '@phosphor-icons/react';
+import { Cards, CaretDown, Spinner, ArrowLeft } from '@phosphor-icons/react';
 import useStore from '@/store/store';
 import { useI18n } from '@/locales/client';
 import { useUpdateWorkflow } from '@/hooks/workflow-queries';
@@ -107,7 +106,17 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
         // allow clicks to focus / edit without interfering with parent handlers
         onPointerDown={(event) => event.stopPropagation()}
       >
-        <span className="text-sm text-muted-foreground whitespace-nowrap">{folderName} /</span>
+        <Link 
+          href="/dashboard"
+          className="group flex items-center gap-1 text-sm text-muted-foreground whitespace-nowrap hover:text-foreground transition-colors"
+        >
+          <ArrowLeft 
+            weight="bold" 
+            className="w-3 h-3 transition-all duration-300 transform translate-x-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-0" 
+          />
+          <span className="transition-transform duration-300 group-hover:translate-x-1">Workflows</span>
+          <span className="text-muted-foreground/50 ml-1">/</span>
+        </Link>
 
         {editName && !isReadOnlyMode ? (
           <Input
