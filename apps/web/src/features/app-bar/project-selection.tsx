@@ -37,7 +37,7 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
   const { data: session } = authClient.useSession();
   const updateMutation = useUpdateWorkflow();
 
-  const folderName = session?.user?.name || session?.user?.email?.split('@')[0] || t('header.folderName');
+  // const folderName = session?.user?.name || session?.user?.email?.split('@')[0] || t('header.folderName');
 
   // Sync local name with prop when not editing
   useEffect(() => {
@@ -147,36 +147,6 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
           </button>
         )}
 
-        <div className="relative">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label={t('tooltips.pickTheProject') as string}
-                className="h-8 w-8"
-              >
-                <CaretDown weight="thin" />
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align="end" sideOffset={6} className="min-w-[200px]">
-              {items.map((it, index) => (
-                <DropdownMenuItem
-                  key={`${it.label}-${index}`}
-                  onSelect={(event) => {
-                    event.preventDefault();
-                    it.onClick();
-                  }}
-                  className="flex items-center gap-2"
-                >
-                  {it.icon}
-                  <span>{it.label}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </div>
 
       <div className="absolute right-6 top-7 transform -translate-y-1/2 w-[calc(100%-75%)] pointer-events-auto">
