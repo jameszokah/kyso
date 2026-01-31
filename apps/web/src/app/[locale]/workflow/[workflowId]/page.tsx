@@ -20,13 +20,13 @@ export default async function WorkflowPage({ params }: WorkflowPageProps) {
   }
 
   // Fetch workflow data
-  const workflow = await getWorkflow(workflowId);
+  // const workflow = await getWorkflow(workflowId);
 
-  console.log(workflow, 'workflow');
+  // console.log(workflow, 'workflow');
 
-  if (!workflow) {
-    notFound();
-  }
+  // if (!workflow) {
+  //   notFound();
+  // }
 
   return (
     // <WorkflowEditor workflow={workflow} />
