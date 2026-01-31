@@ -10,9 +10,9 @@ import {
   Rocket,
   RotateCcw,
   CheckIcon,
-  CopyIcon,
-  HandPointingIcon,
+  CopyIcon
 } from "lucide-react";
+import { HandPointingIcon } from '@phosphor-icons/react';
 import { useState, useMemo, useCallback } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,7 @@ import type { WorkflowConfig } from "@/utils/state-machine-types";
 import EmbedPopupAgentClient from "@/components/voice-ui/embed-popup/agent-client";
 import { APP_CONFIG_DEFAULTS } from "@/app/app-config";
 import { getSandboxId } from "@/lib/env";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 interface DeployDialogProps {
   workflowId: string;
@@ -142,23 +142,6 @@ export function DeployDialog({
     
     // Inject workflowId
     config.workflowId = workflowId;
-    
-    // Merge settings from extractedConfig if available
-    if (extractedConfig?.settings) {
-      // Map extracted settings to AppConfig properties
-      if (typeof extractedConfig.settings.audio?.voice_enabled !== 'undefined') {
-         // This is just an example assuming there is a voice_enabled flag, 
-         // adjust based on actual WorkflowConfig type
-      }
-      
-      // Specifically for voice agent features:
-      // Note: You need to ensure WorkflowConfig type has these fields or map them correctly
-      // For now we use defaults or assume they might be in extractedConfig.settings
-      
-      // Example mapping (adjust to match your real settings schema)
-      // config.supportsChatInput = extractedConfig.settings.chat_enabled ?? true;
-      // config.supportsVideoInput = extractedConfig.settings.video_enabled ?? true;
-    }
     
     return config;
   }, [workflowId, extractedConfig]);

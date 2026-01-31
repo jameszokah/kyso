@@ -1,12 +1,12 @@
 import useStore from '@/store/store';
 
-import { NodeProps, Node } from '@xyflow/react';
-import { NodeData } from '@kyso/types/node-data';
+import type { NodeProps, Node } from '@xyflow/react';
+import type { NodeData } from '@kyso/types/node-data';
 import { memo, useMemo } from 'react';
 
 import { AiAgentNodeTemplate } from './ai-agent-node-template/ai-agent-node-template';
-import { AiAgentNodeSchema } from '../../../data/nodes/ai-agent/schema';
-import { NodeDataProperties } from '../../json-form/types/default-properties';
+import type { AiAgentNodeSchema } from '../../../data/nodes/ai-agent/schema';
+import type { NodeDataProperties } from '../../json-form/types/default-properties';
 import { chatModelOptions, memoryOptions } from '../../../data/nodes/ai-agent/select-options';
 
 type Props = NodeProps<Node<NodeData<NodeDataProperties<AiAgentNodeSchema>>>>;

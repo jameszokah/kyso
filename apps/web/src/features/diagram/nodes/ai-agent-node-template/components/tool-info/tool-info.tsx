@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import { PlusCircle } from '@phosphor-icons/react';
 
 import { cn } from '@/lib/utils';
@@ -7,7 +7,7 @@ import { IconPlaceholder } from '../icon-placeholder/icon-placeholder';
 
 export function ToolInfo({ children }: PropsWithChildren) {
   return (
-    <NodeInfoWrapper label="AI Agent Tools">
+    <NodeInfoWrapper label="Voice Agent Tools">
       {/* Tools list */}
       <div
         className={cn(
