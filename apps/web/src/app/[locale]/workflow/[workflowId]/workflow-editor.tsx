@@ -1,5 +1,8 @@
 "use client";
 
+import type { DiagramModel, LayoutDirection } from '@kyso/types/common';
+import type { ReactFlowJsonObject } from '@xyflow/react';
+import type { WorkflowBuilderEdge, WorkflowBuilderNode } from "@kyso/types/node-data";
 import { DiagramWrapper } from "@/features/diagram/diagram-wrapper";
 import { DiagramContainer as Diagram } from "@/features/diagram/diagram";
 import VoiceFlow from "@/flows/voice";
@@ -12,10 +15,6 @@ interface WorkflowEditorProps {
     canvasData: unknown;
   };
 }
-
-import type { DiagramModel, LayoutDirection } from '@kyso/types/common';
-import type { ReactFlowJsonObject } from '@xyflow/react';
-import type { WorkflowBuilderEdge, WorkflowBuilderNode } from "@kyso/types/node-data";
 
 export function WorkflowEditor({ workflow }: WorkflowEditorProps) {
   // Construct the DiagramModel structure expected by the store
