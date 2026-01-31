@@ -32,6 +32,7 @@ export async function POST(req: Request) {
     // Parse agent configuration from request body
     const body = await req.json();
     const agentName: string = body?.room_config?.agents?.[0]?.agent_name;
+    const workflowId: string = body?.workflowId;
 
     // Generate participant token
     const participantName = 'user';
@@ -41,7 +42,8 @@ export async function POST(req: Request) {
     const participantToken = await createParticipantToken(
       { identity: participantIdentity, name: participantName },
       roomName,
-      agentName
+      agentName,
+      workflowId
     );
 
     // Return connection details
@@ -66,7 +68,8 @@ export async function POST(req: Request) {
 function createParticipantToken(
   userInfo: AccessTokenOptions,
   roomName: string,
-  agentName?: string
+  agentName?: string,
+  workflowId?: string
 ): Promise<string> {
   const at = new AccessToken(API_KEY, API_SECRET, {
     ...userInfo,
@@ -81,13 +84,18 @@ function createParticipantToken(
   };
   at.addGrant(grant);
 
+  const metadata = {
+    roomName,
+    workflowId
+  };
+
   at.roomConfig = new RoomConfiguration({
-      agents: [{ metadata: JSON.stringify({ roomName, workflowId: "test_workflow_id"}) }],
+      agents: [{ metadata: JSON.stringify(metadata) }],
     });
 
   if (agentName) {
     at.roomConfig = new RoomConfiguration({
-      agents: [{ agentName, metadata: JSON.stringify({ roomName, workflowId: "test_workflow_id"}) }],
+      agents: [{ agentName, metadata: JSON.stringify(metadata) }],
     });
   }
 

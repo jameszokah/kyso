@@ -38,6 +38,7 @@ export default function useConnectionDetails(appConfig: AppConfig) {
                 agents: [{ agent_name: appConfig.agentName }],
               }
             : undefined,
+          workflowId: appConfig.workflowId,
         }),
       });
       data = await res.json();

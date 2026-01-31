@@ -66,7 +66,7 @@ export function DeployDialog({
   // Generate embed URLs
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
   const popupUrl = `${baseUrl}/embed/${workflowId}/popup`;
-  const iframeUrl = `${baseUrl}/embed/${workflowId}/iframe`;
+  const iframeUrl = `${baseUrl}/embed/${workflowId}`;
   const iframeCode = `<iframe src="${iframeUrl}" width="400" height="600" frameborder="0" allow="microphone"></iframe>`;
 
   const handleCopy = async (text: string, type: string) => {
