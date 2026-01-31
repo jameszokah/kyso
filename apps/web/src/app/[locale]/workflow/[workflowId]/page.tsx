@@ -1,4 +1,32 @@
-export default function WorkflowPage() {
-  console.log('[WorkflowPage DEBUG] Rendering simple page');
-  return <div>Workflow Page Debug Mode</div>;
+import { Suspense } from "react";
+import { notFound, redirect } from "next/navigation";
+import { getWorkflow, getSession } from "@/lib/workflow-server";
+import { WorkflowEditor } from "./workflow-editor";
+
+interface WorkflowPageProps {
+  params: Promise<{
+    workflowId: string;
+    locale: string;
+  }>;
+}
+
+export default async function WorkflowPage({ params }: WorkflowPageProps) {
+  const { workflowId } = await params;
+
+  // Check authentication first
+  const session = await getSession();
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  // Fetch workflow data
+  const workflow = await getWorkflow(workflowId);
+
+  if (!workflow) {
+    notFound();
+  }
+
+  return (
+    <WorkflowEditor workflow={workflow} />
+  );
 }

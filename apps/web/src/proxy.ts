@@ -11,7 +11,12 @@ export function proxy(request: NextRequest) {
         return NextResponse.next();
     }
 
-    return I18nMiddleware(request);
+    // Debug logging
+    console.log('[Middleware] Processing:', request.nextUrl.pathname);
+    
+    const response = I18nMiddleware(request);
+    console.log('[Middleware] Response status:', response.status);
+    return response;
 }
 
 export const config = {
