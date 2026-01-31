@@ -14,10 +14,10 @@ export default async function WorkflowPage({ params }: WorkflowPageProps) {
   const { workflowId } = await params;
 
   // Check authentication first
-  const session = await getSession();
-  if (!session?.user) {
-    redirect("/login");
-  }
+  // const session = await getSession();
+  // if (!session?.user) {
+  //   redirect("/login");
+  // }
 
   // Fetch workflow data
   // const workflow = await getWorkflow(workflowId);
