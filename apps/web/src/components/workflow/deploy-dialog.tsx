@@ -9,8 +9,11 @@ import {
   MessageSquare,
   Rocket,
   RotateCcw,
+  CheckIcon,
+  CopyIcon,
+  HandPointingIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +37,10 @@ import {
 } from "@/hooks/workflow-queries";
 import { cn } from "@/lib/utils";
 import type { WorkflowConfig } from "@/utils/state-machine-types";
+import EmbedPopupAgentClient from "@/components/voice-ui/embed-popup/agent-client";
+import { APP_CONFIG_DEFAULTS } from "@/app/app-config";
+import { getSandboxId } from "@/lib/env";
+import { motion } from "framer-motion";
 
 interface DeployDialogProps {
   workflowId: string;
@@ -52,7 +59,17 @@ export function DeployDialog({
 }: DeployDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [releaseMessage, setReleaseMessage] = useState("");
-  const [copiedType, setCopiedType] = useState<string | null>(null);
+  const [previewTab, setPreviewTab] = useState<"iframe" | "popup">("iframe");
+  const [copied, setCopied] = useState(false);
+
+  // Copy helper similar to welcome.tsx
+  const copyEmbedCode = useCallback((embedCode: string) => {
+    navigator.clipboard.writeText(embedCode);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  }, []);
 
   const { data: releases, isLoading: releasesLoading } = useWorkflowReleases(
     isOpen ? workflowId : undefined
@@ -62,20 +79,21 @@ export function DeployDialog({
   const rollbackMutation = useRollbackWorkflow();
 
   const latestRelease = releases?.[0];
+  const hasReleases = releases && releases.length > 0;
 
   // Generate embed URLs
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
-  const popupUrl = `${baseUrl}/embed/${workflowId}/popup`;
-  const iframeUrl = `${baseUrl}/embed/${workflowId}`;
-  const iframeCode = `<iframe src="${iframeUrl}" width="400" height="600" frameborder="0" allow="microphone"></iframe>`;
+  const popupUrl = `${baseUrl}/embed-popup.js`;
+  const iframeEmbedUrl = `${baseUrl}/embed/${workflowId}`;
+  const embedSandboxId = useMemo(() => typeof window !== "undefined" ? getSandboxId(window.location.origin) : "", []);
+  
+  const popupEmbedCode = `<script\n  src="${popupUrl}"\n  data-lk-sandbox-id="${embedSandboxId}"\n  data-workflow-id="${workflowId}"\n></script>`;
+  
+  const iframeEmbedCode = useMemo(() => {
+    return `<iframe\n  src="${iframeEmbedUrl}"\n  style="width: 320px; height: 64px;"\n></iframe>`;
+  }, [iframeEmbedUrl]);
 
-  const handleCopy = async (text: string, type: string) => {
-    await navigator.clipboard.writeText(text);
-    setCopiedType(type);
-    toast.success("Copied to clipboard");
-    setTimeout(() => setCopiedType(null), 2000);
-  };
-
+  // Handle Deployment
   const handleDeploy = async () => {
     if (!extractedConfig) {
       toast.error("Cannot deploy: workflow configuration is invalid");
@@ -102,6 +120,7 @@ export function DeployDialog({
     }
   };
 
+  // Handle Rollback
   const handleRollback = async (releaseId: string, releaseNumber: number) => {
     try {
       await rollbackMutation.mutateAsync({
@@ -116,7 +135,33 @@ export function DeployDialog({
     }
   };
 
-  const hasReleases = releases && releases.length > 0;
+  // Construct config for preview from the *current* extractedConfig
+  const previewAppConfig = useMemo(() => {
+    // Start with defaults
+    const config = { ...APP_CONFIG_DEFAULTS };
+    
+    // Inject workflowId
+    config.workflowId = workflowId;
+    
+    // Merge settings from extractedConfig if available
+    if (extractedConfig?.settings) {
+      // Map extracted settings to AppConfig properties
+      if (typeof extractedConfig.settings.audio?.voice_enabled !== 'undefined') {
+         // This is just an example assuming there is a voice_enabled flag, 
+         // adjust based on actual WorkflowConfig type
+      }
+      
+      // Specifically for voice agent features:
+      // Note: You need to ensure WorkflowConfig type has these fields or map them correctly
+      // For now we use defaults or assume they might be in extractedConfig.settings
+      
+      // Example mapping (adjust to match your real settings schema)
+      // config.supportsChatInput = extractedConfig.settings.chat_enabled ?? true;
+      // config.supportsVideoInput = extractedConfig.settings.video_enabled ?? true;
+    }
+    
+    return config;
+  }, [workflowId, extractedConfig]);
 
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
@@ -126,7 +171,7 @@ export function DeployDialog({
           Deploy
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-xl">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Rocket className="h-5 w-5" />
@@ -145,7 +190,7 @@ export function DeployDialog({
             </TabsTrigger>
             <TabsTrigger className="flex-1" value="embed">
               <Code className="mr-2 h-4 w-4" />
-              Embed
+              Embed & Preview
             </TabsTrigger>
             {hasReleases && (
               <TabsTrigger className="flex-1" value="history">
@@ -205,95 +250,138 @@ export function DeployDialog({
             )}
           </TabsContent>
 
-          {/* Embed Tab */}
+          {/* Embed & Preview Tab */}
           <TabsContent className="mt-4 space-y-4" value="embed">
             {hasReleases ? (
-              <>
-                <div className="space-y-2">
-                  <Label>Popup URL</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      className="font-mono text-xs"
-                      readOnly
-                      value={popupUrl}
-                    />
-                    <Button
-                      onClick={() => handleCopy(popupUrl, "popup")}
-                      size="icon"
-                      variant="outline"
-                    >
-                      {copiedType === "popup" ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
+              <div className="space-y-6">
+                 {/* Variant Selection similar to welcome.tsx */}
+                 <div>
+                    <div className="text-sm font-semibold mb-1">Select a variant</div>
+                    <div className="border border-border rounded-lg p-1 bg-muted/20">
+                      <div className="relative flex gap-2">
+                        <motion.div
+                          layout="position"
+                          layoutId="tab-indicator"
+                          initial={false}
+                          className="absolute top-0 h-full w-1/2 rounded-md bg-background shadow-sm border border-border"
+                          animate={previewTab === 'iframe' ? { left: 0 } : { left: '50%' }}
+                          transition={{ duration: 0.2 }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setPreviewTab('iframe')}
+                          className={cn(
+                            'relative z-10 flex-1 py-1.5 text-sm font-mono font-medium transition-colors text-center',
+                            previewTab === 'iframe' ? 'text-foreground font-bold' : 'text-muted-foreground'
+                          )}
+                        >
+                          iFrame
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setPreviewTab('popup')}
+                          className={cn(
+                            'relative z-10 flex-1 py-1.5 text-sm font-mono font-medium transition-colors text-center',
+                            previewTab === 'popup' ? 'text-foreground font-bold' : 'text-muted-foreground'
+                          )}
+                        >
+                          Popup
+                        </button>
+                      </div>
+                    </div>
+                 </div>
 
-                <div className="space-y-2">
-                  <Label>iFrame URL</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      className="font-mono text-xs"
-                      readOnly
-                      value={iframeUrl}
-                    />
-                    <Button
-                      onClick={() => handleCopy(iframeUrl, "iframe")}
-                      size="icon"
-                      variant="outline"
-                    >
-                      {copiedType === "iframe" ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
+                 {/* Iframe View */}
+                 {previewTab === 'iframe' && (
+                   <div className="space-y-4">
+                     <div className="space-y-2">
+                       <Label className="text-sm font-semibold">Embed Code</Label>
+                        <div className="relative">
+                          <pre className="border bg-muted/30 scrollbar-custom relative overflow-auto rounded-md px-4 py-3 text-xs font-mono">
+                            <code className="font-mono">
+                              {iframeEmbedCode.split(iframeEmbedUrl).map((stringPart, index) => {
+                                if (index === 0) {
+                                  return <span key={index}>{stringPart}</span>;
+                                }
+                                return (
+                                  <span key={index}>
+                                    <a
+                                      href={iframeEmbedUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-primary underline"
+                                    >
+                                      {iframeEmbedUrl}
+                                    </a>
+                                    {stringPart}
+                                  </span>
+                                );
+                              })}
+                            </code>
+                          </pre>
+                          <div className="absolute top-2 right-2">
+                            <button
+                              onClick={() => copyEmbedCode(iframeEmbedCode)}
+                              className="cursor-pointer p-2 opacity-50 transition-opacity hover:opacity-100"
+                            >
+                               {copied ? <CheckIcon className="h-4 w-4 text-green-500" /> : <CopyIcon className="h-4 w-4" />}
+                            </button>
+                          </div>
+                        </div>
+                     </div>
+                     
+                     <div className="flex justify-center border rounded-lg p-8 bg-muted/10">
+                       <iframe
+                         src={iframeEmbedUrl}
+                         style={{ width: 320, height: 64 }}
+                         className="shadow-lg rounded-full"
+                         allow="microphone"
+                       />
+                     </div>
+                   </div>
+                 )}
 
-                <div className="space-y-2">
-                  <Label>iFrame Embed Code</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      className="font-mono text-xs"
-                      readOnly
-                      value={iframeCode}
-                    />
-                    <Button
-                      onClick={() => handleCopy(iframeCode, "code")}
-                      size="icon"
-                      variant="outline"
-                    >
-                      {copiedType === "code" ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
+                 {/* Popup View */}
+                 {previewTab === 'popup' && (
+                   <div className="space-y-4">
+                      <div className="space-y-2">
+                       <Label className="text-sm font-semibold">Embed Code</Label>
+                        <div className="relative">
+                          <pre className="border bg-muted/30 scrollbar-custom relative overflow-auto rounded-md px-4 py-3 text-xs font-mono">
+                            <code className="font-mono">{popupEmbedCode}</code>
+                          </pre>
+                           <div className="absolute top-2 right-2">
+                            <button
+                              onClick={() => copyEmbedCode(popupEmbedCode)}
+                              className="cursor-pointer p-2 opacity-50 transition-opacity hover:opacity-100"
+                            >
+                               {copied ? <CheckIcon className="h-4 w-4 text-green-500" /> : <CopyIcon className="h-4 w-4" />}
+                            </button>
+                          </div>
+                        </div>
+                     </div>
 
-                <Separator />
+                     <div className="flex justify-center pt-8">
+                       <div className="text-primary flex gap-1 items-center">
+                         <p className="text-sm">
+                           The popup button should appear in the bottom right corner of the screen
+                         </p>
+                         <HandPointingIcon
+                           size={16}
+                           className="rotate-[145deg] animate-bounce"
+                         />
+                       </div>
+                     </div>
+                     
+                     {/* This renders the popup client specifically for preview purposes within the dialog context context 
+                         NOTE: Since this uses fixed positioning (bottom right), it will appear on the user's screen outside the dialog. 
+                         This is the intended behavior as per welcome.tsx demonstration.
+                     */}
+                     <EmbedPopupAgentClient appConfig={previewAppConfig} />
+                   </div>
+                 )}
 
-                <div className="flex gap-2">
-                  <Button
-                    className="flex-1"
-                    onClick={() => window.open(popupUrl, "_blank")}
-                    variant="outline"
-                  >
-                    Preview Popup
-                  </Button>
-                  <Button
-                    className="flex-1"
-                    onClick={() => window.open(iframeUrl, "_blank")}
-                    variant="outline"
-                  >
-                    Preview iFrame
-                  </Button>
-                </div>
-              </>
+              </div>
             ) : (
               <div className="rounded-lg border border-dashed bg-muted/30 p-6 text-center">
                 <Rocket className="mx-auto h-8 w-8 text-muted-foreground/50" />

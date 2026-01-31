@@ -5,6 +5,7 @@ import EmbedFixedAgentClient from './agent-client';
 
 const scriptTag = document.querySelector<HTMLScriptElement>('script[data-lk-sandbox-id]');
 const sandboxIdAttribute = scriptTag?.dataset.lkSandboxId;
+const workflowIdAttribute = scriptTag?.dataset.workflowId;
 
 if (sandboxIdAttribute) {
   const wrapper = document.createElement('div');
@@ -25,6 +26,11 @@ if (sandboxIdAttribute) {
 
   getAppConfig(window.location.origin, sandboxIdAttribute)
     .then((appConfig) => {
+      // Inject workflowId if present
+      if (workflowIdAttribute) {
+        appConfig.workflowId = workflowIdAttribute;
+      }
+      
       const root = ReactDOM.createRoot(reactRoot);
       root.render(<EmbedFixedAgentClient appConfig={appConfig} />);
     })
