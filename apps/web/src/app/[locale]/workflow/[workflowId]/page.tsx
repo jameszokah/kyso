@@ -11,7 +11,7 @@ interface WorkflowPageProps {
 }
 
 export default async function WorkflowPage({ params }: WorkflowPageProps) {
-  const { workflowId } = await params;
+  // const { workflowId } = await params;
 
   // Check authentication first
   // const session = await getSession();
