@@ -150,11 +150,11 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
       </div>
 
       <div className="absolute right-6 top-7 transform -translate-y-1/2 w-[calc(100%-75%)] pointer-events-auto">
-        {/* <DeployDialog 
+        <DeployDialog 
           workflowId={workflowId}
           workflowName={documentName}
           extractedConfig={extractedConfig}
-        /> */}
+        />
       </div>
     </header>
   );
