@@ -27,6 +27,7 @@
     "ws": "^8.18.3",
     "dotenv": "catalog:",
     "zod": "catalog:",
-    "@kyso/env": "workspace:*"
+    "@kyso/env": "workspace:*",
+    "@kyso/types": "workspace:*"
   }
 }

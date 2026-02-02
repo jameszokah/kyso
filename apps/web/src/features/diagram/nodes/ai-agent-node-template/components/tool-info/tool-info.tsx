@@ -7,7 +7,7 @@ import { IconPlaceholder } from '../icon-placeholder/icon-placeholder';
 
 export function ToolInfo({ children }: PropsWithChildren) {
   return (
-    <NodeInfoWrapper label="Voice Agent Tools">
+    <NodeInfoWrapper label="AI Agent Tools">
       {/* Tools list */}
       <div
         className={cn(

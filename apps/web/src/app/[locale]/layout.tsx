@@ -34,7 +34,7 @@ export default async function RootLayout({
 }>) {
   const { locale } = await params;
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <I18nProviderClient locale={locale}>
           <Providers>

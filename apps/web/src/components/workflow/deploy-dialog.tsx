@@ -351,7 +351,7 @@ export function DeployDialog({
                          </p>
                          <HandPointingIcon
                            size={16}
-                           className="rotate-[145deg] animate-bounce"
+                           className="r`otate-[145deg] animate-bounce"
                          />
                        </div>
                      </div>

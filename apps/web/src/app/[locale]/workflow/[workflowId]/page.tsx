@@ -3,15 +3,10 @@ import { notFound, redirect } from "next/navigation";
 import { getWorkflow, getSession } from "@/lib/workflow-server";
 import { WorkflowEditor } from "./workflow-editor";
 
-interface WorkflowPageProps {
-  params: Promise<{
-    workflowId: string;
-    locale: string;
-  }>;
-}
 
-export default async function WorkflowPage({ params }: WorkflowPageProps) {
+export default async function WorkflowPage({ params }: PageProps<'/[locale]/workflow/[workflowId]'>) {
   const { workflowId } = await params;
+
 
   // Check authentication first
   const session = await getSession();
@@ -19,16 +14,17 @@ export default async function WorkflowPage({ params }: WorkflowPageProps) {
     redirect("/login");
   }
 
+
   // Fetch workflow data
   const workflow = await getWorkflow(workflowId);
+
+  console.log(workflow, 'workflow');
 
   if (!workflow) {
     notFound();
   }
 
   return (
-    <Suspense>
-      <WorkflowEditor workflow={workflow} />
-    </Suspense>
+    <WorkflowEditor workflow={workflow} />
   );
 }

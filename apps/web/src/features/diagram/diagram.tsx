@@ -180,7 +180,6 @@ function DiagramContainerComponent({ edgeTypes = {} }: { edgeTypes?: EdgeTypes }
         proOptions={proOptions}
       >
        <Background bgColor="var(--sidebar)" />
-        {/* <Watermark /> */}
       </ReactFlow>
     </div>
   );

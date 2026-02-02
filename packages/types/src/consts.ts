@@ -1,1 +1,1 @@
-export const localStorageKey = 'react-flow-diagram-data';
+export const localStorageKey = 'kyso-diagram-data';

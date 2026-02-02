@@ -1,4 +1,4 @@
-import { Toaster } from '@/components/ui-test/sonner';
+import { Toaster } from '@/components/ui/sonner';
 
 export function SnackbarContainer() {
   return <Toaster />;
