@@ -2,22 +2,14 @@
 
 import Link from 'next/link';
 import { useMemo, useState, useEffect, useTransition } from 'react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-import { Cards, CaretDown, Spinner, ArrowLeft } from '@phosphor-icons/react';
+import { CardsIcon as Cards, SpinnerIcon as Spinner, ArrowLeftIcon as ArrowLeft } from '@phosphor-icons/react';
 import useStore from '@/store/store';
 import { useI18n } from '@/locales/client';
 import { useUpdateWorkflow } from '@/hooks/workflow-queries';
 import { toast } from 'sonner';
 import { DeployDialog } from '@/components/workflow/deploy-dialog';
 import { extractWorkflowConfig } from '@/features/workflow-validator/workflow-logic';
-import { authClient } from '@/lib/auth-client';
 
 interface ProjectSelectionProps {
   workflowId: string;
@@ -36,10 +28,7 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
   const [isPending, startTransition] = useTransition();
   const t = useI18n();
 
-  const { data: session } = authClient.useSession();
   const updateMutation = useUpdateWorkflow();
-
-  // const folderName = session?.user?.name || session?.user?.email?.split('@')[0] || t('header.folderName');
 
   // Sync local name with prop when not editing
   useEffect(() => {
@@ -78,7 +67,7 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
     });
   };
 
-  const items = useMemo(
+  const _items = useMemo(
     () =>
       onDuplicateClick
         ? [
@@ -94,7 +83,7 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
 
   const extractedConfig = useMemo(() => {
     try {
-      return extractWorkflowConfig(nodes, edges);
+      return extractWorkflowConfig(nodes, edges, workflowId, documentName);
     } catch {
       return null;
     }

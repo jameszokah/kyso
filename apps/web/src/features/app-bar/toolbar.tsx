@@ -78,7 +78,7 @@ export function Toolbar({
       disabled: false,
     },
     {
-      title: 'Edit',
+      title: isReadOnlyMode ? 'Read Only' : 'Edit',
       icon: (
         <Icon
           name={isReadOnlyMode ? 'PencilSimpleSlashThin' : 'PencilSimpleThin'}

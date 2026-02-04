@@ -2,10 +2,10 @@ import type { Node, Edge } from '@xyflow/react';
 import styles from './delete-confirmation.module.css';
 // import { Trans, useTranslation } from 'react-i18next';
 import { useI18n } from '@/locales/client';
-import { Checkbox } from '@/components/ui-test/checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { Label } from '@/components/ui-test/label';
+import { Label } from '@/components/ui/label';
 
 type DeleteConfirmationProps = {
   nodes: Node[];

@@ -115,7 +115,7 @@ export function ActionBar({
           {visibleControls.microphone && (
             <div className="flex items-center gap-0">
               <TrackToggle
-                variant="primary"
+                variant="default"
                 source={Track.Source.Microphone}
                 pressed={microphoneToggle.enabled}
                 disabled={microphoneToggle.pending}
@@ -157,7 +157,7 @@ export function ActionBar({
           {capabilities.supportsVideoInput && visibleControls.camera && (
             <div className="flex items-center gap-0">
               <TrackToggle
-                variant="primary"
+                variant="default"
                 source={Track.Source.Camera}
                 pressed={cameraToggle.enabled}
                 pending={cameraToggle.pending}
@@ -186,7 +186,7 @@ export function ActionBar({
           {capabilities.supportsScreenShare && visibleControls.screenShare && (
             <div className="flex items-center gap-0">
               <TrackToggle
-                variant="secondary"
+                variant="default"
                 source={Track.Source.ScreenShare}
                 pressed={screenShareToggle.enabled}
                 disabled={screenShareToggle.pending}
@@ -198,7 +198,7 @@ export function ActionBar({
 
           {visibleControls.chat && (
             <Toggle
-              variant="secondary"
+              variant="default"
               aria-label="Toggle chat"
               pressed={chatOpen}
               onPressedChange={setChatOpen}

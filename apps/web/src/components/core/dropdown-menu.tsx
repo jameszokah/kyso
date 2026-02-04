@@ -10,10 +10,10 @@ import {
   DropdownMenu as DropdownMenuPrimitive,
   DropdownMenuSeparator,
   DropdownMenuTrigger as DropdownMenuTriggerPrimitive,
-} from '@/components/ui-test/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { Button, type ButtonProps } from '../core/button'
-import { textVariants } from '../ui-test/typography'
+import { textVariants } from '../ui/typography'
 import { Window } from './window'
 
 const DropdownMenuContext = createContext<{

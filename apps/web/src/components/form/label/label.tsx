@@ -1,4 +1,4 @@
-import { Label as ShadcnLabel } from '@/components/ui-test/label';
+import { Label as ShadcnLabel } from '@/components/ui/label';
 import { Asterisk } from '@phosphor-icons/react';
 import { cn } from '@/lib/utils';
 

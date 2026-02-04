@@ -145,7 +145,7 @@ export function AppBarContainer({ workflowId }: { workflowId: string }) {
     setValidatedEdgeIds(result.validEdges);
     
     if (result.isValid) {
-        const config = extractWorkflowConfig(nodes, edges);
+        const config = extractWorkflowConfig(nodes, edges, workflowId, documentName);
         setPreviewConfig(config);
     } else {
         setPreviewConfig(null);
@@ -160,6 +160,7 @@ export function AppBarContainer({ workflowId }: { workflowId: string }) {
       <Toolbar
         onSave={handleSave}
         onUndo={undo}
+        onOpen={handleImport}
         onRedo={redo}
         canUndo={canUndo}
         canRedo={canRedo}

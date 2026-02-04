@@ -3,14 +3,10 @@
 import {
   Check,
   Clock,
-  Code,
-  Copy,
   History,
   MessageSquare,
   Rocket,
   RotateCcw,
-  CheckIcon,
-  CopyIcon
 } from "lucide-react";
 import { HandPointingIcon } from '@phosphor-icons/react';
 import { useState, useMemo, useCallback } from "react";
@@ -41,6 +37,8 @@ import EmbedPopupAgentClient from "@/components/voice-ui/embed-popup/agent-clien
 import { APP_CONFIG_DEFAULTS } from "@/app/app-config";
 import { getSandboxId } from "@/lib/env";
 import { motion } from "motion/react";
+import { CodeBlock, CodeBlockCopyButton } from "@/components/ai-elements/code-block";
+import { Code } from "lucide-react";
 
 interface DeployDialogProps {
   workflowId: string;
@@ -60,16 +58,7 @@ export function DeployDialog({
   const [isOpen, setIsOpen] = useState(false);
   const [releaseMessage, setReleaseMessage] = useState("");
   const [previewTab, setPreviewTab] = useState<"iframe" | "popup">("iframe");
-  const [copied, setCopied] = useState(false);
 
-  // Copy helper similar to welcome.tsx
-  const copyEmbedCode = useCallback((embedCode: string) => {
-    navigator.clipboard.writeText(embedCode);
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 1000);
-  }, []);
 
   const { data: releases, isLoading: releasesLoading } = useWorkflowReleases(
     isOpen ? workflowId : undefined
@@ -154,7 +143,7 @@ export function DeployDialog({
           Deploy
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Rocket className="h-5 w-5" />
@@ -279,38 +268,11 @@ export function DeployDialog({
                    <div className="space-y-4">
                      <div className="space-y-2">
                        <Label className="text-sm font-semibold">Embed Code</Label>
-                        <div className="relative">
-                          <pre className="border bg-muted/30 scrollbar-custom relative overflow-auto rounded-md px-4 py-3 text-xs font-mono">
-                            <code className="font-mono">
-                              {iframeEmbedCode.split(iframeEmbedUrl).map((stringPart, index) => {
-                                if (index === 0) {
-                                  return <span key={index}>{stringPart}</span>;
-                                }
-                                return (
-                                  <span key={index}>
-                                    <a
-                                      href={iframeEmbedUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-primary underline"
-                                    >
-                                      {iframeEmbedUrl}
-                                    </a>
-                                    {stringPart}
-                                  </span>
-                                );
-                              })}
-                            </code>
-                          </pre>
-                          <div className="absolute top-2 right-2">
-                            <button
-                              onClick={() => copyEmbedCode(iframeEmbedCode)}
-                              className="cursor-pointer p-2 opacity-50 transition-opacity hover:opacity-100"
-                            >
-                               {copied ? <CheckIcon className="h-4 w-4 text-green-500" /> : <CopyIcon className="h-4 w-4" />}
-                            </button>
-                          </div>
-                        </div>
+                       <CodeBlock code={iframeEmbedCode} language="html" className="max-w-full">
+                         <div className="absolute top-2 right-2 z-10">
+                           <CodeBlockCopyButton />
+                         </div>
+                       </CodeBlock>
                      </div>
                      
                      <div className="flex justify-center border rounded-lg p-8 bg-muted/10">
@@ -329,20 +291,12 @@ export function DeployDialog({
                    <div className="space-y-4">
                       <div className="space-y-2">
                        <Label className="text-sm font-semibold">Embed Code</Label>
-                        <div className="relative">
-                          <pre className="border bg-muted/30 scrollbar-custom relative overflow-auto rounded-md px-4 py-3 text-xs font-mono">
-                            <code className="font-mono">{popupEmbedCode}</code>
-                          </pre>
-                           <div className="absolute top-2 right-2">
-                            <button
-                              onClick={() => copyEmbedCode(popupEmbedCode)}
-                              className="cursor-pointer p-2 opacity-50 transition-opacity hover:opacity-100"
-                            >
-                               {copied ? <CheckIcon className="h-4 w-4 text-green-500" /> : <CopyIcon className="h-4 w-4" />}
-                            </button>
-                          </div>
-                        </div>
-                     </div>
+                       <CodeBlock code={popupEmbedCode} language="html" className="max-w-full">
+                         <div className="absolute top-2 right-2 z-10">
+                           <CodeBlockCopyButton />
+                         </div>
+                       </CodeBlock>
+                      </div>
 
                      <div className="flex justify-center pt-8">
                        <div className="text-primary flex gap-1 items-center">
@@ -351,7 +305,7 @@ export function DeployDialog({
                          </p>
                          <HandPointingIcon
                            size={16}
-                           className="r`otate-[145deg] animate-bounce"
+                           className="rotate-[145deg] animate-bounce"
                          />
                        </div>
                      </div>
