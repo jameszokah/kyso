@@ -12,8 +12,6 @@ import type { ValidationResult } from '../workflow-logic';
 import type { WorkflowConfig } from '@/utils/state-machine-types';
 import { CheckCircle, XCircle, Copy } from '@phosphor-icons/react';
 import { useState } from 'react';
-import { ApplyThemeScript } from '@/components/voice-ui/theme-toggle';
-import WelcomeDynamic from '@/components/voice-ui/welcome-dynamic';
 import { APP_CONFIG_DEFAULTS } from '@/app/app-config';
 import PreviewAgentClient from '@/components/voice-ui/preview/agent-client';
 
@@ -22,6 +20,7 @@ interface PreviewDrawerProps {
   onClose: () => void;
   validationResult: ValidationResult | null;
   config: WorkflowConfig | null;
+  workflowId: string;
 }
 
 export function PreviewDrawer({
@@ -29,6 +28,7 @@ export function PreviewDrawer({
   onClose,
   validationResult,
   config,
+  workflowId,
 }: PreviewDrawerProps) {
   const [copied, setCopied] = useState(false);
 
@@ -73,17 +73,12 @@ export function PreviewDrawer({
 
           {validationResult?.isValid && (
             <div className="bg-background">
-              <PreviewAgentClient appConfig={APP_CONFIG_DEFAULTS} />
+              <PreviewAgentClient appConfig={{ ...APP_CONFIG_DEFAULTS, workflowId }} />
             </div>
           )}
             
 
-          {/* <div className="bg-background">
-            <ApplyThemeScript />
-            <WelcomeDynamic />
-          </div> */}
-
-          {config && (
+          {/* {config && (
             <div className="relative">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="text-sm font-medium text-muted-foreground">Generated Configuration</h4>
@@ -96,7 +91,7 @@ export function PreviewDrawer({
                 {JSON.stringify(config, null, 2)}
               </pre>
             </div>
-          )}
+          )} */}
         </div>
 
       

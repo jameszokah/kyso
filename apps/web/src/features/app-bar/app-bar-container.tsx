@@ -190,6 +190,7 @@ export function AppBarContainer({ workflowId }: { workflowId: string }) {
         onClose={() => setIsPreviewOpen(false)}
         validationResult={validationResult}
         config={previewConfig}
+        workflowId={workflowId}
       />
 
     </div>
