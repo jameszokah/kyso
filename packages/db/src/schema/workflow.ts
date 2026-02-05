@@ -112,11 +112,7 @@ export const workflowRelease = pgTable(
     /**
      * Canvas data snapshot at release time (for rollback)
      */
-    canvasSnapshot: jsonb("canvas_snapshot").$type<{
-      nodes: unknown[];
-      edges: unknown[];
-      viewport?: { x: number; y: number; zoom: number };
-    }>(),
+    canvasSnapshot: jsonb("canvas_snapshot").$type<WorkflowBuilderReactFlowJson>(),
 
     deployedAt: timestamp("deployed_at").defaultNow().notNull(),
     deployedBy: text("deployed_by")
