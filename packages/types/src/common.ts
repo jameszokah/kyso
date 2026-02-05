@@ -22,6 +22,9 @@ export enum StatusType {
 
 export type WorkflowBuilderReactFlowInstance = ReactFlowInstance<WorkflowBuilderNode, WorkflowBuilderEdge>;
 
+export type WorkflowBuilderReactFlowJson = ReactFlowJsonObject<WorkflowBuilderNode, WorkflowBuilderEdge>;
+
+
 export type WorkflowBuilderOnSelectionChangeParams = {
   nodes: WorkflowBuilderNode[];
   edges: WorkflowBuilderEdge[];
@@ -30,7 +33,7 @@ export type WorkflowBuilderOnSelectionChangeParams = {
 export type DiagramModel = {
   name: string;
   layoutDirection: LayoutDirection;
-  diagram: ReactFlowJsonObject<WorkflowBuilderNode, WorkflowBuilderEdge>;
+  diagram: WorkflowBuilderReactFlowJson;
 };
 
 export type ChildrenProps = {
@@ -63,3 +66,4 @@ export type TemplateModel = {
   value: DiagramModel;
   icon: IconType;
 };
+

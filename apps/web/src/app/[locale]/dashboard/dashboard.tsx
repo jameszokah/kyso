@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  Check,
   Clock,
   Edit3,
   MoreHorizontal,
@@ -21,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -41,6 +43,9 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import type { Route } from "next";
+import { templates } from "@/data/templates";
+import { Icon } from "@kyso/icons";
+import type { TemplateModel } from "@kyso/types/common";
 
 interface DashboardProps {
   customerState: Awaited<ReturnType<typeof authClient.customer.state>>;
@@ -52,6 +57,8 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [newWorkflowName, setNewWorkflowName] = useState("");
+  const [newWorkflowDescription, setNewWorkflowDescription] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateModel | null>(null);
   const [workflowToDelete, setWorkflowToDelete] = useState<WorkflowType | null>(null);
 
   const { data, isLoading, error } = useWorkflows();
@@ -67,9 +74,13 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
     try {
       const created = await createMutation.mutateAsync({
         name: newWorkflowName.trim() || "Untitled Workflow",
+        description: newWorkflowDescription.trim() || undefined,
+        canvasData: selectedTemplate?.value.diagram,
       });
       setIsCreateDialogOpen(false);
       setNewWorkflowName("");
+      setNewWorkflowDescription("");
+      setSelectedTemplate(null);
       toast.success("Workflow created!");
       router.push(`/workflow/${created.id}` as Route);
     } catch {
@@ -176,14 +187,15 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
 
       {/* Create Dialog */}
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Create New Workflow</DialogTitle>
             <DialogDescription>
-              Give your workflow a name. You can change it later.
+              Give your workflow a name and choose a preset to get started.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-4">
+          <div className="space-y-5 py-4">
+            {/* Name Input */}
             <div className="space-y-2">
               <Label htmlFor="workflow-name">Name</Label>
               <Input
@@ -191,10 +203,78 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
                 placeholder="My Voice Agent"
                 value={newWorkflowName}
                 onChange={(e) => setNewWorkflowName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleCreateWorkflow();
-                }}
               />
+            </div>
+
+            {/* Description Input */}
+            <div className="space-y-2">
+              <Label htmlFor="workflow-description">
+                Description <span className="text-muted-foreground text-xs">(optional)</span>
+              </Label>
+              <Textarea
+                id="workflow-description"
+                placeholder="Brief description of your workflow..."
+                value={newWorkflowDescription}
+                onChange={(e) => setNewWorkflowDescription(e.target.value)}
+                rows={2}
+                className="resize-none"
+              />
+            </div>
+
+            {/* Template Selection */}
+            <div className="space-y-2">
+              <Label>Start from a preset</Label>
+              <div className="grid grid-cols-3 gap-2">
+                {/* Empty Canvas Option */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedTemplate(null)}
+                  className={cn(
+                    "relative flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition-all",
+                    "hover:border-primary/50 hover:bg-muted/50",
+                    !selectedTemplate
+                      ? "border-primary bg-primary/5"
+                      : "border-border bg-transparent"
+                  )}
+                >
+                  {!selectedTemplate && (
+                    <div className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary">
+                      <Check className="h-2.5 w-2.5 text-primary-foreground" />
+                    </div>
+                  )}
+                  <Icon name="CornersOutThin" size="medium" className="text-muted-foreground" />
+                  <span className="text-xs font-medium">Empty</span>
+                </button>
+
+                {/* Template Options */}
+                {templates.map((template) => (
+                  <button
+                    type="button"
+                    key={template.id}
+                    onClick={() => setSelectedTemplate(template)}
+                    className={cn(
+                      "relative flex flex-col items-center gap-2 rounded-lg border-2 p-3 transition-all",
+                      "hover:border-primary/50 hover:bg-muted/50",
+                      selectedTemplate?.id === template.id
+                        ? "border-primary bg-primary/5"
+                        : "border-border bg-transparent"
+                    )}
+                  >
+                    {selectedTemplate?.id === template.id && (
+                      <div className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary">
+                        <Check className="h-2.5 w-2.5 text-primary-foreground" />
+                      </div>
+                    )}
+                    <Icon name={template.icon} size="medium" className="text-muted-foreground" />
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs font-medium line-clamp-1">{template.name}</span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {template.value.diagram.nodes.length} nodes
+                      </span>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           <DialogFooter>
@@ -208,7 +288,7 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
               onClick={handleCreateWorkflow}
               disabled={createMutation.isPending}
             >
-              {createMutation.isPending ? "Creating..." : "Create"}
+              {createMutation.isPending ? "Creating..." : "Create Workflow"}
             </Button>
           </DialogFooter>
         </DialogContent>

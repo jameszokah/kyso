@@ -39,6 +39,8 @@ import { getSandboxId } from "@/lib/env";
 import { motion } from "motion/react";
 import { CodeBlock, CodeBlockCopyButton } from "@/components/ai-elements/code-block";
 import { Code } from "lucide-react";
+import useStore from "@/store/store";
+import type { WorkflowBuilderReactFlowJson } from "@kyso/types/common";
 
 interface DeployDialogProps {
   workflowId: string;
@@ -109,13 +111,25 @@ export function DeployDialog({
     }
   };
 
+  // Get setDiagramModel to update the canvas after rollback
+  const setDiagramModel = useStore((state) => state.setDiagramModel);
+
   // Handle Rollback
   const handleRollback = async (releaseId: string, releaseNumber: number) => {
     try {
-      await rollbackMutation.mutateAsync({
+      const updated = await rollbackMutation.mutateAsync({
         workflowId,
         releaseId,
       });
+
+      // Sync the Zustand store with the restored canvas data
+      if (updated?.canvasData) {
+        setDiagramModel({
+          name: workflowName,
+          layoutDirection: "DOWN",
+          diagram: updated.canvasData,
+        });
+      }
 
       toast.success(`Rolled back to Release #${releaseNumber}`);
       onRollbackSuccess?.();
@@ -138,7 +152,7 @@ export function DeployDialog({
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogTrigger asChild>
-        <Button className="gap-2" size="sm">
+        <Button className="gap-2 cursor-pointer" size="sm">
           <Rocket className="h-4 w-4" />
           Deploy
         </Button>

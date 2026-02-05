@@ -66,7 +66,7 @@ export function useCreateWorkflow() {
   return useMutation(
     orpc.workflow.create.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["workflow", "list"] });
+        queryClient.invalidateQueries({ queryKey: orpc.workflow.list.key({}) });
       },
     })
   );
@@ -81,8 +81,10 @@ export function useUpdateWorkflow() {
   return useMutation(
     orpc.workflow.update.mutationOptions({
       onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: ["workflow", "getById", data.id] });
-        queryClient.invalidateQueries({ queryKey: ["workflow", "list"] });
+        queryClient.invalidateQueries({
+          queryKey: orpc.workflow.getById.key({ input: { id: data.id } }),
+        });
+        queryClient.invalidateQueries({ queryKey: orpc.workflow.list.key({}) });
       },
     })
   );
@@ -97,7 +99,7 @@ export function useDeleteWorkflow() {
   return useMutation(
     orpc.workflow.delete.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["workflow", "list"] });
+        queryClient.invalidateQueries({ queryKey: orpc.workflow.list.key({}) });
       },
     })
   );
@@ -113,7 +115,7 @@ export function useDeployWorkflow() {
     orpc.workflow.deploy.mutationOptions({
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries({
-          queryKey: ["workflow", "listReleases", variables.workflowId],
+          queryKey: orpc.workflow.listReleases.key({ input: { id: variables.workflowId } }),
         });
       },
     })
@@ -128,8 +130,15 @@ export function useRollbackWorkflow() {
 
   return useMutation(
     orpc.workflow.rollback.mutationOptions({
-      onSuccess: (data) => {
-        queryClient.invalidateQueries({ queryKey: ["workflow", "getById", data.id] });
+      onSuccess: (data, variables) => {
+        // Invalidate the workflow data using orpc's key generator
+        queryClient.invalidateQueries({
+          queryKey: orpc.workflow.getById.key({ input: { id: data.id } }),
+        });
+        // Invalidate the releases list so DeployDialog updates
+        queryClient.invalidateQueries({
+          queryKey: orpc.workflow.listReleases.key({ input: { id: variables.workflowId } }),
+        });
       },
     })
   );

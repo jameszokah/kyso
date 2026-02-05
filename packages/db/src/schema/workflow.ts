@@ -9,7 +9,7 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 import { user } from "./auth";
-import type { WorkflowBuilderReactFlowInstance } from "@kyso/types/common";
+import type { WorkflowBuilderReactFlowJson } from "@kyso/types/common";
 
 // Use crypto.randomUUID for generating IDs (built-in, no external deps)
 const generateId = () => crypto.randomUUID();
@@ -44,7 +44,7 @@ export const workflow = pgTable(
      *   viewport?: { x: number; y: number; zoom: number };
      * }
      */
-    canvasData: jsonb("canvas_data").$type<WorkflowBuilderReactFlowInstance>(),
+    canvasData: jsonb("canvas_data").$type<WorkflowBuilderReactFlowJson>(),
 
     /**
      * Voice agent settings associated with this workflow

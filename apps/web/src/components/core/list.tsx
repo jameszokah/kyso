@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority'
 import { ChevronRightIcon } from 'lucide-react'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { Text } from '../ui-test/typography'
+import { Text } from '../ui/typography'
 import { Hoverable } from './hoverable'
 import View from './view'
 

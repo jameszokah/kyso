@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, useTransform } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { Text } from '../ui-test/typography'
+import { Text } from '../ui/typography'
 import { useWindow } from './window'
 
 const navigationBarVariants = cva(

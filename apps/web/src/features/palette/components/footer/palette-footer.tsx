@@ -1,14 +1,4 @@
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { templates } from '@/data/templates';
 import { TemplateSelector } from '@/features/modals/template-selector/template-selector';
 import { SettingsDialog } from '../settings/settings-dialog';
@@ -37,7 +27,7 @@ export function PaletteFooter() {
 
   return (
     <div className="flex flex-col gap-2">
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      {/* <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button variant="secondary" className="w-full" size="default">
             {t('palette.templates')}
@@ -59,9 +49,9 @@ export function PaletteFooter() {
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
-      <Button variant="ghost" className="w-full justify-start gap-2" onClick={() => setIsSettingsOpen(true)}>
+      <Button variant="secondary" className="w-full justify-start hover:bg-primary/10 gap-2" onClick={() => setIsSettingsOpen(true)}>
         <Settings className="w-4 h-4" />
         {t('palette.settings')}
       </Button>

@@ -12,7 +12,21 @@ import { protectedProcedure } from "../index";
 const createWorkflowInput = z.object({
   name: z.string().min(1).max(255).optional(),
   description: z.string().max(1000).optional(),
+  canvasData: z
+    .object({
+      nodes: z.array(z.unknown()),
+      edges: z.array(z.unknown()),
+      viewport: z
+        .object({
+          x: z.number(),
+          y: z.number(),
+          zoom: z.number(),
+        })
+        .optional(),
+    })
+    .optional(),
 });
+
 
 const updateWorkflowInput = z.object({
   id: z.string(),
@@ -102,7 +116,7 @@ export const workflowRouter = {
           name: input.name ?? "Untitled Workflow",
           description: input.description,
           userId,
-          canvasData: { nodes: [], edges: [] },
+          canvasData: input.canvasData ?? { nodes: [], edges: [] },
           settings: {},
         })
         .returning();

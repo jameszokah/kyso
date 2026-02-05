@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import React, { createContext, useContext, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '../core/button';
-import { Text } from '../ui-test/typography';
+import { Text } from '../ui/typography';
 import { Window, type WindowProps } from './window';
 
 const CONSTANTS = {
