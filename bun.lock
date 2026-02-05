@@ -172,6 +172,7 @@
         "@kyso/auth": "workspace:*",
         "@kyso/db": "workspace:*",
         "@kyso/env": "workspace:*",
+        "@kyso/types": "workspace:*",
         "@orpc/client": "catalog:",
         "@orpc/openapi": "catalog:",
         "@orpc/server": "catalog:",

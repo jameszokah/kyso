@@ -4,11 +4,11 @@ import { ORPCError } from "@orpc/server";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { protectedProcedure } from "../index";
+import type { WorkflowBuilderReactFlowJson } from "@kyso/types/common";
 
 // =============================================================================
 // Input Schemas
 // =============================================================================
-
 const createWorkflowInput = z.object({
   name: z.string().min(1).max(255).optional(),
   description: z.string().max(1000).optional(),
@@ -24,7 +24,7 @@ const createWorkflowInput = z.object({
         })
         .optional(),
     })
-    .optional(),
+    .optional()
 });
 
 

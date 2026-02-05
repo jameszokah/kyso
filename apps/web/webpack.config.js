@@ -18,7 +18,7 @@ module.exports = {
     // NOTE: the below doesn't whitelist, see https://github.com/mrsteele/dotenv-webpack/issues/41
     new Dotenv({
       systemvars: true,
-      path: '.env',
+      path: path.resolve(__dirname, '.env')
     }),
   ],
   module: {
@@ -28,6 +28,7 @@ module.exports = {
         use: {
           loader: 'ts-loader',
           options: {
+            transpileOnly: true,
             configFile: 'tsconfig.webpack.json',
           },
         },

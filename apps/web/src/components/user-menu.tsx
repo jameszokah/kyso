@@ -14,6 +14,7 @@ import { authClient } from "@/lib/auth-client";
 
 import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
+import type { Route } from "next";
 
 export default function UserMenu() {
   const router = useRouter();
@@ -33,8 +34,10 @@ export default function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" />}>
-        {session.user.name}
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">
+          {session.user.name}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-card">
         <DropdownMenuGroup>
@@ -47,7 +50,7 @@ export default function UserMenu() {
               authClient.signOut({
                 fetchOptions: {
                   onSuccess: () => {
-                    router.push("/");
+                    router.push("/" as Route);
                   },
                 },
               });
