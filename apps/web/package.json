@@ -6,6 +6,7 @@
     "dev": "next dev --port 3001",
     "build-embed-popup-script": "webpack",
     "build": "next build && bun run build-embed-popup-script",
+    "prebuild": "bun run --filter @kyso/icons build",
     "start": "next start",
     "tauri": "tauri",
     "desktop:dev": "tauri dev",

@@ -4,14 +4,14 @@ const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'production',
-  entry: './components/voice-ui/embed-popup/standalone-bundle-root.tsx', // Input file
+  entry: './src/components/voice-ui/embed-popup/standalone-bundle-root.tsx', // Input file
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'embed-popup.js', // Output file
   },
   devtool: 'source-map', // Equivalent to sourcemap: true
   resolve: {
-    alias: { '@/*': path.resolve(__dirname, '*') },
+    alias: { '@': path.resolve(__dirname, 'src') },
     extensions: ['.tsx', '.ts', '.js'], // Resolve TypeScript and JS files
   },
   plugins: [
