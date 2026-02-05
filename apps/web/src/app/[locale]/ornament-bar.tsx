@@ -6,7 +6,7 @@ import { Ornament, OrnamentContentBase, OrnamentContents, OrnamentTab, OrnamentT
 import { Text } from '@/components/ui/typography';
 import { AppStoreLogoIcon, EnvelopeIcon, PhoneIcon } from '@phosphor-icons/react';
 // import EnvironmentView from './environment-view'
-import VoiceFlow from '../flows/voice';
+import VoiceFlow from '@/flows/voice';
 import { IntersectIcon } from '@phosphor-icons/react/dist/ssr';
 
 export const dynamic = 'force-dynamic';
