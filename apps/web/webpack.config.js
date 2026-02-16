@@ -20,6 +20,10 @@ module.exports = {
       systemvars: true,
       path: path.resolve(__dirname, './src/.env')
     }),
+    new Dotenv({
+      systemvars: true,
+      path: path.resolve(__dirname, './src/.env.local')
+    }),
   ],
   module: {
     rules: [

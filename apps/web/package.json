@@ -18,8 +18,8 @@
     "@jsonforms/react": "^3.7.0",
     "@kyso/api": "workspace:*",
     "@kyso/auth": "workspace:*",
-    "@kyso/env": "workspace:*",
     "@kyso/db": "workspace:*",
+    "@kyso/env": "workspace:*",
     "@kyso/icons": "workspace:*",
     "@kyso/types": "workspace:*",
     "@livekit/components-react": "^2.0.0",
@@ -76,6 +76,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "catalog:",
+    "drizzle-orm": "catalog:",
     "elkjs": "^0.11.0",
     "embla-carousel-react": "^8.6.0",
     "html-to-image": "^1.11.13",
@@ -102,6 +103,7 @@
     "remeda": "^2.33.1",
     "shadcn": "^3.6.2",
     "shiki": "^3.21.0",
+    "sileo": "^0.1.0",
     "sonner": "^2.0.5",
     "streamdown": "^2.1.0",
     "tailwind-merge": "^3.4.0",
@@ -111,7 +113,6 @@
     "use-sync-external-store": "^1.6.0",
     "vaul": "^1.1.2",
     "zod": "catalog:",
-    "drizzle-orm": "catalog:",
     "zustand": "^5.0.9"
   },
   "devDependencies": {

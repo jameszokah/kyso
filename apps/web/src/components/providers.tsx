@@ -10,6 +10,7 @@ import { ModalProvider } from '@/features/modals/modal-provider';
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "@/utils/orpc";
+import { SileoToaster } from "./ui/sileo";
 
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -24,7 +25,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                         {children}
                         <ReactQueryDevtools />
                       </QueryClientProvider>
-                      <Toaster richColors />
+                {/* <Toaster richColors /> */}
+                <SileoToaster />
                   </ModalProvider>
                 </MousePositionProvider>
               </UndoRedoProvider>
