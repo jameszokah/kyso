@@ -107,7 +107,23 @@ export function DeployDialog({
       });
 
       // toast.success(`Release #${release.releaseNumber} deployed successfully!`);
-      sileo.success({ title: `Release #${release.releaseNumber} deployed successfully!`, description: <EmbedPopupAgentClient appConfig={previewAppConfig} /> });
+      sileo.success({
+        title: `Release #${release.releaseNumber} deployed successfully!`, description: <div className="space-y-4">
+          <div className="flex justify-center pt-8">
+                       <div className="text-primary flex gap-1 items-center">
+                         <p className="text-sm">
+                           The popup button should appear in the bottom right corner of the screen
+                         </p>
+                         <HandPointingIcon
+                           size={16}
+                           className="rotate-145 animate-bounce"
+                         />
+                       </div>
+                     </div>
+                     
+  
+                     <EmbedPopupAgentClient appConfig={previewAppConfig} />
+                   </div> });
       setReleaseMessage("");
       onDeploySuccess?.(release as WorkflowRelease);
     } catch {
