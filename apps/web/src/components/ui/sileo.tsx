@@ -8,7 +8,7 @@ export interface SileoToasterProps {
   defaultOptions?: SileoOptions
 }
 function SileoToaster({
-  position = "top-right",
+  position = "bottom-right",
   offset = 16,
   defaultOptions }: SileoToasterProps) {
   const { theme = "system" } = useTheme()

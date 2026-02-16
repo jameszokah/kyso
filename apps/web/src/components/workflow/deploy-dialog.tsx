@@ -107,7 +107,7 @@ export function DeployDialog({
       });
 
       // toast.success(`Release #${release.releaseNumber} deployed successfully!`);
-      sileo.success({ title: `Release #${release.releaseNumber} deployed successfully!` });
+      sileo.success({ title: `Release #${release.releaseNumber} deployed successfully!`, description: <EmbedPopupAgentClient appConfig={previewAppConfig} /> });
       setReleaseMessage("");
       onDeploySuccess?.(release as WorkflowRelease);
     } catch {
@@ -326,7 +326,7 @@ export function DeployDialog({
                          </p>
                          <HandPointingIcon
                            size={16}
-                           className="rotate-[145deg] animate-bounce"
+                           className="rotate-145 animate-bounce"
                          />
                        </div>
                      </div>
