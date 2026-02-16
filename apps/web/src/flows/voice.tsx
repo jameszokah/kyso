@@ -1,8 +1,8 @@
 import { AppBarContainer } from '../features/app-bar/app-bar-container';
-import { AppLoaderContainer } from '../features/app-loader/app-loader-container';
 import { PaletteSidebar } from '../features/palette/palette-container';
 import { PropertiesBarContainer } from '../features/properties-bar/properties-bar-container';
-import { SnackbarContainer } from '../features/snackbar/snackbar-container';
+// import { AppLoaderContainer } from '../features/app-loader/app-loader-container';
+// import { SnackbarContainer } from '../features/snackbar/snackbar-container';
 
 export default function VoiceFlow({ workflowId }: { workflowId?: string }) {
   return (
@@ -23,8 +23,8 @@ export default function VoiceFlow({ workflowId }: { workflowId?: string }) {
         </div>
       </div>
 
-      <SnackbarContainer />
-      <AppLoaderContainer />
+      {/* <SnackbarContainer /> */}
+      {/* <AppLoaderContainer /> */}
     </div>
   );
 }
