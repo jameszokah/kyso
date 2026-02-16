@@ -10,7 +10,8 @@ import {
 } from "lucide-react";
 import { HandPointingIcon } from '@phosphor-icons/react';
 import { useState, useMemo, useCallback } from "react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
+import { sileo } from "sileo";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -87,12 +88,14 @@ export function DeployDialog({
   // Handle Deployment
   const handleDeploy = async () => {
     if (!extractedConfig) {
-      toast.error("Cannot deploy: workflow configuration is invalid");
+      // toast.error("Cannot deploy: workflow configuration is invalid");
+      sileo.error({ title: "Cannot deploy: workflow configuration is invalid" });
       return;
     }
 
     if (!releaseMessage.trim()) {
-      toast.error("Please enter a release message");
+      // toast.error("Please enter a release message");
+      sileo.error({ title: "Please enter a release message" });
       return;
     }
 
@@ -103,11 +106,13 @@ export function DeployDialog({
         agentFlow: extractedConfig,
       });
 
-      toast.success(`Release #${release.releaseNumber} deployed successfully!`);
+      // toast.success(`Release #${release.releaseNumber} deployed successfully!`);
+      sileo.success({ title: `Release #${release.releaseNumber} deployed successfully!` });
       setReleaseMessage("");
       onDeploySuccess?.(release as WorkflowRelease);
     } catch {
-      toast.error("Failed to deploy release");
+      // toast.error("Failed to deploy release");
+      sileo.error({ title: "Failed to deploy release" });
     }
   };
 
@@ -131,10 +136,12 @@ export function DeployDialog({
         });
       }
 
-      toast.success(`Rolled back to Release #${releaseNumber}`);
+      // toast.success(`Rolled back to Release #${releaseNumber}`);
+      sileo.success({ title: `Rolled back to Release #${releaseNumber}` });
       onRollbackSuccess?.();
     } catch {
-      toast.error("Failed to rollback");
+      // toast.error("Failed to rollback");
+      sileo.error({ title: "Failed to rollback" });
     }
   };
 

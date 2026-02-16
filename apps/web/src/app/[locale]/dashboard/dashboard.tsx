@@ -40,7 +40,8 @@ import {
   type Workflow as WorkflowType,
 } from "@/hooks/workflow-queries";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+// import { toast } from "sonner";
+import { sileo } from "sileo";
 import { authClient } from "@/lib/auth-client";
 import type { Route } from "next";
 import { templates } from "@/data/templates";
@@ -81,10 +82,12 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
       setNewWorkflowName("");
       setNewWorkflowDescription("");
       setSelectedTemplate(null);
-      toast.success("Workflow created!");
+      // toast.success("Workflow created!");
+      sileo.success({ title: "Workflow created!" });
       router.push(`/workflow/${created.id}` as Route);
     } catch {
-      toast.error("Failed to create workflow");
+      // toast.error("Failed to create workflow");
+      sileo.error({ title: "Failed to create workflow" });
     }
   };
 
@@ -93,9 +96,11 @@ export default function Dashboard({ customerState, session }: DashboardProps) {
     try {
       await deleteMutation.mutateAsync({ id: workflowToDelete.id });
       setWorkflowToDelete(null);
-      toast.success("Workflow deleted");
+      // toast.success("Workflow deleted");
+      sileo.success({ title: "Workflow deleted" });
     } catch {
-      toast.error("Failed to delete workflow");
+      // toast.error("Failed to delete workflow");
+      sileo.error({ title: "Failed to delete workflow" });
     }
   };
 
