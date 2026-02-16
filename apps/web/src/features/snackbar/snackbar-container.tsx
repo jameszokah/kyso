@@ -1,5 +1,5 @@
-import { Toaster } from '@/components/ui/sonner';
+import { SileoToaster } from '@/components/ui/sileo';
 
 export function SnackbarContainer() {
-  return <Toaster />;
+  return <SileoToaster />;
 }
