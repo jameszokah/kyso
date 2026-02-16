@@ -1,6 +1,7 @@
-import { GetDiagramState, SetDiagramState } from '@/store/store';
-import { toast } from 'sonner';
-import { DiagramModel, StatusType } from '@kyso/types/common';
+import { type GetDiagramState, type SetDiagramState } from '@/store/store';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
+import { type DiagramModel, StatusType } from '@kyso/types/common';
 import { delay } from '@/utils/common';
 
 export function importDiagram(set: SetDiagramState, get: GetDiagramState) {
@@ -37,15 +38,17 @@ export function importDiagram(set: SetDiagramState, get: GetDiagramState) {
 
       await delay(500);
 
-      toast.success('Import successful', {
-        description: `Workflow loaded from ${file.name}`,
-      });
+      // toast.success('Import successful', {
+      //   description: `Workflow loaded from ${file.name}`,
+      // });
+      sileo.success({ title: 'Import successful', description: `Workflow loaded from ${file.name}` });
     } catch (error) {
       console.error('Import error:', error);
       set({ loadDiagramStatus: StatusType.Error });
-      toast.error('Import failed', {
-        description: 'Failed to parse the workflow file. Please ensure it is a valid .jam file.',
-      });
+      // toast.error('Import failed', {
+      //   description: 'Failed to parse the workflow file. Please ensure it is a valid .jam file.',
+      // });
+      sileo.error({ title: 'Import failed', description: 'Failed to parse the workflow file. Please ensure it is a valid .jam file.' });
     } finally {
       set({ loadDiagramStatus: StatusType.Idle });
     }

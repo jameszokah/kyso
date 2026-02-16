@@ -1,6 +1,7 @@
 import { localStorageKey } from '@kyso/types/consts';
-import { toast } from 'sonner';
-import { DiagramState } from '../diagram-slice';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
+import { type DiagramState } from '../diagram-slice';
 import { extractStateMachineConfig } from '@/utils/export-state-machine';
 
 export function saveDiagram(get: () => DiagramState) {
@@ -23,9 +24,10 @@ export function saveDiagram(get: () => DiagramState) {
 
       if (!showNotification) return;
 
-      toast.success('Diagram saved successfully', {
-        description: 'Your workflow has been saved to local storage.',
-      });
+      // toast.success('Diagram saved successfully', {
+      //   description: 'Your workflow has been saved to local storage.',
+      // });
+      sileo.success({ title: 'Diagram saved successfully', description: 'Your workflow has been saved to local storage.' });
     } catch {
       onError();
     }
@@ -33,7 +35,8 @@ export function saveDiagram(get: () => DiagramState) {
 }
 
 function onError() {
-  toast.error('Failed to save diagram', {
-    description: 'An error occurred while saving your workflow.',
-  });
+  // toast.error('Failed to save diagram', {
+  //   description: 'An error occurred while saving your workflow.',
+  // });
+  sileo.error({ title: 'Failed to save diagram', description: 'An error occurred while saving your workflow.' });
 }

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
 import useStore from '@/store/store';
 import type { DiagramModel } from '@kyso/types/common';
 import { localStorageKey } from '@/utils/consts';
@@ -33,15 +34,17 @@ export function useAutoload(initialData?: DiagramModel | null) {
       setDiagramModel(model, false);
       hasLoaded.current = true;
 
-      toast.success('Diagram restored successfully', {
-        description: 'Your last workflow has been reloaded.',
-      });
+      // toast.success('Diagram restored successfully', {
+      //   description: 'Your last workflow has been reloaded.',
+      // });
+      sileo.success({ title: 'Diagram restored successfully', description: 'Your last workflow has been reloaded.' });
     } catch (error) {
       console.error(error);
 
-      toast.error('Failed to restore diagram', {
-        description: 'An error occurred while reloading your workflow.',
-      });
+      // toast.error('Failed to restore diagram', {
+      //   description: 'An error occurred while reloading your workflow.',
+      // });
+      sileo.error({ title: 'Failed to restore diagram', description: 'An error occurred while reloading your workflow.' });
     }
   }, [openTemplateSelectionModal, setDiagramModel]);
 }

@@ -14,7 +14,8 @@ import { validateWorkflow, extractWorkflowConfig, type ValidationResult } from '
 import { PreviewDrawer } from '../workflow-validator/components/preview-drawer';
 import type { WorkflowConfig } from '@/utils/state-machine-types';
 import { useUpdateWorkflow } from '@/hooks/workflow-queries';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
 
 export function AppBarContainer({ workflowId }: { workflowId: string }) {
   const nodes = useStore((state) => state.nodes);
@@ -82,10 +83,12 @@ export function AppBarContainer({ workflowId }: { workflowId: string }) {
         canvasData: flow,
       });
       
-      toast.success('Workflow saved successfully');
+      // toast.success('Workflow saved successfully');
+      sileo.success({ title: 'Workflow saved successfully' });
     } catch (error) {
       console.error('Failed to save workflow', error);
-      toast.error('Failed to save workflow');
+      // toast.error('Failed to save workflow');
+      sileo.error({ title: 'Failed to save workflow' });
     }
   }
 

@@ -1,5 +1,6 @@
-import { DiagramState } from '../diagram-slice';
-import { toast } from 'sonner';
+import { type DiagramState } from '../diagram-slice';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
 
 export function exportDiagram(get: () => DiagramState) {
   return () => {
@@ -7,9 +8,10 @@ export function exportDiagram(get: () => DiagramState) {
       const { reactFlowInstance, documentName, layoutDirection } = get();
 
       if (!reactFlowInstance) {
-        toast.error('Export failed', {
-          description: 'No diagram instance found to export.',
-        });
+        // toast.error('Export failed', {
+        //   description: 'No diagram instance found to export.',
+        // });
+        sileo.error({ title: 'Export failed', description: 'No diagram instance found to export.' });
         return;
       }
 
@@ -39,14 +41,16 @@ export function exportDiagram(get: () => DiagramState) {
       link.remove();
       URL.revokeObjectURL(url);
 
-      toast.success('Export successful', {
-        description: `Workflow exported as ${filename}.jam`,
-      });
+      // toast.success('Export successful', {
+      //   description: `Workflow exported as ${filename}.jam`,
+      // });
+      sileo.success({ title: 'Export successful', description: `Workflow exported as ${filename}.jam` });
     } catch (error) {
       console.error('Export error:', error);
-      toast.error('Export failed', {
-        description: 'An error occurred while exporting the workflow.',
-      });
+      // toast.error('Export failed', { 
+      //   description: 'An error occurred while exporting the workflow.',
+      // });
+      sileo.error({ title: 'Export failed', description: 'An error occurred while exporting the workflow.' });
     }
   };
 }

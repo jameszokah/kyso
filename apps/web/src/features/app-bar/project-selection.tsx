@@ -7,7 +7,8 @@ import { CardsIcon as Cards, SpinnerIcon as Spinner, ArrowLeftIcon as ArrowLeft 
 import useStore from '@/store/store';
 import { useI18n } from '@/locales/client';
 import { useUpdateWorkflow } from '@/hooks/workflow-queries';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
 import { DeployDialog } from '@/components/workflow/deploy-dialog';
 import { extractWorkflowConfig } from '@/features/workflow-validator/workflow-logic';
 
@@ -58,11 +59,13 @@ export function ProjectSelection({ workflowId, documentName, onDuplicateClick, i
           id: workflowId,
           name: localName,
         });
-        toast.success('Workflow name updated');
+        // toast.success('Workflow name updated');
+        sileo.success({ title: 'Workflow name updated' });
       } catch {
         setDocumentName(documentName); // Revert on failure
         setLocalName(documentName);
-        toast.error('Failed to update workflow name');
+        // toast.error('Failed to update workflow name');
+        sileo.error({ title: 'Failed to update workflow name' });
       }
     });
   };

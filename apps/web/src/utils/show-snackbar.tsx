@@ -1,6 +1,5 @@
-import { toast } from 'sonner';
-// import i18n from 'i18next';
-// import { DefaultTranslationMap } from '@/i18n/i18next';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
 
 const SNACKBAR_PREFIX = `snackbar` as const;
 // type SnackbarKey = keyof DefaultTranslationMap[typeof SNACKBAR_PREFIX];
@@ -27,7 +26,7 @@ export function showSnackbar({ title, variant = 'default', subtitle, buttonLabel
     action:
       buttonLabel && onButtonClick
         ? {
-            label: buttonLabel,
+            title: buttonLabel,
             onClick: onButtonClick,
           }
         : undefined,
@@ -36,23 +35,23 @@ export function showSnackbar({ title, variant = 'default', subtitle, buttonLabel
   switch (variant) {
     case 'destructive':
     case 'error': {
-      toast.error(message, options);
+      sileo.error({ title: message, description: options.description, button: options.action });
       break;
     }
     case 'success': {
-      toast.success(message, options);
+      sileo.success({ title: message, description: options.description, button: options.action });
       break;
     }
     case 'warning': {
-      toast.warning(message, options);
+      sileo.warning({ title: message, description: options.description, button: options.action });
       break;
     }
     case 'info': {
-      toast.info(message, options);
+      sileo.info({ title: message, description: options.description, button: options.action });
       break;
     }
     default: {
-      toast(message, options);
+      sileo.show({ title: message, description: options.description, button: options.action });
     }
   }
 }

@@ -1,6 +1,7 @@
 import { toPng } from 'html-to-image';
-import { DiagramState } from '../diagram-slice';
-import { toast } from 'sonner';
+import { type DiagramState } from '../diagram-slice';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
 import { getNodesBounds } from '@xyflow/react';
 
 export function saveAsImage(get: () => DiagramState) {
@@ -13,9 +14,10 @@ export function saveAsImage(get: () => DiagramState) {
     const viewportElement = document.querySelector('.react-flow__viewport') as HTMLElement;
 
     if (!viewportElement) {
-      toast.error('Export failed', {
-        description: 'Could not find the diagram viewport.',
-      });
+      // toast.error('Export failed', {
+      //   description: 'Could not find the diagram viewport.',
+      // });
+      sileo.error({ title: 'Export failed', description: 'Could not find the diagram viewport.' });
       return;
     }
 
@@ -52,14 +54,16 @@ export function saveAsImage(get: () => DiagramState) {
       link.href = dataUrl;
       link.click();
 
-      toast.success('Image saved', {
-        description: `Workflow saved as ${filename}.png`,
-      });
+      // toast.success('Image saved', {
+      //   description: `Workflow saved as ${filename}.png`,
+      // });
+      sileo.success({ title: 'Image saved', description: `Workflow saved as ${filename}.png` });
     } catch (error) {
       console.error('Save as image error:', error);
-      toast.error('Export failed', {
-        description: 'Failed to generate image from workflow.',
-      });
+      // toast.error('Export failed', {
+      //   description: 'Failed to generate image from workflow.',
+      // });
+      sileo.error({ title: 'Export failed', description: 'Failed to generate image from workflow.' });
     }
   };
 }

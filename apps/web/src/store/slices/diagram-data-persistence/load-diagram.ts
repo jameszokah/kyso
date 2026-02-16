@@ -1,8 +1,9 @@
-import { GetDiagramState, SetDiagramState } from '@/store/store';
+import { type GetDiagramState, type SetDiagramState } from '@/store/store';
 import { delay } from '@/utils/common';
 import { localStorageKey } from '@kyso/types/consts';
-import { toast } from 'sonner';
-import { DiagramModel, StatusType } from '@kyso/types/common';
+// import { toast } from 'sonner';
+import { sileo } from 'sileo';
+import { type DiagramModel, StatusType } from '@kyso/types/common';
 
 export function loadDiagram(set: SetDiagramState, get: GetDiagramState) {
   return async () => {
@@ -27,9 +28,10 @@ export function loadDiagram(set: SetDiagramState, get: GetDiagramState) {
 
       await delay(500);
     } else {
-      toast.error('No diagram to load', {
-        description: 'There is no saved workflow available to load.',
-      });
+      // toast.error('No diagram to load', {
+      //   description: 'There is no saved workflow available to load.',
+      // });
+      sileo.error({ title: 'No diagram to load', description: 'There is no saved workflow available to load.' });
     }
 
     set({ loadDiagramStatus: StatusType.Idle });
@@ -37,9 +39,10 @@ export function loadDiagram(set: SetDiagramState, get: GetDiagramState) {
 
   function onError() {
     set({ loadDiagramStatus: StatusType.Error });
-    toast.error('Failed to load diagram', {
-      description: 'An error occurred while loading your workflow.',
-    });
+    // toast.error('Failed to load diagram', {
+    //   description: 'An error occurred while loading your workflow.',
+    // });
+    sileo.error({ title: 'Failed to load diagram', description: 'An error occurred while loading your workflow.' });
   }
 }
 
