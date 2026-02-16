@@ -25,8 +25,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                         {children}
                         <ReactQueryDevtools />
                       </QueryClientProvider>
-                {/* <Toaster richColors /> */}
-                <SileoToaster />
+                <Toaster richColors />
+                {/* <SileoToaster /> */}
                   </ModalProvider>
                 </MousePositionProvider>
               </UndoRedoProvider>
